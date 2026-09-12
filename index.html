@@ -1,862 +1,1717 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Sergio Campos · Dashboard CV · Comunicación Digital</title>
-  <!-- Fuentes e iconos -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Srgxio — Human System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+  :root{
+    --hs-blue:#1F4E67;
+    --hs-blue-lt:#2f6d8c;
+    --hs-red:#d71d00;
+    --hs-gold:#22d3ee;
+    --hs-gold-warm:#fcc404;
+    --glass:rgba(255,255,255,0.08);
+    --glass-strong:rgba(255,255,255,0.14);
+    --glass-border:rgba(255,255,255,0.18);
+    --text-hi:#ffffff;
+    --text-mid:rgba(255,255,255,0.72);
+    --text-low:rgba(255,255,255,0.48);
+    --radius-lg:26px;
+    --radius-md:18px;
+    --radius-sm:12px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--text-hi);
+    min-height:100vh;
+    background:
+      radial-gradient(1100px 650px at 8% -10%, rgba(252,196,4,0.14), transparent 55%),
+      radial-gradient(900px 600px at 100% 0%, rgba(215,29,0,0.16), transparent 55%),
+      linear-gradient(135deg,#070a10 0%, var(--hs-blue) 55%, var(--hs-red) 130%);
+    background-attachment:fixed;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  h1,h2,h3,.brand,.nav-label{font-family:'Space Grotesk',sans-serif;}
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0b1a2f;
-      background-image: radial-gradient(circle at 20% 30%, #153a5e 0%, #0a1a2c 100%);
-      min-height: 100vh;
-      padding: 24px 16px;
-      color: #e7edf5;
-    }
+  .glass{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(22px) saturate(160%);
+    -webkit-backdrop-filter:blur(22px) saturate(160%);
+    box-shadow:0 1px 0 rgba(255,255,255,0.15) inset, 0 20px 40px -20px rgba(0,0,0,0.55);
+  }
+  .glass-strong{ background:var(--glass-strong); }
 
-    /* CONTENEDOR PRINCIPAL */
-    .dashboard {
-      max-width: 1440px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 24px;
-    }
+  i.fas, i.far, i.fab, i.fa-solid, i.fa-regular, i.fa-brands {
+    display:inline-block; font-style:normal; font-variant:normal;
+    text-rendering:auto; line-height:1; -webkit-font-smoothing:antialiased;
+  }
 
-    /* ========== SIDEBAR (PERFIL + MÉTRICAS) ========== */
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      /* FIX 1: Evita el desbordamiento de Grid/Flex */
-      min-width: 0; 
-    }
+  /* ═══════════════ TOP BAR ═══════════════ */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 22px; border-radius:0 0 24px 24px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.05rem; letter-spacing:.2px;}
+  .brand img{ height:40px; border-radius:12px; box-shadow:0 4px 14px rgba(34,211,238,.45); }
+  .topnav{display:flex; gap:6px;}
+  .topnav a{
+    color:var(--text-mid); text-decoration:none; font-size:1.05rem;
+    width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+    border-radius:50%; transition:all .25s cubic-bezier(.175,.885,.32,1.275);
+    position:relative;
+  }
+  .topnav a.active, .topnav a:hover{ background:var(--hs-gold); color:#1a1200; transform:translateY(-3px) scale(1.1); }
+  .dot{ position:absolute; top:8px; right:9px; width:7px; height:7px; border-radius:50%; background:var(--hs-red); border:1.5px solid #070a10; }
+  .avatar-mini{
+    width:38px;height:38px;border-radius:50%;object-fit:cover;
+    border:2px solid var(--hs-gold);
+    box-shadow:0 0 12px rgba(34,211,238,.5);
+    flex-shrink:0;
+  }
 
-    .card {
-      background: rgba(18, 40, 70, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(100, 170, 255, 0.2);
-      border-radius: 28px;
-      padding: 24px 20px;
-      box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-      transition: all 0.2s ease;
-    }
+  /* ═══════════════ LAYOUT ═══════════════ */
+  .layout{
+    max-width:1080px; margin:22px auto 60px; padding:0 18px;
+    display:grid; grid-template-columns:230px minmax(0,560px) 260px; gap:22px;
+    align-items:start;
+  }
+  @media (max-width:980px){ .layout{ grid-template-columns:1fr; } .side-left,.side-right{ display:none; } }
 
-    .profile-card {
-      text-align: center;
-    }
+  /* ═══════════════ SIDE LEFT ═══════════════ */
+  .side-left{ position:sticky; top:90px; display:flex; flex-direction:column; gap:14px; }
+  .profile-card{ padding:20px 18px; border-radius:var(--radius-lg); text-align:center; }
+  .profile-card img{ width:76px;height:76px;border-radius:50%; object-fit:cover; border:3px solid var(--hs-gold); box-shadow:0 0 18px rgba(34,211,238,.5);}
+  .profile-card h3{ margin:10px 0 2px; font-size:1rem; font-style:italic; color:var(--hs-gold); }
+  .profile-card p{ margin:0; font-size:.76rem; color:var(--text-low); display:flex; align-items:center; justify-content:center; gap:6px;}
+  .profile-stats{ display:flex; justify-content:space-around; margin-top:14px; padding-top:12px; border-top:1px solid var(--glass-border);}
+  .profile-stats div{ font-size:.68rem; color:var(--text-mid); letter-spacing:.4px; display:flex; flex-direction:column; align-items:center; gap:3px;}
+  .profile-stats b{ display:block; font-size:1.05rem; color:var(--hs-gold); font-family:'Space Grotesk'; }
+  .profile-stats i{ font-size:.7rem; color:var(--text-low); }
 
-    .avatar-large {
-      width: 130px;
-      height: 130px;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #1e6ec7, #0a3366);
-      padding: 4px;
-      box-shadow: 0 12px 28px rgba(0, 20, 50, 0.6), 0 0 0 2px #2a73c4 inset;
-    }
+  /* ═══════════════ REDES SOCIALES ═══════════════ */
+  .social-panel{ padding:16px; border-radius:var(--radius-lg); }
+  .social-panel h4{
+    margin:0 0 12px;
+    font-size:.88rem;
+    color:var(--text-mid);
+    font-weight:600;
+    letter-spacing:.2px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .social-panel h4 i{ color:var(--hs-gold); }
+  .social-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:8px;
+  }
+  .social-grid a{
+    aspect-ratio:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid var(--glass-border);
+    color:var(--text-hi);
+    font-size:1rem;
+    text-decoration:none;
+    transition:all .25s cubic-bezier(.175,.885,.32,1.275);
+    position:relative;
+  }
+  .social-grid a:hover{
+    background:var(--hs-gold);
+    color:#001a22;
+    transform:translateY(-3px) scale(1.08);
+    box-shadow:0 8px 20px rgba(34,211,238,0.4);
+  }
+  .social-grid a[data-net="whatsapp"]:hover{ background:#25D366; color:#fff; box-shadow:0 8px 20px rgba(37,211,102,0.5); }
+  .social-grid a[data-net="instagram"]:hover{ background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color:#fff; box-shadow:0 8px 20px rgba(220,39,67,0.5); }
+  .social-grid a[data-net="facebook"]:hover{ background:#1877F2; color:#fff; box-shadow:0 8px 20px rgba(24,119,242,0.5); }
+  .social-grid a[data-net="youtube"]:hover{ background:#FF0000; color:#fff; box-shadow:0 8px 20px rgba(255,0,0,0.5); }
+  .social-grid a[data-net="linkedin"]:hover{ background:#0A66C2; color:#fff; box-shadow:0 8px 20px rgba(10,102,194,0.5); }
+  .social-grid a[data-net="twitter"]:hover{ background:#000; color:#fff; box-shadow:0 8px 20px rgba(0,0,0,0.6); }
+  .social-grid a[data-net="tiktok"]:hover{ background:linear-gradient(45deg,#25F4EE,#FE2C55,#000); color:#fff; box-shadow:0 8px 20px rgba(254,44,85,0.5); }
+  .social-grid a[data-net="personal"]:hover{ background:var(--hs-blue-lt); color:#fff; box-shadow:0 8px 20px rgba(47,109,140,0.5); }
 
-    .avatar-large img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #a0c8ff;
-    }
+  .quick-nav{ padding:10px; border-radius:var(--radius-lg); display:flex; flex-direction:column; gap:2px;}
+  .quick-nav a{ display:flex; align-items:center; gap:12px; color:var(--text-mid); text-decoration:none;
+    padding:11px 14px; border-radius:var(--radius-sm); font-size:.86rem; transition:background .2s,color .2s;}
+  .quick-nav a i{width:18px; text-align:center; color:var(--hs-gold); font-size:.95rem;}
+  .quick-nav a:hover{ background:var(--glass-strong); color:var(--text-hi);}
 
-    .profile-name {
-      font-size: 1.9rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: white;
-      margin-bottom: 6px;
-      word-break: break-word;
-    }
+  /* ═══════════════ STORIES BAR ═══════════════ */
+  .stories-bar{
+    padding:14px 10px;
+    border-radius:var(--radius-lg);
+    margin-bottom:16px;
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+  }
+  .stories-bar::-webkit-scrollbar{ display:none; }
 
-    .profile-title {
-      color: #b3d9ff;
-      font-weight: 500;
-      font-size: 0.95rem;
-      background: rgba(30, 110, 199, 0.25);
-      display: inline-block;
-      padding: 4px 16px;
-      border-radius: 50px;
-      margin-bottom: 16px;
-    }
+  .story-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    flex-shrink:0;
+    width:96px;
+    transition:transform .2s;
+  }
+  .story-item:hover{ transform:translateY(-3px); }
 
-    .meta-list {
-      text-align: left;
-      margin-top: 10px;
-    }
+  .story-avatar-wrap{
+    position:relative;
+    width:96px;
+    height:150px;
+    border-radius:20px;
+    padding:3px;
+    background:linear-gradient(135deg, var(--hs-gold), var(--hs-blue-lt));
+    transition:transform .25s, box-shadow .25s;
+    overflow:hidden;
+  }
+  .story-item:hover .story-avatar-wrap{
+    transform:scale(1.03);
+    box-shadow:0 12px 28px rgba(0,0,0,0.35);
+  }
 
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(122, 183, 239, 0.1);
-      font-size: 0.9rem;
-      flex-wrap: wrap;
-      /* FIX 2: Permite que elementos flex internos se encojan y rompan palabras largas */
-      min-width: 0; 
-      overflow-wrap: anywhere;
-      word-break: break-all;
-    }
+  .story-item.seen .story-avatar-wrap{
+    background:rgba(255,255,255,0.20);
+  }
+  .story-item.unseen .story-avatar-wrap{
+    background:linear-gradient(160deg, var(--hs-gold) 0%, var(--hs-blue-lt) 55%, var(--hs-red) 100%);
+    box-shadow:0 0 18px rgba(34,211,238,.35);
+  }
 
-    .meta-item i {
-      width: 24px;
-      color: #7ab7ef;
-      flex-shrink: 0; /* Evita que el ícono se aplaste */
-    }
+  .story-thumb{
+    width:100%;
+    height:100%;
+    border-radius:17px;
+    object-fit:cover;
+    border:2.5px solid #070a10;
+    display:block;
+  }
 
-    /* MÉTRICAS RADIALES */
-    .metric-radial {
-      display: flex;
-      justify-content: space-around;
-      margin: 10px 0 20px;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
+  .story-author-avatar{
+    position:absolute;
+    bottom:6px;
+    right:6px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2.5px solid #070a10;
+    box-shadow:0 3px 10px rgba(0,0,0,0.5);
+    z-index:5;
+  }
+  .story-item.mine .story-author-avatar{
+    border-color:var(--hs-gold);
+    box-shadow:0 0 14px rgba(34,211,238,.8);
+  }
 
-    .radial-box {
-      text-align: center;
-      flex: 1;
-      min-width: 70px;
-    }
+  .story-add-btn{
+    position:absolute;
+    bottom:4px;
+    right:4px;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--hs-gold);
+    color:#001a22;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.85rem;
+    border:2.5px solid #070a10;
+    font-weight:700;
+    box-shadow:0 2px 10px rgba(34,211,238,.7);
+    transition:transform .2s;
+    z-index:6;
+  }
+  .story-item.mine:hover .story-add-btn{ transform:scale(1.15); }
 
-    .progress-circle {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: conic-gradient(#1e6ec7 0deg 137deg, #2a4b7a 137deg 360deg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 10px;
-      position: relative;
-    }
+  .story-avatar-wrap::after{
+    content:'';
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:55%;
+    background:linear-gradient(0deg, rgba(0,0,0,0.78) 0%, transparent 100%);
+    border-radius:0 0 17px 17px;
+    pointer-events:none;
+    z-index:1;
+  }
 
-    .progress-circle span {
-      background: #0f2a48;
-      width: 62px;
-      height: 62px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: white;
-    }
+  .story-name{
+    position:absolute;
+    left:6px; right:44px; bottom:10px;
+    z-index:2;
+    font-size:.72rem;
+    color:#fff;
+    font-weight:600;
+    text-align:left;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    letter-spacing:.2px;
+    text-shadow:0 1px 4px rgba(0,0,0,0.9);
+  }
+  .story-item.mine .story-name{ color:var(--hs-gold); }
 
-    /* ========== CONTENIDO PRINCIPAL ========== */
-    .main-content {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      /* FIX 1: Evita el desbordamiento de Grid/Flex causado por la tabla */
-      min-width: 0; 
-    }
+  /* ═══════════════ STORY VIEWER ═══════════════ */
+  .story-viewer{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.94);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    z-index:9999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    animation:svFadeIn .25s ease;
+  }
+  .story-viewer.active{ display:flex; }
+  @keyframes svFadeIn{ from{opacity:0;} to{opacity:1;} }
 
-    /* FILA DE WIDGETS ESTADÍSTICOS */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
+  .sv-stage{
+    position:relative;
+    width:100%;
+    max-width:420px;
+    height:min(88vh, 780px);
+    border-radius:20px;
+    overflow:hidden;
+    background:#000;
+    box-shadow:0 30px 80px rgba(0,0,0,0.7);
+    animation:svScaleIn .3s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes svScaleIn{ from{transform:scale(0.94); opacity:0;} to{transform:scale(1); opacity:1;} }
 
-    .stat-card {
-      background: rgba(18, 40, 70, 0.7);
-      backdrop-filter: blur(12px);
-      border-radius: 22px;
-      padding: 20px 16px;
-      border: 1px solid rgba(100, 170, 255, 0.2);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 12px 25px -8px #030b14;
-      transition: transform 0.2s, background 0.2s;
-    }
+  .sv-progress{
+    position:absolute;
+    top:0; left:0; right:0;
+    display:flex;
+    gap:3px;
+    padding:10px 10px 0;
+    z-index:20;
+  }
+  .sv-progress-bar{
+    flex:1;
+    height:2.5px;
+    background:rgba(255,255,255,0.3);
+    border-radius:2px;
+    overflow:hidden;
+    position:relative;
+  }
+  .sv-progress-bar .fill{
+    height:100%;
+    width:0;
+    background:#fff;
+    border-radius:2px;
+    transition:width .1s linear;
+  }
+  .sv-progress-bar.done .fill{ width:100%; }
+  .sv-progress-bar.active .fill{ background:var(--hs-gold); }
 
-    .stat-card:hover {
-      background: rgba(24, 52, 88, 0.8);
-      transform: translateY(-2px);
-    }
+  .sv-header{
+    position:absolute;
+    top:22px; left:0; right:0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 14px;
+    z-index:20;
+    background:linear-gradient(180deg, rgba(0,0,0,0.6), transparent);
+  }
+  .sv-header img{
+    width:38px; height:38px; border-radius:50%;
+    object-fit:cover;
+    border:2px solid var(--hs-gold);
+  }
+  .sv-header-info{
+    display:flex; flex-direction:column;
+    flex:1; min-width:0;
+  }
+  .sv-header-name{
+    font-weight:700;
+    font-size:.9rem;
+    color:#fff;
+    font-style:italic;
+    display:flex; align-items:center; gap:6px;
+  }
+  .sv-header-time{
+    font-size:.7rem;
+    color:rgba(255,255,255,0.7);
+  }
+  .sv-close{
+    width:34px; height:34px;
+    border-radius:50%;
+    background:rgba(0,0,0,0.5);
+    color:#fff;
+    border:none;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    font-size:1rem;
+    transition:background .2s;
+  }
+  .sv-close:hover{ background:var(--hs-red); }
 
-    .stat-icon {
-      background: #1e3a6b;
-      width: 54px;
-      height: 54px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      color: #7ab7ef;
-      flex-shrink: 0;
-    }
+  .sv-content{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .sv-content img,
+  .sv-content video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .sv-content .text-story{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:60px 30px;
+    text-align:center;
+    font-family:'Space Grotesk';
+    font-size:1.6rem;
+    font-weight:600;
+    line-height:1.3;
+    color:#fff;
+    text-shadow:0 2px 20px rgba(0,0,0,0.5);
+  }
 
-    .stat-info h3 {
-      font-size: 0.75rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #b3d9ff;
-    }
+  .sv-nav{
+    position:absolute;
+    inset:0;
+    display:flex;
+    z-index:10;
+  }
+  .sv-nav-left, .sv-nav-right{
+    flex:1;
+    cursor:pointer;
+  }
 
-    .stat-info .value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: white;
-      line-height: 1.2;
-    }
+  .sv-footer{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    padding:14px;
+    z-index:20;
+    background:linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .sv-footer input{
+    flex:1;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:999px;
+    padding:10px 18px;
+    color:#fff;
+    font-family:inherit;
+    font-size:.85rem;
+    outline:none;
+    backdrop-filter:blur(10px);
+  }
+  .sv-footer input::placeholder{ color:rgba(255,255,255,0.55); }
+  .sv-footer button{
+    width:40px; height:40px;
+    border-radius:50%;
+    background:var(--hs-gold);
+    color:#001a22;
+    border:none;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.95rem;
+    transition:transform .2s;
+    flex-shrink:0;
+  }
+  .sv-footer button:hover{ transform:scale(1.1); }
 
-    /* TABLA / HISTORIAL */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
+  /* ═══════════════ COMPOSER ═══════════════ */
+  .composer{ padding:16px 18px; border-radius:var(--radius-lg); margin-bottom:18px;}
+  .composer-top{ display:flex; gap:12px; align-items:flex-start;}
+  .composer textarea{
+    flex:1; resize:none; min-height:46px; background:transparent; border:none; outline:none;
+    color:var(--text-hi); font-family:'Inter'; font-size:.95rem; line-height:1.4; padding-top:8px;
+  }
+  .composer textarea::placeholder{ color:var(--text-low); }
+  .composer-actions{ display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--glass-border);}
+  .composer-icons{ display:flex; gap:16px; color:var(--text-mid); font-size:1.05rem;}
+  .composer-icons i{ cursor:pointer; transition:color .2s, transform .2s; }
+  .composer-icons i:hover{ color:var(--hs-gold); transform:translateY(-2px); }
+  .btn-post{
+    border:none; padding:9px 22px; border-radius:999px; font-weight:700; font-size:.85rem; cursor:pointer;
+    background:linear-gradient(135deg,var(--hs-gold),#0e94b0); color:#001a22; transition:filter .2s;
+    display:flex; align-items:center; gap:8px;
+  }
+  .btn-post:hover{ filter:brightness(1.08); }
 
-    .section-header h2 {
-      font-weight: 600;
-      font-size: 1.5rem;
-      color: white;
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      /* FIX 3: Permite que el título baje a otra línea si choca con el borde */
-      flex-wrap: wrap; 
-    }
+  /* ═══════════════ FEED ═══════════════ */
+  .feed{ display:flex; flex-direction:column; gap:16px; }
+  .post{ padding:18px; border-radius:var(--radius-lg); }
+  .post-head{ display:flex; align-items:center; gap:12px; }
+  .post-head img{ width:46px;height:46px;border-radius:50%; object-fit:cover; border:2px solid var(--hs-gold); flex-shrink:0;}
+  .post-head .who{ display:flex; flex-direction:column; min-width:0;}
+  .post-head .name{ font-weight:700; font-size:.94rem; font-style:italic; color:var(--hs-gold); display:flex; align-items:center; gap:6px;}
+  .post-head .meta{ font-size:.74rem; color:var(--text-low); display:flex; align-items:center; gap:5px;}
+  .post-title{ font-size:1.05rem; font-weight:700; margin:10px 0 4px; }
+  .post-body{ margin:4px 0 4px; font-size:.92rem; line-height:1.55; color:rgba(255,255,255,.9); white-space:pre-line; }
+  .post-body a{ color:var(--hs-gold); text-decoration:none; }
+  .post-media{ margin-top:10px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--glass-border); }
+  .post-media img{ width:100%; display:block; max-height:420px; object-fit:cover;}
+  .post-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:10px; border-radius:var(--radius-md); overflow:hidden;}
+  .post-grid img{ width:100%; height:170px; object-fit:cover; }
+  .post-actions{ display:flex; justify-content:space-around; margin-top:14px; padding-top:12px; border-top:1px solid var(--glass-border); }
+  .post-actions button{
+    background:none; border:none; color:var(--text-mid); font-size:.85rem; display:flex; align-items:center; gap:8px;
+    cursor:pointer; padding:6px 10px; border-radius:10px; transition:all .2s; font-family:inherit;
+  }
+  .post-actions button i{ font-size:.95rem; }
+  .post-actions button:hover{ color:var(--hs-gold); background:rgba(255,255,255,.08); transform:translateY(-2px);}
+  .post-actions button.liked{ color:var(--hs-red); }
+  .post-actions button.liked i{ animation:pop .35s ease; }
+  @keyframes pop{ 0%{transform:scale(1);} 50%{transform:scale(1.4);} 100%{transform:scale(1);} }
+  .badge{
+    display:inline-flex; align-items:center; gap:5px; font-size:.66rem; letter-spacing:.3px;
+    padding:3px 9px; border-radius:999px; background:rgba(34,211,238,.14); color:var(--hs-gold);
+    border:1px solid rgba(34,211,238,.4); font-style:normal;
+  }
 
-    .badge-new {
-      background: #1e6ec7;
-      padding: 5px 14px;
-      border-radius: 30px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
+  /* ═══════════════ POLL ═══════════════ */
+  .poll-opt{
+    position:relative; margin-bottom:10px; border-radius:12px; overflow:hidden; cursor:pointer;
+    background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
+    transition:border-color .2s;
+  }
+  .poll-opt:hover:not(.voted){ border-color:var(--hs-gold); }
+  .poll-opt .fill{
+    position:absolute; top:0; left:0; bottom:0; width:0%;
+    background:linear-gradient(90deg, rgba(34,211,238,.4), rgba(34,211,238,.1));
+    transition:width .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .poll-opt .row{ position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; padding:11px 14px; font-size:.85rem; }
+  .poll-opt .row span:first-child{ display:flex; align-items:center; gap:8px; }
+  .poll-opt.voted{ cursor:default; }
+  .poll-foot{ font-size:.72rem; color:var(--text-low); margin-top:6px; display:flex; justify-content:space-between; align-items:center;}
 
-    .table-wrapper {
-      background: rgba(18, 40, 70, 0.55);
-      backdrop-filter: blur(8px);
-      border-radius: 24px;
-      padding: 0;
-      border: 1px solid rgba(100, 170, 255, 0.15);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+  /* ═══════════════ SIDE RIGHT ═══════════════ */
+  .side-right{ display:flex; flex-direction:column; gap:16px; position:sticky; top:90px; }
+  .panel{ padding:16px; border-radius:var(--radius-lg); }
+  .panel h4{ margin:0 0 12px; font-size:.9rem; color:var(--text-mid); font-weight:600; letter-spacing:.2px; display:flex; align-items:center; gap:8px;}
+  .panel h4 i{ color:var(--hs-gold); }
+  .trend{ display:flex; justify-content:space-between; align-items:center; padding:9px 0; font-size:.82rem; border-bottom:1px solid var(--glass-border);}
+  .trend:last-child{ border-bottom:none; }
+  .trend .tag{ color:var(--text-hi); display:flex; align-items:center; gap:8px; }
+  .trend .tag i{ color:var(--hs-gold); font-size:.75rem; }
+  .trend .n{ color:var(--text-low); font-size:.72rem; }
+  .suggestion{ display:flex; align-items:center; gap:10px; padding:8px 0; }
+  .suggestion img{ width:38px;height:38px;border-radius:50%; object-fit:cover; border:2px solid var(--hs-gold); flex-shrink:0;}
+  .suggestion .s-name{ font-size:.82rem; font-weight:600; }
+  .suggestion .s-sub{ font-size:.7rem; color:var(--text-low); display:flex; align-items:center; gap:4px;}
+  .follow-btn{
+    margin-left:auto; font-size:.7rem; padding:6px 13px; border-radius:999px; border:1px solid var(--hs-gold);
+    background:transparent; color:var(--hs-gold); cursor:pointer; display:flex; align-items:center; gap:5px;
+    transition:all .2s; font-family:inherit; white-space:nowrap;
+  }
+  .follow-btn:hover{ background:var(--hs-gold); color:#001a22; }
+  .follow-btn.following{ background:var(--hs-gold); color:#001a22; }
+  .follow-btn i{ font-size:.65rem; }
 
-    .academic-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      color: #e0edfc;
-      min-width: 520px;
-    }
+  /* ═══════════════ MODAL SUBIR HISTORIA ═══════════════ */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    z-index:10000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    animation:svFadeIn .2s ease;
+  }
+  .modal-overlay.active{ display:flex; }
 
-    .academic-table th {
-      text-align: left;
-      padding: 18px 16px;
-      font-weight: 600;
-      color: #b3d9ff;
-      border-bottom: 1px solid #2a4b7a;
-      font-size: 0.8rem;
-      letter-spacing: 0.8px;
-    }
+  .modal-box{
+    width:100%;
+    max-width:460px;
+    max-height:90vh;
+    overflow-y:auto;
+    border-radius:24px;
+    padding:24px;
+    background:linear-gradient(180deg, rgba(31,78,103,0.9), rgba(10,14,20,0.95));
+    border:1px solid var(--glass-border);
+    box-shadow:0 30px 80px rgba(0,0,0,0.7);
+    animation:svScaleIn .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .modal-box h3{
+    margin:0 0 6px;
+    font-size:1.2rem;
+    color:var(--hs-gold);
+    display:flex; align-items:center; gap:10px;
+  }
+  .modal-box .sub{
+    margin:0 0 18px;
+    font-size:.82rem;
+    color:var(--text-mid);
+  }
+  .story-type-tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:16px;
+    background:rgba(0,0,0,0.3);
+    padding:5px;
+    border-radius:12px;
+  }
+  .story-type-tabs button{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:var(--text-mid);
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.82rem;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    transition:all .2s;
+  }
+  .story-type-tabs button.active{
+    background:var(--hs-gold);
+    color:#001a22;
+  }
+  .story-drop{
+    border:2px dashed rgba(255,255,255,0.25);
+    border-radius:16px;
+    padding:36px 20px;
+    text-align:center;
+    cursor:pointer;
+    transition:all .25s;
+    margin-bottom:16px;
+    background:rgba(0,0,0,0.2);
+  }
+  .story-drop:hover{
+    border-color:var(--hs-gold);
+    background:rgba(34,211,238,0.08);
+  }
+  .story-drop i{
+    font-size:2.2rem;
+    color:var(--hs-gold);
+    margin-bottom:10px;
+    display:block;
+  }
+  .story-drop p{
+    margin:0;
+    font-size:.85rem;
+    color:var(--text-mid);
+  }
+  .story-drop small{
+    display:block;
+    margin-top:6px;
+    font-size:.72rem;
+    color:var(--text-low);
+  }
+  .story-drop input{ display:none; }
 
-    .academic-table td {
-      padding: 12px 16px;
-      border-bottom: 1px solid rgba(42, 75, 122, 0.4);
-    }
+  .story-preview{
+    width:100%;
+    height:220px;
+    border-radius:16px;
+    overflow:hidden;
+    margin-bottom:16px;
+    background:#000;
+    display:none;
+    position:relative;
+  }
+  .story-preview.active{ display:block; }
+  .story-preview img,
+  .story-preview video{
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .story-preview .remove{
+    position:absolute;
+    top:10px; right:10px;
+    width:32px; height:32px;
+    border-radius:50%;
+    background:var(--hs-red);
+    color:#fff;
+    border:none;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.85rem;
+  }
 
-    .academic-table tr:last-child td {
-      border-bottom: none;
-    }
+  .story-text-input{
+    width:100%;
+    min-height:200px;
+    background:linear-gradient(135deg, var(--hs-blue), var(--hs-red));
+    border:none;
+    border-radius:16px;
+    padding:24px;
+    color:#fff;
+    font-family:'Space Grotesk';
+    font-size:1.3rem;
+    font-weight:600;
+    text-align:center;
+    outline:none;
+    resize:none;
+    line-height:1.4;
+    margin-bottom:16px;
+    display:none;
+  }
+  .story-text-input.active{ display:block; }
+  .story-text-input::placeholder{ color:rgba(255,255,255,0.6); }
 
-    .grade-badge {
-      background: #0e2c4e;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-weight: 700;
-      color: #9ac0f0;
-      display: inline-block;
-      min-width: 55px;
-      text-align: center;
-      border: 1px solid #2a73c4;
-    }
+  .modal-actions{
+    display:flex;
+    gap:10px;
+    margin-top:8px;
+  }
+  .modal-actions button{
+    flex:1;
+    padding:13px;
+    border-radius:14px;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    font-weight:700;
+    font-size:.88rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:filter .2s;
+  }
+  .btn-cancel{
+    background:rgba(255,255,255,0.1);
+    color:var(--text-hi);
+    border:1px solid var(--glass-border);
+  }
+  .btn-cancel:hover{ background:rgba(255,255,255,0.18); }
+  .btn-publish-story{
+    background:linear-gradient(135deg, var(--hs-gold), #0e94b0);
+    color:#001a22;
+  }
+  .btn-publish-story:hover{ filter:brightness(1.1); }
 
-    .grade-highlight {
-      background: #1a5bbf;
-      color: white;
-      border-color: #7ab7ef;
-    }
-
-    /* CERTIFICACIONES GRILLA */
-    .cert-grid-mini {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-
-    .cert-block {
-      background: rgba(18, 40, 70, 0.6);
-      backdrop-filter: blur(8px);
-      border-radius: 20px;
-      padding: 20px;
-      border: 1px solid rgba(100, 170, 255, 0.15);
-      transition: 0.2s;
-    }
-
-    .cert-block h4 {
-      font-weight: 600;
-      color: #c6ddff;
-      margin-bottom: 14px;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .mini-cert-list {
-      list-style: none;
-    }
-
-    .mini-cert-list li {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      padding: 8px 0;
-      border-bottom: 1px dashed #2f5580;
-      font-size: 0.85rem;
-      flex-wrap: wrap;
-    }
-
-    .mini-cert-list i {
-      color: #1e6ec7;
-      font-size: 0.75rem;
-      flex-shrink: 0;
-      margin-top: 3px;
-    }
-
-    .cert-date-mini {
-      margin-left: auto;
-      font-size: 0.7rem;
-      background: #0e2842;
-      padding: 2px 8px;
-      border-radius: 12px;
-      color: #b3d9ff;
-      white-space: nowrap;
-    }
-
-    /* SKILLS TAGS */
-    .skill-cloud {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .skill-pill {
-      background: #112f4f;
-      border: 1px solid #2a73c4;
-      color: #e1efff;
-      padding: 8px 18px;
-      border-radius: 40px;
-      font-weight: 500;
-      font-size: 0.85rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(5px);
-      transition: 0.2s;
-    }
-
-    .skill-pill i {
-      color: #7ab7ef;
-    }
-
-    .skill-pill:hover {
-      background: #1a4b7a;
-      transform: scale(1.02);
-    }
-
-    /* FOOTER */
-    .dashboard-footer {
-      margin-top: 12px;
-      color: #a0bbd8;
-      font-size: 0.8rem;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      border-top: 1px solid #1e3f64;
-      padding-top: 20px;
-    }
-
-    /* PROGRESS BARS */
-    .progress-bar-sm {
-      height: 6px;
-      background: #1e3f64;
-      border-radius: 10px;
-      margin: 8px 0;
-      overflow: hidden;
-    }
-
-    .progress-fill-sm {
-      height: 6px;
-      background: linear-gradient(90deg, #2a73c4, #7ab7ef);
-      border-radius: 10px;
-      width: 70%;
-    }
-
-    /* FLOATING NOTE RESPONSIVE */
-    .floating-note {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(18, 40, 70, 0.9);
-      backdrop-filter: blur(10px);
-      padding: 8px 18px;
-      border-radius: 40px;
-      border: 1px solid #2a73c4;
-      font-size: 0.75rem;
-      color: #b3d9ff;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      z-index: 100;
-      pointer-events: none;
-    }
-
-    /* ========== MEJORAS RESPONSIVE ========== */
-    /* Tablets grandes */
-    @media (max-width: 1024px) {
-      .dashboard {
-        gap: 20px;
-      }
-      .stats-row {
-        gap: 16px;
-      }
-      .stat-card {
-        padding: 16px 14px;
-      }
-      .stat-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 1.5rem;
-      }
-      .stat-info .value {
-        font-size: 1.8rem;
-      }
-    }
-
-    /* Tablets medianas: sidebar vertical */
-    @media (max-width: 900px) {
-      .dashboard {
-        grid-template-columns: 1fr;
-      }
-      .sidebar {
-        max-width: 100%;
-      }
-      .card {
-        padding: 20px;
-      }
-    }
-
-    /* Tablets pequeñas y móviles grandes */
-    @media (max-width: 768px) {
-      body {
-        padding: 16px 12px;
-      }
-      .stats-row {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-      }
-      .cert-grid-mini {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      .section-header h2 {
-        font-size: 1.3rem;
-      }
-      .profile-name {
-        font-size: 1.7rem;
-      }
-      .avatar-large {
-        width: 110px;
-        height: 110px;
-      }
-      .stat-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 1.3rem;
-      }
-      .stat-info .value {
-        font-size: 1.6rem;
-      }
-      .card {
-        padding: 18px;
-      }
-    }
-
-    /* Móviles (≤ 550px) */
-    @media (max-width: 550px) {
-      .stats-row {
-        grid-template-columns: 1fr;
-      }
-      .progress-circle {
-        width: 70px;
-        height: 70px;
-      }
-      .progress-circle span {
-        width: 54px;
-        height: 54px;
-        font-size: 1rem;
-      }
-      .avatar-large {
-        width: 90px;
-        height: 90px;
-      }
-      .profile-name {
-        font-size: 1.5rem;
-      }
-      .profile-title {
-        font-size: 0.85rem;
-      }
-      .meta-item {
-        font-size: 0.8rem;
-        gap: 10px;
-        padding: 8px 0;
-      }
-      .stat-card {
-        padding: 14px 12px;
-      }
-      .stat-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-        border-radius: 12px;
-      }
-      .stat-info h3 {
-        font-size: 0.7rem;
-      }
-      .stat-info .value {
-        font-size: 1.5rem;
-      }
-      .section-header h2 {
-        font-size: 1.2rem;
-      }
-      .badge-new {
-        font-size: 0.7rem;
-        padding: 3px 10px;
-      }
-      .academic-table th,
-      .academic-table td {
-        padding: 10px 12px;
-        font-size: 0.8rem;
-      }
-      .grade-badge {
-        padding: 3px 8px;
-        min-width: 48px;
-        font-size: 0.75rem;
-      }
-      .cert-block {
-        padding: 16px;
-      }
-      .cert-block h4 {
-        font-size: 0.95rem;
-      }
-      .mini-cert-list li {
-        font-size: 0.8rem;
-        gap: 6px;
-      }
-      .cert-date-mini {
-        font-size: 0.65rem;
-        margin-left: 0;
-        margin-top: 4px;
-      }
-      .skill-pill {
-        padding: 5px 14px;
-        font-size: 0.75rem;
-      }
-      .dashboard-footer {
-        flex-direction: column;
-        align-items: flex-start;
-        font-size: 0.7rem;
-      }
-      .floating-note {
-        bottom: 10px;
-        right: 10px;
-        padding: 5px 12px;
-        font-size: 0.65rem;
-      }
-    }
-
-    /* Ultra pequeñas (≤ 380px) */
-    @media (max-width: 380px) {
-      .metric-radial {
-        gap: 16px;
-      }
-      .progress-circle {
-        width: 60px;
-        height: 60px;
-      }
-      .progress-circle span {
-        width: 46px;
-        height: 46px;
-        font-size: 0.9rem;
-      }
-      .avatar-large {
-        width: 80px;
-        height: 80px;
-      }
-      .profile-name {
-        font-size: 1.3rem;
-      }
-      .card {
-        padding: 14px;
-      }
-      .stat-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 1rem;
-      }
-      .stat-info .value {
-        font-size: 1.3rem;
-      }
-    }
-
-    /* Utilidades adicionales */
-    .text-glow {
-      text-shadow: 0 2px 5px rgba(0, 80, 200, 0.5);
-    }
-  </style>
+</style>
 </head>
 <body>
-<div class="dashboard">
 
-  <!-- SIDEBAR IZQUIERDO (perfil + contacto + radials) -->
-  <aside class="sidebar">
-    <div class="card profile-card">
-      <div class="avatar-large">
-        <img src="https://storage.googleapis.com/humansystem/Gemini_Generated_Image_iej9v9iej9v9iej9%20-%20copia.jpg" alt="Sergio Campos" loading="lazy">
-      </div>
-      <div class="profile-name">Sergio Campos M.</div>
-      <div class="profile-title">Comunicación Digital</div>
-      
-      <div class="meta-list">
-        <div class="meta-item"><i class="fas fa-id-card"></i> 010754140</div>
-        <div class="meta-item"><i class="fas fa-star"></i> Promedio: 9.39</div>
-        <div class="meta-item"><i class="fas fa-chart-pie"></i> Avance oficial: 22.7%</div>
-        <div class="meta-item"><i class="fas fa-rocket"></i> Proyectado: 38%</div>
-        <div class="meta-item"><i class="fas fa-calendar"></i> 15 Mar 2026</div>
+  <!-- ═══════════════ TOP BAR ═══════════════ -->
+  <div class="topbar glass" style="max-width:1080px;">
+    <div class="brand">
+      <img src="https://i.ibb.co/G3XDtMJ/Logoapp.png" alt="Human System">
+      Human <span style="color:var(--hs-gold)">System</span>
+    </div>
+    <div class="topnav">
+      <a href="#" class="active" title="Inicio"><i class="fas fa-house"></i></a>
+      <a href="#" title="Explorar"><i class="fas fa-compass"></i></a>
+      <a href="#" title="Notificaciones"><i class="fas fa-bell"></i><span class="dot"></span></a>
+      <a href="#" title="Mensajes"><i class="fas fa-envelope"></i></a>
+      <a href="#" title="Buscar"><i class="fas fa-magnifying-glass"></i></a>
+    </div>
+    <img class="avatar-mini" src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+  </div>
+
+  <div class="layout">
+
+    <!-- ═══════════════ SIDE LEFT ═══════════════ -->
+    <aside class="side-left">
+
+      <div class="profile-card glass">
+        <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+        <h3>Srgxio</h3>
+        <p><i class="fas fa-fingerprint"></i> HUM-4B21XK9</p>
+        <div class="profile-stats">
+          <div><b>142</b><i class="fas fa-image"></i>Posts</div>
+          <div><b>3.2k</b><i class="fas fa-users"></i>Seguidores</div>
+          <div><b>410</b><i class="fas fa-user-plus"></i>Siguiendo</div>
+        </div>
       </div>
 
-      <!-- RADIALES DE PROGRESO -->
-      <div class="metric-radial">
-        <div class="radial-box">
-          <div class="progress-circle" style="background: conic-gradient(#1e6ec7 0deg 137deg, #2a4b7a 137deg 360deg);">
-            <span>38%</span>
+      <!-- REDES SOCIALES -->
+      <div class="social-panel glass">
+        <h4><i class="fas fa-share-nodes"></i> Mis redes</h4>
+        <div class="social-grid">
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener" data-net="instagram" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.facebook.com/" target="_blank" rel="noopener" data-net="facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://wa.me/521234567890" target="_blank" rel="noopener" data-net="whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener" data-net="youtube" title="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener" data-net="linkedin" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.twitter.com/" target="_blank" rel="noopener" data-net="twitter" title="Twitter / X">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="https://www.tiktok.com/" target="_blank" rel="noopener" data-net="tiktok" title="TikTok">
+            <i class="fab fa-tiktok"></i>
+          </a>
+          <a href="https://www.tusitio.com" target="_blank" rel="noopener" data-net="personal" title="Página personal">
+            <i class="fas fa-globe"></i>
+          </a>
+        </div>
+      </div>
+
+      <nav class="quick-nav glass">
+        <a href="#"><i class="fas fa-user"></i> Perfil</a>
+        <a href="#"><i class="fas fa-images"></i> Publicaciones</a>
+        <a href="#"><i class="fas fa-panorama"></i> Imágenes</a>
+        <a href="#"><i class="fas fa-video"></i> Videos</a>
+        <a href="#"><i class="fas fa-chart-simple"></i> Métricas</a>
+        <a href="#"><i class="fas fa-bookmark"></i> Guardados</a>
+        <a href="#"><i class="fas fa-gear"></i> Configuración</a>
+      </nav>
+    </aside>
+
+    <!-- ═══════════════ FEED ═══════════════ -->
+    <main>
+
+      <!-- ════════ STORIES BAR ════════ -->
+      <div class="stories-bar glass" id="storiesBar">
+
+        <div class="story-item mine" onclick="openStoryUpload()" title="Subir historia">
+          <div class="story-avatar-wrap">
+            <img class="story-thumb" src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Mi historia">
+            <div class="story-add-btn"><i class="fas fa-plus"></i></div>
+            <span class="story-name">Tu historia</span>
           </div>
-          <div style="font-size:0.75rem;">Avance curricular</div>
         </div>
-        <div class="radial-box">
-          <div class="progress-circle" style="background: conic-gradient(#7ab7ef 0deg 334deg, #2a4b7a 334deg 360deg);">
-            <span>9.4</span>
+
+        <div class="story-item unseen" onclick="openStory(0)">
+          <div class="story-avatar-wrap">
+            <img class="story-thumb" src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=400" alt="Human System">
+            <img class="story-author-avatar" src="https://i.ibb.co/Nxkbn3C/Dise-o-sin-t-tulo-3.png" alt="Human System">
+            <span class="story-name">Human System</span>
           </div>
-          <div style="font-size:0.75rem;">Promedio</div>
+        </div>
+
+        <div class="story-item unseen" onclick="openStory(1)">
+          <div class="story-avatar-wrap">
+            <img class="story-thumb" src="https://i.ibb.co/S5zQm4b/3.png" alt="Buena Wayka">
+            <img class="story-author-avatar" src="https://i.ibb.co/S7HB4g5/3.png" alt="Buena Wayka">
+            <span class="story-name">Buena Wayka</span>
+          </div>
+        </div>
+
+        <div class="story-item unseen" onclick="openStory(2)">
+          <div class="story-avatar-wrap">
+            <img class="story-thumb" src="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=400" alt="María García">
+            <img class="story-author-avatar" src="https://i.ibb.co/H2h9hNW/1.png" alt="María García">
+            <span class="story-name">María G.</span>
+          </div>
+        </div>
+
+        <div class="story-item seen" onclick="openStory(3)">
+          <div class="story-avatar-wrap">
+            <img class="story-thumb" src="https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=400" alt="Steven">
+            <img class="story-author-avatar" src="https://i.ibb.co/BV3FH5L/4.png" alt="Steven">
+            <span class="story-name">Steven G.</span>
+          </div>
+        </div>
+
+        <div class="story-item seen" onclick="openStory(4)">
+          <div class="story-avatar-wrap">
+            <img class="story-thumb" src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=400" alt="Juliana">
+            <img class="story-author-avatar" src="https://i.ibb.co/MDRRYBG/3.png" alt="Juliana">
+            <span class="story-name">Juliana M.</span>
+          </div>
+        </div>
+
+        <div class="story-item unseen" onclick="openStory(5)">
+          <div class="story-avatar-wrap">
+            <img class="story-thumb" src="https://i.ibb.co/S5zQm4b/3.png" alt="Carlos">
+            <img class="story-author-avatar" src="https://i.ibb.co/SyQ8JCY/2.png" alt="Carlos">
+            <span class="story-name">Carlos L.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ════════ COMPOSER ════════ -->
+      <div class="composer glass">
+        <div class="composer-top">
+          <img class="avatar-mini" src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+          <textarea placeholder="¿Qué quieres compartir, Srgxio?"></textarea>
+        </div>
+        <div class="composer-actions">
+          <div class="composer-icons">
+            <i class="fas fa-image" title="Foto"></i>
+            <i class="fas fa-video" title="Video"></i>
+            <i class="fas fa-chart-simple" title="Encuesta"></i>
+            <i class="fas fa-location-dot" title="Ubicación"></i>
+            <i class="fas fa-face-smile" title="Emoji"></i>
+          </div>
+          <button class="btn-post"><i class="fas fa-paper-plane"></i> Publicar</button>
         </div>
       </div>
-      <div style="margin-top: 5px; text-align: left;">
-        <div style="display:flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size:0.8rem;">
-          <span>📚 Créditos acumulados</span><span>82.5 / 330</span>
+
+      <div class="feed" id="feed">
+
+        <!-- ═══════ PUBLICACIÓN 1: Srgxio — Presentación personal ═══════ -->
+        <article class="post glass">
+          <div class="post-head">
+            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+            <div class="who">
+              <span class="name">Srgxio <i class="fas fa-circle-check" style="color:var(--hs-gold); font-size:.7rem;"></i></span>
+              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 15 min</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-hand-sparkles" style="color:var(--hs-gold); margin-right:6px;"></i> Hola mundo 👋</div>
+          <div class="post-body">Bienvenidos a mi espacio en Human System. Aquí compartiré proyectos, ideas y un poco de mi día a día. ¡Gracias por pasarse! ✨
+
+#HumanSystem #Srgxio #Bienvenidos</div>
+          <div class="post-media">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=900" alt="Bienvenida">
+          </div>
+          <div class="post-actions">
+            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">204</span></button>
+            <button onclick="openComments(this)"><i class="far fa-comment"></i> 18</button>
+            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </article>
+
+        <!-- ═══════ PUBLICACIÓN 2: Srgxio — Viaje a Japón ═══════ -->
+        <article class="post glass">
+          <div class="post-head">
+            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+            <div class="who">
+              <span class="name">Srgxio <span class="badge"><i class="fas fa-plane"></i> Viajes</span></span>
+              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 1 h</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-torii-gate" style="color:var(--hs-gold); margin-right:6px;"></i> 日本 — Crónicas desde Tokio 🗾</div>
+          <div class="post-body">Primer día en Japón y ya me enamoré del país. Los templos, la comida, la gente… Todo es tan diferente y hermoso a la vez.
+
+<i class="fas fa-location-dot" style="color:var(--hs-gold);"></i> Shibuya, Tokio
+<i class="fas fa-camera" style="color:var(--hs-gold);"></i> Shot on iPhone</div>
+          <div class="post-grid">
+            <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500" alt="Tokio">
+            <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=500" alt="Templo">
+            <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=500" alt="Shibuya">
+            <img src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=500" alt="Comida">
+          </div>
+          <div class="post-actions">
+            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">1876</span></button>
+            <button onclick="openComments(this)"><i class="far fa-comment"></i> 132</button>
+            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </article>
+
+        <!-- ═══════ PUBLICACIÓN 3: Srgxio — Reflexión / Texto ═══════ -->
+        <article class="post glass">
+          <div class="post-head">
+            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+            <div class="who">
+              <span class="name">Srgxio</span>
+              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 4 h</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-quote-left" style="color:var(--hs-gold); margin-right:6px;"></i> Sobre construir en silencio</div>
+          <div class="post-body">A veces los proyectos más grandes nacen sin que nadie los vea. Se construyen de madrugada, con pruebas, errores y café. Y un día, simplemente aparecen.
+
+No le temas a los procesos lentos. Le teme más a no empezar nunca.
+
+#Motivación #Startup #HumanSystem</div>
+          <div class="post-actions">
+            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">3420</span></button>
+            <button onclick="openComments(this)"><i class="far fa-comment"></i> 287</button>
+            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </article>
+
+        <!-- ═══════ PUBLICACIÓN 4: Srgxio — Video ═══════ -->
+        <article class="post glass">
+          <div class="post-head">
+            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+            <div class="who">
+              <span class="name">Srgxio <span class="badge"><i class="fas fa-video"></i> Video</span></span>
+              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 8 h</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-film" style="color:var(--hs-gold); margin-right:6px;"></i> Detrás de cámaras 🎬</div>
+          <div class="post-body">Un pequeño vistazo al proceso creativo de lo que estamos preparando en Human System. Spoiler: viene algo grande. 🔥</div>
+          <div class="post-media">
+            <video controls playsinline poster="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=900" style="width:100%; display:block; max-height:420px; object-fit:cover;">
+              <source src="https://cdn.coverr.co/videos/coverr-typing-on-a-laptop-1584/1080p.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="post-actions">
+            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">921</span></button>
+            <button onclick="openComments(this)"><i class="far fa-comment"></i> 54</button>
+            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </article>
+
+        <!-- ═══════ PUBLICACIÓN 5: Srgxio — Ubicación CDMX ═══════ -->
+        <article class="post glass">
+          <div class="post-head">
+            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+            <div class="who">
+              <span class="name">Srgxio <span class="badge"><i class="fas fa-location-dot"></i> CDMX</span></span>
+              <span class="meta"><i class="fas fa-earth-americas"></i> Público · ayer</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-city" style="color:var(--hs-gold); margin-right:6px;"></i> Atardecer en la Ciudad de México 🌅</div>
+          <div class="post-body">No hay mejor vista que la del Valle de México cuando el sol cae detrás de las montañas. A veces olvidamos lo bonito que es nuestro país hasta que lo vemos desde arriba.
+
+<i class="fas fa-location-dot" style="color:var(--hs-gold);"></i> Mirador Torre Latinoamericana, CDMX 🇲🇽</div>
+          <div class="post-media">
+            <img src="https://images.unsplash.com/photo-1518659526054-190340b32735?w=900" alt="CDMX">
+          </div>
+          <div class="post-actions">
+            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">2314</span></button>
+            <button onclick="openComments(this)"><i class="far fa-comment"></i> 168</button>
+            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </article>
+
+        <!-- ═══════ PUBLICACIÓN 6: Srgxio — Encuesta ═══════ -->
+        <article class="post glass" id="poll-post">
+          <div class="post-head">
+            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+            <div class="who">
+              <span class="name">Srgxio</span>
+              <span class="meta"><i class="fas fa-square-poll-vertical"></i> Encuesta · termina en 2 días</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-chart-simple" style="color:var(--hs-gold); margin-right:6px;"></i> ¿Qué contenido te gustaría ver más?</div>
+
+          <div class="poll-opt" data-votes="41" onclick="votePoll(this)">
+            <div class="fill"></div>
+            <div class="row"><span><i class="fas fa-people-group" style="color:var(--hs-gold);"></i> Fotos de comunidad y eventos</span><span class="pct"></span></div>
+          </div>
+          <div class="poll-opt" data-votes="27" onclick="votePoll(this)">
+            <div class="fill"></div>
+            <div class="row"><span><i class="fas fa-bullhorn" style="color:var(--hs-gold);"></i> Noticias y avisos</span><span class="pct"></span></div>
+          </div>
+          <div class="poll-opt" data-votes="19" onclick="votePoll(this)">
+            <div class="fill"></div>
+            <div class="row"><span><i class="fas fa-film" style="color:var(--hs-gold);"></i> Cine y cultura</span><span class="pct"></span></div>
+          </div>
+          <div class="poll-opt" data-votes="8" onclick="votePoll(this)">
+            <div class="fill"></div>
+            <div class="row"><span><i class="fas fa-book-open" style="color:var(--hs-gold);"></i> Historias personales</span><span class="pct"></span></div>
+          </div>
+
+          <div class="poll-foot">
+            <span id="poll-total"><i class="fas fa-square-poll-vertical" style="margin-right:4px;"></i>95 votos</span>
+            <span id="poll-status">Toca una opción para votar</span>
+          </div>
+        </article>
+
+        <!-- ═══════ PUBLICACIÓN 7: Human System Oficial ═══════ -->
+        <article class="post glass">
+          <div class="post-head">
+            <img src="https://i.ibb.co/Nxkbn3C/Dise-o-sin-t-tulo-3.png" alt="Human System">
+            <div class="who">
+              <span class="name">Human System <i class="fas fa-circle-check" style="color:var(--hs-gold); font-size:.7rem;"></i></span>
+              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 2 días</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-rocket" style="color:var(--hs-gold); margin-right:6px;"></i> Nuevo hito alcanzado 🚀</div>
+          <div class="post-body">Gracias a toda la comunidad, hemos superado los 10,000 usuarios activos. Esto es solo el comienzo de un proyecto que busca conectar humanos reales con identidad digital verificada.
+
+#HumanSystem #Milestone #ComunidadGlobal</div>
+          <div class="post-media">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900" alt="Hito">
+          </div>
+          <div class="post-actions">
+            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">5203</span></button>
+            <button onclick="openComments(this)"><i class="far fa-comment"></i> 412</button>
+            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </article>
+
+        <!-- ═══════ PUBLICACIÓN 8: Buena Wayka (Japón) ═══════ -->
+        <article class="post glass">
+          <div class="post-head">
+            <img src="https://i.ibb.co/S7HB4g5/3.png" alt="Buena Wayka">
+            <div class="who">
+              <span class="name">Buena Wayka <span class="badge"><i class="fas fa-film"></i> Cine</span></span>
+              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 3 días</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-video" style="color:var(--hs-gold); margin-right:6px;"></i> 『マイ・リトル・クイーンズ』8月21日ロードショー</div>
+          <div class="post-body">Corrección: algunos cines cambiaron. Historia sobre una madre en el Lima de los 90 que necesita el permiso de viaje del padre para salir del país con sus hijas. Con mucha música peruana de la época.
+
+<i class="fas fa-location-dot" style="color:var(--hs-gold);"></i> Cines: 8/21 ケイズシネマ・ヒューマントラストシネマ有楽町・シアターエンヤ(宮崎) · 9/5 第七藝術劇場(大阪)・シネマ5(大分) · 9/18 宮崎キネマ館
+<i class="fas fa-link" style="color:var(--hs-gold);"></i> <a href="https://www.buenawayka.info/reinas" target="_blank" rel="noopener">buenawayka.info/reinas</a></div>
+          <div class="post-media">
+            <img src="https://i.ibb.co/S5zQm4b/3.png" alt="cartel de la película">
+          </div>
+          <div class="post-actions">
+            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">567</span></button>
+            <button onclick="openComments(this)"><i class="far fa-comment"></i> 23</button>
+            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </article>
+
+        <!-- ═══════ PUBLICACIÓN 9: María García — Andes ═══════ -->
+        <article class="post glass">
+          <div class="post-head">
+            <img src="https://i.ibb.co/H2h9hNW/1.png" alt="María">
+            <div class="who">
+              <span class="name">María García</span>
+              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 4 días</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-mountain-sun" style="color:var(--hs-gold); margin-right:6px;"></i> La belleza de los Andes</div>
+          <div class="post-body">Desde las alturas de los Andes hasta las costas del Pacífico, nuestro continente guarda paisajes que quitan el aliento. Comparte tu rincón favorito del mundo. 🌄</div>
+          <div class="post-grid">
+            <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=500" alt="">
+            <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=500" alt="">
+          </div>
+          <div class="post-actions">
+            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">3102</span></button>
+            <button onclick="openComments(this)"><i class="far fa-comment"></i> 215</button>
+            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </article>
+
+        <!-- ═══════ PUBLICACIÓN 10: Human System Tech ═══════ -->
+        <article class="post glass">
+          <div class="post-head">
+            <img src="https://i.ibb.co/fkQ4fR6/Human-System.png" alt="Human System Tech">
+            <div class="who">
+              <span class="name">Human System Tech <span class="badge"><i class="fas fa-microchip"></i> Tech</span></span>
+              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 5 días</span>
+            </div>
+          </div>
+          <div class="post-title"><i class="fas fa-shield-halved" style="color:var(--hs-gold); margin-right:6px;"></i> Identidad digital soberana</div>
+          <div class="post-body">Cada humano tiene un ID único e irrepetible. Tu identidad te pertenece, no a las plataformas.
+
+#HumanSystem #DigitalIdentity #Web3</div>
+          <div class="post-media">
+            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=900" alt="Identidad digital">
+          </div>
+          <div class="post-actions">
+            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">892</span></button>
+            <button onclick="openComments(this)"><i class="far fa-comment"></i> 34</button>
+            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </article>
+
+      </div>
+    </main>
+
+    <!-- ═══════════════ SIDE RIGHT ═══════════════ -->
+    <aside class="side-right">
+      <div class="panel glass">
+        <h4><i class="fas fa-fire"></i> Tendencias</h4>
+        <div class="trend"><span class="tag"><i class="fas fa-hashtag"></i>HumanSystemRed</span><span class="n">1.2k</span></div>
+        <div class="trend"><span class="tag"><i class="fas fa-hashtag"></i>BuenaWayka</span><span class="n">340</span></div>
+        <div class="trend"><span class="tag"><i class="fas fa-hashtag"></i>CineIndependiente</span><span class="n">210</span></div>
+        <div class="trend"><span class="tag"><i class="fas fa-hashtag"></i>Srgxio</span><span class="n">98</span></div>
+      </div>
+      <div class="panel glass">
+        <h4><i class="fas fa-user-group"></i> A quién seguir</h4>
+        <div class="suggestion">
+          <img src="https://i.ibb.co/SyQ8JCY/2.png" alt="">
+          <div><div class="s-name">Carlos López</div><div class="s-sub"><i class="fas fa-at"></i>carlos</div></div>
+          <button class="follow-btn" onclick="toggleFollow(this)"><i class="fas fa-plus"></i>Seguir</button>
         </div>
-        <div class="progress-bar-sm"><div class="progress-fill-sm" style="width:25%"></div></div>
+        <div class="suggestion">
+          <img src="https://i.ibb.co/BV3FH5L/4.png" alt="">
+          <div><div class="s-name">Steven García</div><div class="s-sub"><i class="fas fa-at"></i>steven</div></div>
+          <button class="follow-btn" onclick="toggleFollow(this)"><i class="fas fa-plus"></i>Seguir</button>
+        </div>
+        <div class="suggestion">
+          <img src="https://i.ibb.co/MDRRYBG/3.png" alt="">
+          <div><div class="s-name">Juliana Main</div><div class="s-sub"><i class="fas fa-at"></i>juliana</div></div>
+          <button class="follow-btn" onclick="toggleFollow(this)"><i class="fas fa-plus"></i>Seguir</button>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- ═══════════════ STORY VIEWER ═══════════════ -->
+  <div class="story-viewer" id="storyViewer">
+    <div class="sv-stage" id="svStage">
+      <div class="sv-progress" id="svProgress"></div>
+
+      <div class="sv-header">
+        <img id="svAvatar" src="" alt="">
+        <div class="sv-header-info">
+          <div class="sv-header-name" id="svName">—</div>
+          <div class="sv-header-time" id="svTime">—</div>
+        </div>
+        <button class="sv-close" onclick="closeStoryViewer()" title="Cerrar">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="sv-content" id="svContent"></div>
+
+      <div class="sv-nav">
+        <div class="sv-nav-left" onclick="prevStory()"></div>
+        <div class="sv-nav-right" onclick="nextStory()"></div>
+      </div>
+
+      <div class="sv-footer">
+        <input type="text" placeholder="Responde a la historia..." id="svReply">
+        <button onclick="sendStoryReply()" title="Enviar"><i class="fas fa-paper-plane"></i></button>
       </div>
     </div>
+  </div>
 
-    <!-- DATOS DE CONTACTO / RESUMEN -->
-    <div class="card">
-      <h3 style="color:white; margin-bottom:15px; font-weight:600; font-size:1.2rem;"><i class="fas fa-address-card" style="margin-right:10px;"></i>Contacto</h3>
-      <div class="meta-item"><i class="fas fa-envelope"></i> camposmedinasergio@gmail.com</div>
-      <div class="meta-item"><i class="fas fa-phone"></i> (55) 7986 - 7370</div>
-      <div class="meta-item"><i class="fas fa-map-pin"></i> CDMX, México</div>
-      <div class="meta-item"><i class="fas fa-globe"></i> Inglés B2 (EF SET 55)</div>
-    </div>
-  </aside>
+  <!-- ═══════════════ MODAL SUBIR HISTORIA ═══════════════ -->
+  <div class="modal-overlay" id="uploadModal">
+    <div class="modal-box">
+      <h3><i class="fas fa-circle-plus"></i> Crear historia</h3>
+      <p class="sub">Comparte un momento. Se mostrará durante 24 horas.</p>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="main-content">
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-check-double"></i></div>
-        <div class="stat-info">
-          <h3>Materias aprobadas</h3>
-          <div class="value">14</div>
-          <small>+4 en curso</small>
-        </div>
+      <div class="story-type-tabs">
+        <button type="button" class="active" data-type="image" onclick="setStoryType('image', this)">
+          <i class="fas fa-image"></i> Foto
+        </button>
+        <button type="button" data-type="video" onclick="setStoryType('video', this)">
+          <i class="fas fa-video"></i> Video
+        </button>
+        <button type="button" data-type="text" onclick="setStoryType('text', this)">
+          <i class="fas fa-font"></i> Texto
+        </button>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-        <div class="stat-info">
-          <h3>Calificación 10</h3>
-          <div class="value">8</div>
-          <small>Excelencia</small>
-        </div>
+
+      <label class="story-drop" id="storyDrop">
+        <i class="fas fa-cloud-arrow-up"></i>
+        <p id="dropLabel">Toca para subir una foto</p>
+        <small>JPG, PNG · máx 10 MB</small>
+        <input type="file" id="storyFile" accept="image/*">
+      </label>
+
+      <div class="story-preview" id="storyPreview">
+        <button class="remove" type="button" onclick="clearStoryPreview()" title="Quitar">
+          <i class="fas fa-xmark"></i>
+        </button>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-certificate"></i></div>
-        <div class="stat-info">
-          <h3>Certificaciones</h3>
-          <div class="value">82+</div>
-          <small>cursos & badges</small>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-clock"></i></div>
-        <div class="stat-info">
-          <h3>Horas formación</h3>
-          <div class="value">650+</div>
-          <small>complementaria</small>
-        </div>
+
+      <textarea class="story-text-input" id="storyTextInput" placeholder="¿Qué estás pensando?"></textarea>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeStoryUpload()">
+          <i class="fas fa-xmark"></i> Cancelar
+        </button>
+        <button type="button" class="btn-publish-story" onclick="publishStory()">
+          <i class="fas fa-paper-plane"></i> Publicar historia
+        </button>
       </div>
     </div>
+  </div>
 
-    <!-- TABLA ACADÉMICA -->
-    <div>
-      <div class="section-header">
-        <h2><i class="fas fa-graduation-cap"></i> Récord académico · Comunicación Digital</h2>
-        <span class="badge-new"><i class="fas fa-circle-check"></i> 4to cuatri en curso</span>
-      </div>
-      <div class="table-wrapper">
-        <table class="academic-table">
-          <thead>
-            <tr><th>Asignatura</th><th>Cuatrimestre</th><th>Calificación</th><th>Estado</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Historia de los medios</td><td>1º</td><td><span class="grade-badge">7.0</span></td><td>Aprobada</td></tr>
-            <tr><td>Teorías clásicas de la comunicación</td><td>1º</td><td><span class="grade-badge grade-highlight">10</span></td><td>Aprobada</td></tr>
-            <tr><td>Lectura y redacción</td><td>1º</td><td><span class="grade-badge grade-highlight">10</span></td><td>Aprobada</td></tr>
-            <tr><td>Géneros periodísticos</td><td>1º</td><td><span class="grade-badge">9.0</span></td><td>Aprobada</td></tr>
-            <tr><td>Procesos globales de comunicación</td><td>2º</td><td><span class="grade-badge grade-highlight">10</span></td><td>Aprobada</td></tr>
-            <tr><td>Teorías contemporáneas de la comunicación</td><td>2º</td><td><span class="grade-badge grade-highlight">10</span></td><td>Aprobada</td></tr>
-            <tr><td>Guiones para medios de comunicación</td><td>2º</td><td><span class="grade-badge">8.0</span></td><td>Aprobada</td></tr>
-            <tr><td>Periodismo digital</td><td>2º</td><td><span class="grade-badge">9.0</span></td><td>Aprobada</td></tr>
-            <tr><td>Análisis de la información y opinión pública</td><td>3º</td><td><span class="grade-badge">9.0</span></td><td>Aprobada</td></tr>
-            <tr><td>Teoría de la comunicación organizacional</td><td>3º</td><td><span class="grade-badge grade-highlight">10</span></td><td>Aprobada</td></tr>
-            <tr><td><strong>Estrategias de comunicación para organizaciones</strong></td><td>4º (EC)</td><td><span class="grade-badge grade-highlight">10</span></td><td>En curso</td></tr>
-            <tr><td><strong>Elaboración de multimedios</strong> (Aula 109)</td><td>4º (EC)</td><td><span class="grade-badge grade-highlight">9.7</span></td><td>En curso</td></tr>
-            <tr><td><strong>Legislación de la comunicación</strong></td><td>4º (EC)</td><td><span class="grade-badge grade-highlight">10</span></td><td>En curso</td></tr>
-            <tr><td><strong>Métodos y técnicas de investigación social</strong></td><td>4º (EC)</td><td><span class="grade-badge">9.7</span></td><td>En curso</td></tr>
-          </tbody>
-        </table>
+<script>
+// ══════════════════════════════════════════════════════════
+//  USUARIO ACTUAL
+// ══════════════════════════════════════════════════════════
+const CURRENT_USER = {
+  username: 'Srgxio',
+  fullName: 'Sergio Campos Medina',
+  avatar: 'https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png'
+};
+
+// ══════════════════════════════════════════════════════════
+//  DATA DE HISTORIAS
+// ══════════════════════════════════════════════════════════
+const stories = [
+  {
+    avatar:'https://i.ibb.co/Nxkbn3C/Dise-o-sin-t-tulo-3.png',
+    name:'Human System',
+    time:'hace 30 min',
+    items:[
+      { type:'text', bg:'linear-gradient(135deg, #1F4E67, #22d3ee)', text:'¡Bienvenidos a las Historias de Human System! 🌎' },
+      { type:'image', src:'https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=700', caption:'今、私たちは世界とつながっています 🇯🇵🇲🇽' }
+    ]
+  },
+  {
+    avatar:'https://i.ibb.co/S7HB4g5/3.png',
+    name:'Buena Wayka',
+    time:'hace 1 h',
+    items:[
+      { type:'image', src:'https://i.ibb.co/S5zQm4b/3.png', caption:'『マイ・リトル・クイーンズ』8月21日ロードショー 🎬' }
+    ]
+  },
+  {
+    avatar:'https://i.ibb.co/H2h9hNW/1.png',
+    name:'María García',
+    time:'hace 3 h',
+    items:[
+      { type:'image', src:'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=700', caption:'La belleza de los Andes 🏔️' },
+      { type:'image', src:'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=700', caption:'Arte que inspira ✨' },
+      { type:'text', bg:'linear-gradient(135deg, #d71d00, #fcc404)', text:'Buenos días desde México ☀️' }
+    ]
+  },
+  {
+    avatar:'https://i.ibb.co/BV3FH5L/4.png',
+    name:'Steven García',
+    time:'hace 5 h',
+    items:[
+      { type:'image', src:'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=700', caption:'Nuevos horizontes 🎨' }
+    ]
+  },
+  {
+    avatar:'https://i.ibb.co/MDRRYBG/3.png',
+    name:'Juliana Main',
+    time:'hace 8 h',
+    items:[
+      { type:'image', src:'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=700', caption:'Colors of life 🌈' }
+    ]
+  },
+  {
+    avatar:'https://i.ibb.co/SyQ8JCY/2.png',
+    name:'Carlos López',
+    time:'hace 12 h',
+    items:[
+      { type:'text', bg:'linear-gradient(135deg, #0a0e14, #1F4E67)', text:'Human System — el futuro es humano 💫' }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════════════════
+//  STORY VIEWER
+// ══════════════════════════════════════════════════════════
+let svUserIndex = 0;
+let svItemIndex = 0;
+let svTimer = null;
+const STORY_DURATION = 5000;
+
+function openStory(userIndex){
+  svUserIndex = userIndex;
+  svItemIndex = 0;
+  document.getElementById('storyViewer').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderStory();
+  const items = document.querySelectorAll('#storiesBar .story-item');
+  if(items[userIndex + 1]){
+    items[userIndex + 1].classList.remove('unseen');
+    items[userIndex + 1].classList.add('seen');
+  }
+}
+
+function renderStory(){
+  const user = stories[svUserIndex];
+  const item = user.items[svItemIndex];
+
+  document.getElementById('svAvatar').src = user.avatar;
+  document.getElementById('svName').innerHTML = user.name + ' <i class="fas fa-circle-check" style="color:var(--hs-gold); font-size:.7rem;"></i>';
+  document.getElementById('svTime').textContent = user.time;
+
+  const progress = document.getElementById('svProgress');
+  progress.innerHTML = user.items.map((_, i) => `
+    <div class="sv-progress-bar ${i < svItemIndex ? 'done' : ''} ${i === svItemIndex ? 'active' : ''}">
+      <div class="fill"></div>
+    </div>
+  `).join('');
+
+  const content = document.getElementById('svContent');
+  if(item.type === 'image'){
+    content.innerHTML = `<img src="${item.src}" alt="">`;
+  } else if(item.type === 'video'){
+    content.innerHTML = `<video src="${item.src}" autoplay muted playsinline></video>`;
+  } else {
+    content.innerHTML = `<div class="text-story" style="background:${item.bg};">${item.text}</div>`;
+  }
+
+  if(item.caption){
+    const cap = document.createElement('div');
+    cap.style.cssText = 'position:absolute; bottom:70px; left:0; right:0; padding:20px; text-align:center; font-size:.95rem; font-weight:600; text-shadow:0 2px 12px rgba(0,0,0,0.8); z-index:15;';
+    cap.textContent = item.caption;
+    content.appendChild(cap);
+  }
+
+  clearTimeout(svTimer);
+  const activeBar = progress.querySelector('.sv-progress-bar.active .fill');
+  if(activeBar){
+    activeBar.style.transition = 'width ' + STORY_DURATION + 'ms linear';
+    activeBar.style.width = '0';
+    requestAnimationFrame(() => { activeBar.style.width = '100%'; });
+  }
+
+  svTimer = setTimeout(() => nextStory(), STORY_DURATION);
+}
+
+function nextStory(){
+  clearTimeout(svTimer);
+  const user = stories[svUserIndex];
+  if(svItemIndex < user.items.length - 1){
+    svItemIndex++;
+    renderStory();
+  } else if(svUserIndex < stories.length - 1){
+    svUserIndex++;
+    svItemIndex = 0;
+    renderStory();
+  } else {
+    closeStoryViewer();
+  }
+}
+
+function prevStory(){
+  clearTimeout(svTimer);
+  if(svItemIndex > 0){
+    svItemIndex--;
+    renderStory();
+  } else if(svUserIndex > 0){
+    svUserIndex--;
+    svItemIndex = stories[svUserIndex].items.length - 1;
+    renderStory();
+  }
+}
+
+function closeStoryViewer(){
+  clearTimeout(svTimer);
+  document.getElementById('storyViewer').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function sendStoryReply(){
+  const input = document.getElementById('svReply');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  const btn = input.nextElementSibling;
+  btn.innerHTML = '<i class="fas fa-check"></i>';
+  setTimeout(() => { btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }, 1200);
+}
+
+document.addEventListener('keydown', (e) => {
+  if(!document.getElementById('storyViewer').classList.contains('active')) return;
+  if(e.key === 'Escape') closeStoryViewer();
+  if(e.key === 'ArrowRight') nextStory();
+  if(e.key === 'ArrowLeft') prevStory();
+});
+
+// ══════════════════════════════════════════════════════════
+//  SUBIR HISTORIA
+// ══════════════════════════════════════════════════════════
+let currentStoryType = 'image';
+let storyPreviewData = null;
+
+function openStoryUpload(){
+  document.getElementById('uploadModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  resetStoryModal();
+}
+
+function closeStoryUpload(){
+  document.getElementById('uploadModal').classList.remove('active');
+  document.body.style.overflow = '';
+  resetStoryModal();
+}
+
+function resetStoryModal(){
+  document.getElementById('storyFile').value = '';
+  document.getElementById('storyTextInput').value = '';
+  document.getElementById('storyPreview').classList.remove('active');
+  document.getElementById('storyPreview').innerHTML = `
+    <button class="remove" type="button" onclick="clearStoryPreview()" title="Quitar">
+      <i class="fas fa-xmark"></i>
+    </button>`;
+  storyPreviewData = null;
+  setStoryType('image', document.querySelector('.story-type-tabs button[data-type="image"]'));
+}
+
+function setStoryType(type, btn){
+  currentStoryType = type;
+  document.querySelectorAll('.story-type-tabs button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const drop = document.getElementById('storyDrop');
+  const textarea = document.getElementById('storyTextInput');
+  const input = document.getElementById('storyFile');
+  const dropLabel = document.getElementById('dropLabel');
+  const dropSmall = drop.querySelector('small');
+
+  if(type === 'text'){
+    drop.style.display = 'none';
+    document.getElementById('storyPreview').classList.remove('active');
+    textarea.classList.add('active');
+    textarea.focus();
+  } else {
+    drop.style.display = 'block';
+    textarea.classList.remove('active');
+    if(type === 'image'){
+      input.accept = 'image/*';
+      dropLabel.textContent = 'Toca para subir una foto';
+      dropSmall.textContent = 'JPG, PNG · máx 10 MB';
+      drop.querySelector('i').className = 'fas fa-cloud-arrow-up';
+    } else {
+      input.accept = 'video/*';
+      dropLabel.textContent = 'Toca para subir un video';
+      dropSmall.textContent = 'MP4 · máx 50 MB';
+      drop.querySelector('i').className = 'fas fa-video';
+    }
+  }
+}
+
+document.getElementById('storyFile').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    storyPreviewData = ev.target.result;
+    const preview = document.getElementById('storyPreview');
+    const isVideo = file.type.startsWith('video/');
+    preview.innerHTML = `
+      <button class="remove" type="button" onclick="clearStoryPreview()" title="Quitar">
+        <i class="fas fa-xmark"></i>
+      </button>
+      ${isVideo
+        ? `<video src="${ev.target.result}" autoplay muted loop playsinline></video>`
+        : `<img src="${ev.target.result}" alt="">`}
+    `;
+    preview.classList.add('active');
+  };
+  reader.readAsDataURL(file);
+});
+
+function clearStoryPreview(){
+  storyPreviewData = null;
+  document.getElementById('storyFile').value = '';
+  const preview = document.getElementById('storyPreview');
+  preview.classList.remove('active');
+  preview.innerHTML = `
+    <button class="remove" type="button" onclick="clearStoryPreview()" title="Quitar">
+      <i class="fas fa-xmark"></i>
+    </button>`;
+}
+
+function publishStory(){
+  let newStory;
+
+  if(currentStoryType === 'text'){
+    const txt = document.getElementById('storyTextInput').value.trim();
+    if(!txt){
+      alert('Escribe algo para tu historia');
+      return;
+    }
+    newStory = {
+      type: 'text',
+      bg: 'linear-gradient(135deg, #1F4E67, #d71d00)',
+      text: txt
+    };
+  } else {
+    if(!storyPreviewData){
+      alert('Selecciona una imagen o video');
+      return;
+    }
+    newStory = {
+      type: currentStoryType,
+      src: storyPreviewData,
+      caption: ''
+    };
+  }
+
+  if(!stories.userOwn){
+    stories.userOwn = {
+      avatar: CURRENT_USER.avatar,
+      name: CURRENT_USER.username,
+      time: 'ahora',
+      items: [newStory]
+    };
+    stories.unshift(stories.userOwn);
+  } else {
+    stories.userOwn.items.push(newStory);
+    stories.userOwn.time = 'ahora';
+  }
+
+  const mineItem = document.querySelector('.story-item.mine');
+  if(mineItem){
+    const thumb = mineItem.querySelector('.story-thumb');
+    if(thumb && newStory.src) thumb.src = newStory.src;
+
+    mineItem.classList.remove('mine');
+    mineItem.classList.add('unseen');
+
+    const addBtn = mineItem.querySelector('.story-add-btn');
+    if(!addBtn){
+      const newBtn = document.createElement('div');
+      newBtn.className = 'story-add-btn';
+      newBtn.innerHTML = '<i class="fas fa-plus"></i>';
+      mineItem.querySelector('.story-avatar-wrap').appendChild(newBtn);
+    }
+
+    const nameEl = mineItem.querySelector('.story-name');
+    if(nameEl) nameEl.textContent = CURRENT_USER.username;
+
+    let authorAvatar = mineItem.querySelector('.story-author-avatar');
+    if(!authorAvatar){
+      authorAvatar = document.createElement('img');
+      authorAvatar.className = 'story-author-avatar';
+      authorAvatar.src = CURRENT_USER.avatar;
+      authorAvatar.alt = CURRENT_USER.username;
+      mineItem.querySelector('.story-avatar-wrap').appendChild(authorAvatar);
+    }
+
+    mineItem.setAttribute('onclick', 'openStory(0)');
+  }
+
+  closeStoryUpload();
+  showToast('¡Historia publicada! 🎉');
+}
+
+// ══════════════════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════════════════
+function showToast(msg){
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = `
+    position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:linear-gradient(135deg, var(--hs-gold), #0e94b0);
+    color:#001a22; padding:14px 26px; border-radius:999px; font-weight:700; font-size:.9rem;
+    box-shadow:0 12px 40px rgba(34,211,238,.5); z-index:99999;
+    opacity:0; transition:all .35s cubic-bezier(.2,.8,.2,1);
+    font-family:'Inter', sans-serif;
+  `;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => {
+    t.style.opacity = '1';
+    t.style.transform = 'translateX(-50%) translateY(0)';
+  });
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(20px)';
+    setTimeout(() => t.remove(), 400);
+  }, 2200);
+}
+
+// ══════════════════════════════════════════════════════════
+//  LIKE / FOLLOW / COMMENTS / SHARE / POLL
+// ══════════════════════════════════════════════════════════
+function toggleLike(btn){
+  const icon = btn.querySelector('i');
+  const cnt = btn.querySelector('.cnt');
+  const liked = btn.classList.toggle('liked');
+  icon.classList.toggle('far');
+  icon.classList.toggle('fas');
+  cnt.textContent = parseInt(cnt.textContent.replace(/,/g,'')) + (liked ? 1 : -1);
+}
+
+function toggleFollow(btn){
+  const following = btn.classList.toggle('following');
+  btn.innerHTML = following
+    ? '<i class="fas fa-check"></i>Siguiendo'
+    : '<i class="fas fa-plus"></i>Seguir';
+}
+
+function openComments(btn){
+  const post = btn.closest('.post');
+  const author = post.querySelector('.name').textContent.trim();
+  alert(`Comentarios en la publicación de ${author}\n\n(Aquí se cargarían los comentarios reales)`);
+}
+
+function openShare(btn){
+  const url = window.location.href;
+  if(navigator.share){
+    navigator.share({ title:'Human System', url }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(url).then(()=>showToast('Enlace copiado ✓')).catch(()=>alert('Enlace: ' + url));
+  }
+}
+
+let pollVoted = false;
+function votePoll(el){
+  if(pollVoted) return;
+  pollVoted = true;
+  const opts = document.querySelectorAll('#poll-post .poll-opt');
+  let total = 0;
+  opts.forEach(o => total += parseInt(o.dataset.votes));
+  const chosenVotes = parseInt(el.dataset.votes) + 1;
+  total += 1;
+
+  opts.forEach(o => {
+    const votes = (o === el) ? chosenVotes : parseInt(o.dataset.votes);
+    const pct = Math.round((votes/total)*100);
+    o.classList.add('voted');
+    o.querySelector('.fill').style.width = pct + '%';
+    o.querySelector('.pct').textContent = pct + '%';
+  });
+
+  document.getElementById('poll-total').innerHTML =
+    '<i class="fas fa-square-poll-vertical" style="margin-right:4px;"></i>' + total + ' votos';
+  document.getElementById('poll-status').innerHTML =
+    '<i class="fas fa-circle-check" style="color:var(--hs-gold); margin-right:4px;"></i> Votaste';
+}
+
+// ══════════════════════════════════════════════════════════
+//  PUBLICAR NUEVO POST
+// ══════════════════════════════════════════════════════════
+document.querySelector('.btn-post').addEventListener('click', function(){
+  const ta = document.querySelector('.composer textarea');
+  const text = ta.value.trim();
+  if(!text) return;
+
+  const feed = document.getElementById('feed');
+  const article = document.createElement('article');
+  article.className = 'post glass';
+  article.innerHTML = `
+    <div class="post-head">
+      <img src="${CURRENT_USER.avatar}" alt="tú">
+      <div class="who">
+        <span class="name">${CURRENT_USER.username} <i class="fas fa-circle-check" style="color:var(--hs-gold); font-size:.7rem;"></i></span>
+        <span class="meta"><i class="fas fa-earth-americas"></i> Público · ahora</span>
       </div>
     </div>
-
-    <!-- CERTIFICACIONES -->
-    <div>
-      <div class="section-header">
-        <h2><i class="fas fa-ribbon"></i> Certificaciones & Cursos destacados</h2>
-        <span class="badge-new">82+ insignias</span>
-      </div>
-      <div class="cert-grid-mini">
-        <div class="cert-block">
-          <h4><i class="fas fa-cloud"></i> Tecnología & IA</h4>
-          <ul class="mini-cert-list">
-            <li><i class="fas fa-check-circle"></i> Google Cloud Fundamentals <span class="cert-date-mini">02/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Generative AI (Google) <span class="cert-date-mini">10/25</span></li>
-            <li><i class="fas fa-check-circle"></i> AI Engineer Associate <span class="cert-date-mini">11/25</span></li>
-            <li><i class="fas fa-check-circle"></i> Python + Power BI (Platzi) <span class="cert-date-mini">05/25</span></li>
-            <li><i class="fas fa-check-circle"></i> Build AI Apps (Scrimba) <span class="cert-date-mini">02/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Data Science Math (Duke) <span class="cert-date-mini">03/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Big Data (Yonsei) <span class="cert-date-mini">09/25</span></li>
-            <li><i class="fas fa-check-circle"></i> Process Mining (Eindhoven) <span class="cert-date-mini">03/26</span></li>
-          </ul>
-        </div>
-        <div class="cert-block">
-          <h4><i class="fas fa-chart-bar"></i> Negocios & Marketing</h4>
-          <ul class="mini-cert-list">
-            <li><i class="fas fa-check-circle"></i> Lean Six Sigma (Tec) <span class="cert-date-mini">04/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Analíticas de Marketing <span class="cert-date-mini">03/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Brand Management (London) <span class="cert-date-mini">05/25</span></li>
-            <li><i class="fas fa-check-circle"></i> Excel negocios (Macquarie) <span class="cert-date-mini">02/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Negociación (Michigan) <span class="cert-date-mini">04/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Design Thinking (Sydney) <span class="cert-date-mini">03/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Corporate Sustainability <span class="cert-date-mini">04/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Gestión proyectos (PUC) <span class="cert-date-mini">04/26</span></li>
-          </ul>
-        </div>
-        <div class="cert-block">
-          <h4><i class="fas fa-users"></i> Liderazgo & habilidades</h4>
-          <ul class="mini-cert-list">
-            <li><i class="fas fa-check-circle"></i> Leadership (Copenhagen) <span class="cert-date-mini">03/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Creative Thinking (Imperial) <span class="cert-date-mini">03/26</span></li>
-            <li><i class="fas fa-check-circle"></i> UX Design (Georgia Tech) <span class="cert-date-mini">03/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Personal Branding (UVA) <span class="cert-date-mini">03/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Hablar en público (UAB) <span class="cert-date-mini">03/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Primeros Auxilios Psicológicos <span class="cert-date-mini">04/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Well-Being (Yale) <span class="cert-date-mini">03/26</span></li>
-          </ul>
-        </div>
-        <div class="cert-block">
-          <h4><i class="fas fa-gavel"></i> Legal & Complementos</h4>
-          <ul class="mini-cert-list">
-            <li><i class="fas fa-check-circle"></i> Legaltech (Austral) <span class="cert-date-mini">02/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Data Privacy (Northeastern) <span class="cert-date-mini">03/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Derechos Humanos (IACHR) <span class="cert-date-mini">10/25</span></li>
-            <li><i class="fas fa-check-circle"></i> Agente de Paz (Santander) <span class="cert-date-mini">04/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Salud Financiera (Santander) <span class="cert-date-mini">04/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Capacitación Admin <span class="cert-date-mini">04/26</span></li>
-            <li><i class="fas fa-check-circle"></i> Macros VBA Excel <span class="cert-date-mini">2019</span></li>
-          </ul>
-        </div>
-      </div>
+    <div class="post-body">${text.replace(/</g,'&lt;')}</div>
+    <div class="post-actions">
+      <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">0</span></button>
+      <button onclick="openComments(this)"><i class="far fa-comment"></i> 0</button>
+      <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
     </div>
+  `;
+  feed.insertBefore(article, feed.firstChild);
+  ta.value = '';
+  ta.style.height = 'auto';
+  showToast('¡Publicación creada! 🚀');
+});
 
-    <!-- COMPETENCIAS TÉCNICAS -->
-    <div>
-      <div class="section-header"><h2><i class="fas fa-microchip"></i> Competencias técnicas</h2></div>
-      <div class="skill-cloud">
-        <span class="skill-pill"><i class="fab fa-python"></i> Python</span>
-        <span class="skill-pill"><i class="fas fa-chart-pie"></i> Power BI</span>
-        <span class="skill-pill"><i class="fas fa-file-excel"></i> Excel / VBA</span>
-        <span class="skill-pill"><i class="fas fa-code"></i> HTML/CSS/JS</span>
-        <span class="skill-pill"><i class="fas fa-robot"></i> Generative AI</span>
-        <span class="skill-pill"><i class="fas fa-database"></i> Data Analysis</span>
-        <span class="skill-pill"><i class="fas fa-bullhorn"></i> Marketing Digital</span>
-        <span class="skill-pill"><i class="fas fa-video"></i> Multimedios</span>
-        <span class="skill-pill"><i class="fas fa-pen-fancy"></i> Guiones</span>
-        <span class="skill-pill"><i class="fas fa-balance-scale"></i> Legislación</span>
-        <span class="skill-pill"><i class="fas fa-project-diagram"></i> Gestión proyectos</span>
-        <span class="skill-pill"><i class="fas fa-language"></i> Inglés B2</span>
-      </div>
-    </div>
+const tx = document.querySelector('.composer textarea');
+if(tx){
+  tx.addEventListener('input', function(){
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+  });
+}
 
-    <!-- FOOTER INFORMATIVO -->
-    <div class="dashboard-footer">
-      <span><i class="far fa-calendar-check"></i> Actualizado: Abril 2026 · Elaboración de multimedios 9.7</span>
-      <span><i class="fas fa-chart-line"></i> Avance real ~38% (incluye EC)</span>
-    </div>
-  </main>
-</div>
+document.getElementById('uploadModal').addEventListener('click', function(e){
+  if(e.target === this) closeStoryUpload();
+});
+</script>
 
-<div class="floating-note">
-  <i class="fas fa-sync-alt fa-spin"></i> Dashboard CV · Sergio Campos
-</div>
 </body>
 </html>
