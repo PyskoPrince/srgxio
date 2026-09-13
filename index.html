@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Srgxio — Human System</title>
+<title>Srgxio — Human Cloud</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <style>
   :root{
     --hs-blue:#1F4E67;
@@ -67,24 +68,23 @@
     color:var(--text-mid); text-decoration:none; font-size:1.05rem;
     width:40px; height:40px; display:flex; align-items:center; justify-content:center;
     border-radius:50%; transition:all .25s cubic-bezier(.175,.885,.32,1.275);
-    position:relative;
+    position:relative; cursor:pointer;
   }
   .topnav a.active, .topnav a:hover{ background:var(--hs-gold); color:#1a1200; transform:translateY(-3px) scale(1.1); }
-  .dot{ position:absolute; top:8px; right:9px; width:7px; height:7px; border-radius:50%; background:var(--hs-red); border:1.5px solid #070a10; }
   .avatar-mini{
     width:38px;height:38px;border-radius:50%;object-fit:cover;
     border:2px solid var(--hs-gold);
     box-shadow:0 0 12px rgba(34,211,238,.5);
-    flex-shrink:0;
+    flex-shrink:0; cursor:pointer;
   }
 
   /* ═══════════════ LAYOUT ═══════════════ */
   .layout{
-    max-width:1080px; margin:22px auto 60px; padding:0 18px;
-    display:grid; grid-template-columns:230px minmax(0,560px) 260px; gap:22px;
+    max-width:1180px; margin:22px auto 60px; padding:0 18px;
+    display:grid; grid-template-columns:260px minmax(0,1fr) 260px; gap:22px;
     align-items:start;
   }
-  @media (max-width:980px){ .layout{ grid-template-columns:1fr; } .side-left,.side-right{ display:none; } }
+  @media (max-width:1080px){ .layout{ grid-template-columns:1fr; } .side-left,.side-right{ display:none; } }
 
   /* ═══════════════ SIDE LEFT ═══════════════ */
   .side-left{ position:sticky; top:90px; display:flex; flex-direction:column; gap:14px; }
@@ -92,459 +92,653 @@
   .profile-card img{ width:76px;height:76px;border-radius:50%; object-fit:cover; border:3px solid var(--hs-gold); box-shadow:0 0 18px rgba(34,211,238,.5);}
   .profile-card h3{ margin:10px 0 2px; font-size:1rem; font-style:italic; color:var(--hs-gold); }
   .profile-card p{ margin:0; font-size:.76rem; color:var(--text-low); display:flex; align-items:center; justify-content:center; gap:6px;}
-  .profile-stats{ display:flex; justify-content:space-around; margin-top:14px; padding-top:12px; border-top:1px solid var(--glass-border);}
-  .profile-stats div{ font-size:.68rem; color:var(--text-mid); letter-spacing:.4px; display:flex; flex-direction:column; align-items:center; gap:3px;}
-  .profile-stats b{ display:block; font-size:1.05rem; color:var(--hs-gold); font-family:'Space Grotesk'; }
-  .profile-stats i{ font-size:.7rem; color:var(--text-low); }
 
-  /* ═══════════════ REDES SOCIALES ═══════════════ */
-  .social-panel{ padding:16px; border-radius:var(--radius-lg); }
-  .social-panel h4{
-    margin:0 0 12px;
-    font-size:.88rem;
-    color:var(--text-mid);
-    font-weight:600;
-    letter-spacing:.2px;
-    display:flex;
-    align-items:center;
-    gap:8px;
+  .storage-widget{ margin-top:16px; padding:14px; border-radius:14px; background:rgba(0,0,0,0.25); border:1px solid var(--glass-border); }
+  .storage-widget .label{ font-size:.72rem; color:var(--text-mid); display:flex; justify-content:space-between; margin-bottom:8px; letter-spacing:.4px; }
+  .storage-widget .label b{ color:var(--hs-gold); }
+  .storage-bar{ height:8px; border-radius:6px; background:rgba(255,255,255,0.08); overflow:hidden; }
+  .storage-bar .fill{
+    height:100%; width:47%;
+    background:linear-gradient(90deg, var(--hs-gold), var(--hs-red));
+    border-radius:6px; transition:width .6s ease;
   }
-  .social-panel h4 i{ color:var(--hs-gold); }
-  .social-grid{
-    display:grid;
-    grid-template-columns:repeat(4, 1fr);
-    gap:8px;
+
+  /* ═══════════════ VAULT DE CONTRASEÑAS ═══════════════ */
+  .vault-panel{ padding:16px; border-radius:var(--radius-lg); }
+  .vault-panel h4{
+    margin:0 0 12px; font-size:.88rem; color:var(--text-mid); font-weight:600;
+    letter-spacing:.2px; display:flex; align-items:center; gap:8px;
   }
-  .social-grid a{
-    aspect-ratio:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:12px;
+  .vault-panel h4 i{ color:var(--hs-gold); }
+  .vault-badge{
+    margin-left:auto; font-size:.7rem; font-weight:700;
+    padding:2px 8px; border-radius:999px;
+    background:rgba(34,211,238,0.18); color:var(--hs-gold);
+    border:1px solid rgba(34,211,238,0.4);
+  }
+
+  .vault-search{ position:relative; margin-bottom:10px; }
+  .vault-search i{
+    position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    color:var(--text-low); font-size:.75rem; pointer-events:none;
+  }
+  .vault-search input{
+    width:100%; padding:8px 12px 8px 32px;
+    background:rgba(0,0,0,0.25);
+    border:1px solid var(--glass-border);
+    border-radius:10px; color:var(--text-hi);
+    font-family:inherit; font-size:.78rem; outline:none;
+    transition:border-color .2s;
+  }
+  .vault-search input:focus{ border-color:var(--hs-gold); }
+  .vault-search input::placeholder{ color:var(--text-low); }
+
+  .vault-add-btn{
+    width:100%; padding:9px; margin-bottom:10px;
+    border-radius:10px; border:none;
+    background:linear-gradient(135deg,var(--hs-gold),#0e94b0);
+    color:#001a22; font-family:inherit; font-weight:700; font-size:.78rem;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;
+    transition:filter .2s;
+  }
+  .vault-add-btn:hover{ filter:brightness(1.1); }
+
+  .vault-list{
+    max-height:260px; overflow-y:auto; margin-bottom:10px;
+    display:flex; flex-direction:column; gap:6px;
+    scrollbar-width:thin; scrollbar-color:var(--hs-gold) transparent;
+  }
+  .vault-list::-webkit-scrollbar{ width:5px; }
+  .vault-list::-webkit-scrollbar-thumb{ background:var(--hs-gold); border-radius:10px; }
+
+  .vault-item{
+    display:flex; align-items:center; gap:10px;
+    padding:9px 10px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--glass-border);
+    border-radius:10px;
+    transition:all .2s;
+    cursor:pointer;
+  }
+  .vault-item:hover{
+    background:rgba(255,255,255,0.1);
+    border-color:var(--hs-gold);
+    transform:translateX(3px);
+  }
+
+  .vault-item-icon{
+    width:32px; height:32px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.85rem; color:#fff;
+    flex-shrink:0;
+    background:linear-gradient(135deg, var(--hs-blue), var(--hs-blue-lt));
+  }
+  .vault-item-icon.gmail{ background:linear-gradient(135deg,#EA4335,#c5221f); }
+  .vault-item-icon.facebook{ background:linear-gradient(135deg,#1877F2,#0f5bbf); }
+  .vault-item-icon.instagram{ background:linear-gradient(45deg,#f09433,#dc2743,#bc1888); }
+  .vault-item-icon.github{ background:linear-gradient(135deg,#24292e,#000); }
+  .vault-item-icon.bank{ background:linear-gradient(135deg,#217346,#16542f); }
+  .vault-item-icon.crypto{ background:linear-gradient(135deg,#f7931a,#c76f00); }
+  .vault-item-icon.netflix{ background:linear-gradient(135deg,#E50914,#b00610); }
+  .vault-item-icon.other{ background:linear-gradient(135deg,#6B7280,#374151); }
+
+  .vault-item-info{ flex:1; min-width:0; }
+  .vault-item-name{
+    font-size:.8rem; font-weight:600; color:var(--text-hi);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    margin-bottom:2px;
+  }
+  .vault-item-user{
+    font-size:.68rem; color:var(--text-low);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    display:flex; align-items:center; gap:4px;
+  }
+  .vault-item-user i{ font-size:.6rem; }
+
+  .vault-item-actions{
+    display:flex; gap:4px; opacity:0;
+    transition:opacity .2s;
+  }
+  .vault-item:hover .vault-item-actions{ opacity:1; }
+  .vault-item-actions button{
+    width:24px; height:24px; border-radius:6px;
+    background:rgba(0,0,0,0.5);
+    border:1px solid rgba(255,255,255,0.15);
+    color:#fff; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.65rem;
+    transition:background .2s;
+  }
+  .vault-item-actions button:hover{ background:var(--hs-gold); color:#001a22; }
+  .vault-item-actions button.del:hover{ background:var(--hs-red); color:#fff; }
+
+  .vault-empty{ text-align:center; padding:20px 10px; color:var(--text-low); }
+  .vault-empty i{ font-size:1.6rem; margin-bottom:6px; display:block; opacity:.5; color:var(--hs-gold); }
+  .vault-empty p{ margin:0; font-size:.72rem; }
+
+  .vault-footer{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:10px; border-top:1px solid var(--glass-border);
+  }
+  .vault-lock{
+    display:flex; align-items:center; gap:6px;
+    font-size:.7rem; color:var(--text-low);
+  }
+  .vault-lock i{ color:var(--hs-gold); font-size:.7rem; }
+  .vault-settings{
+    width:26px; height:26px; border-radius:8px;
     background:rgba(255,255,255,0.06);
     border:1px solid var(--glass-border);
-    color:var(--text-hi);
-    font-size:1rem;
-    text-decoration:none;
-    transition:all .25s cubic-bezier(.175,.885,.32,1.275);
-    position:relative;
+    color:var(--text-mid); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.7rem;
+    transition:all .2s;
   }
-  .social-grid a:hover{
-    background:var(--hs-gold);
-    color:#001a22;
-    transform:translateY(-3px) scale(1.08);
-    box-shadow:0 8px 20px rgba(34,211,238,0.4);
+  .vault-settings:hover{ background:var(--hs-gold); color:#001a22; }
+
+  /* Vault fields para SweetAlert */
+  .vault-field{ margin-bottom:12px; text-align:left; }
+  .vault-field label{
+    display:block; font-size:.75rem; color:#555;
+    margin-bottom:6px; font-weight:600; letter-spacing:.3px;
   }
-  .social-grid a[data-net="whatsapp"]:hover{ background:#25D366; color:#fff; box-shadow:0 8px 20px rgba(37,211,102,0.5); }
-  .social-grid a[data-net="instagram"]:hover{ background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color:#fff; box-shadow:0 8px 20px rgba(220,39,67,0.5); }
-  .social-grid a[data-net="facebook"]:hover{ background:#1877F2; color:#fff; box-shadow:0 8px 20px rgba(24,119,242,0.5); }
-  .social-grid a[data-net="youtube"]:hover{ background:#FF0000; color:#fff; box-shadow:0 8px 20px rgba(255,0,0,0.5); }
-  .social-grid a[data-net="linkedin"]:hover{ background:#0A66C2; color:#fff; box-shadow:0 8px 20px rgba(10,102,194,0.5); }
-  .social-grid a[data-net="twitter"]:hover{ background:#000; color:#fff; box-shadow:0 8px 20px rgba(0,0,0,0.6); }
-  .social-grid a[data-net="tiktok"]:hover{ background:linear-gradient(45deg,#25F4EE,#FE2C55,#000); color:#fff; box-shadow:0 8px 20px rgba(254,44,85,0.5); }
-  .social-grid a[data-net="personal"]:hover{ background:var(--hs-blue-lt); color:#fff; box-shadow:0 8px 20px rgba(47,109,140,0.5); }
-
-  .quick-nav{ padding:10px; border-radius:var(--radius-lg); display:flex; flex-direction:column; gap:2px;}
-  .quick-nav a{ display:flex; align-items:center; gap:12px; color:var(--text-mid); text-decoration:none;
-    padding:11px 14px; border-radius:var(--radius-sm); font-size:.86rem; transition:background .2s,color .2s;}
-  .quick-nav a i{width:18px; text-align:center; color:var(--hs-gold); font-size:.95rem;}
-  .quick-nav a:hover{ background:var(--glass-strong); color:var(--text-hi);}
-
-  /* ═══════════════ STORIES BAR ═══════════════ */
-  .stories-bar{
-    padding:14px 10px;
-    border-radius:var(--radius-lg);
-    margin-bottom:16px;
-    display:flex;
-    gap:12px;
-    overflow-x:auto;
-    scrollbar-width:none;
-    -ms-overflow-style:none;
+  .vault-field input,
+  .vault-field select{
+    width:100%; padding:11px 14px;
+    background:rgba(255,255,255,0.9);
+    border:1.5px solid #dde3ea;
+    border-radius:12px; color:#1F4E67;
+    font-family:inherit; font-size:.88rem; outline:none;
+    transition:border-color .2s;
   }
-  .stories-bar::-webkit-scrollbar{ display:none; }
-
-  .story-item{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:8px;
-    cursor:pointer;
-    flex-shrink:0;
-    width:96px;
-    transition:transform .2s;
+  .vault-field input:focus,
+  .vault-field select:focus{ border-color:#22d3ee; }
+  .vault-field .pwd-row{ display:flex; gap:6px; }
+  .vault-field .pwd-row input{ flex:1; }
+  .vault-field .pwd-row button{
+    width:42px; border-radius:12px;
+    background:rgba(31,78,103,0.1);
+    border:1.5px solid #dde3ea;
+    color:#1F4E67; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .2s;
   }
-  .story-item:hover{ transform:translateY(-3px); }
+  .vault-field .pwd-row button:hover{ background:#22d3ee; color:#001a22; }
 
-  .story-avatar-wrap{
-    position:relative;
-    width:96px;
-    height:150px;
+  .strength-bar{
+    height:5px; border-radius:4px; margin-top:6px;
+    background:rgba(0,0,0,0.1); overflow:hidden;
+  }
+  .strength-bar .fill{
+    height:100%; width:0; border-radius:4px;
+    transition:all .3s;
+  }
+  .strength-text{
+    font-size:.68rem; color:#888; margin-top:4px;
+    display:flex; justify-content:space-between;
+  }
+
+  /* Vault view */
+  .vault-view{ text-align:center; }
+  .vault-view .big-icon{
+    width:72px; height:72px; margin:0 auto 14px;
     border-radius:20px;
-    padding:3px;
-    background:linear-gradient(135deg, var(--hs-gold), var(--hs-blue-lt));
-    transition:transform .25s, box-shadow .25s;
-    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    font-size:2rem; color:#fff;
+    background:linear-gradient(135deg, var(--hs-blue), var(--hs-blue-lt));
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
   }
-  .story-item:hover .story-avatar-wrap{
-    transform:scale(1.03);
-    box-shadow:0 12px 28px rgba(0,0,0,0.35);
-  }
-
-  .story-item.seen .story-avatar-wrap{
-    background:rgba(255,255,255,0.20);
-  }
-  .story-item.unseen .story-avatar-wrap{
-    background:linear-gradient(160deg, var(--hs-gold) 0%, var(--hs-blue-lt) 55%, var(--hs-red) 100%);
-    box-shadow:0 0 18px rgba(34,211,238,.35);
-  }
-
-  .story-thumb{
-    width:100%;
-    height:100%;
-    border-radius:17px;
-    object-fit:cover;
-    border:2.5px solid #070a10;
-    display:block;
-  }
-
-  .story-author-avatar{
-    position:absolute;
-    bottom:6px;
-    right:6px;
-    width:32px;
-    height:32px;
-    border-radius:50%;
-    object-fit:cover;
-    border:2.5px solid #070a10;
-    box-shadow:0 3px 10px rgba(0,0,0,0.5);
-    z-index:5;
-  }
-  .story-item.mine .story-author-avatar{
-    border-color:var(--hs-gold);
-    box-shadow:0 0 14px rgba(34,211,238,.8);
-  }
-
-  .story-add-btn{
-    position:absolute;
-    bottom:4px;
-    right:4px;
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    background:var(--hs-gold);
-    color:#001a22;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:.85rem;
-    border:2.5px solid #070a10;
-    font-weight:700;
-    box-shadow:0 2px 10px rgba(34,211,238,.7);
-    transition:transform .2s;
-    z-index:6;
-  }
-  .story-item.mine:hover .story-add-btn{ transform:scale(1.15); }
-
-  .story-avatar-wrap::after{
-    content:'';
-    position:absolute;
-    left:0; right:0; bottom:0;
-    height:55%;
-    background:linear-gradient(0deg, rgba(0,0,0,0.78) 0%, transparent 100%);
-    border-radius:0 0 17px 17px;
-    pointer-events:none;
-    z-index:1;
-  }
-
-  .story-name{
-    position:absolute;
-    left:6px; right:44px; bottom:10px;
-    z-index:2;
-    font-size:.72rem;
-    color:#fff;
-    font-weight:600;
+  .vault-view h3{ justify-content:center; margin:0 0 4px; color:#1F4E67; font-size:1.2rem; }
+  .vault-view .sub{ text-align:center; color:#888; font-size:.85rem; margin:0 0 16px; }
+  .vault-view-info{
+    background:rgba(31,78,103,0.08); border-radius:14px;
+    padding:14px 16px; margin-bottom:16px;
+    border:1px solid rgba(31,78,103,0.15);
     text-align:left;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    letter-spacing:.2px;
-    text-shadow:0 1px 4px rgba(0,0,0,0.9);
   }
-  .story-item.mine .story-name{ color:var(--hs-gold); }
+  .vault-view-info .row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:8px 0; font-size:.82rem;
+    border-bottom:1px solid rgba(0,0,0,0.06);
+  }
+  .vault-view-info .row:last-child{ border-bottom:none; }
+  .vault-view-info .row span:first-child{ color:#666; display:flex; align-items:center; gap:6px; }
+  .vault-view-info .row span:last-child{
+    color:#1F4E67; font-weight:600;
+    font-family:monospace;
+    display:flex; align-items:center; gap:6px;
+  }
+  .vault-view-info .pwd-display{
+    font-family:monospace; font-size:1rem;
+    letter-spacing:1px; color:#1F4E67;
+    display:flex; align-items:center; gap:6px;
+  }
+  .vault-view-info .copy-btn{
+    width:24px; height:24px; border-radius:6px;
+    background:rgba(31,78,103,0.1);
+    border:1px solid rgba(31,78,103,0.2);
+    color:#1F4E67; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.65rem;
+    transition:background .2s;
+  }
+  .vault-view-info .copy-btn:hover{ background:#22d3ee; color:#001a22; border-color:#22d3ee; }
 
-  /* ═══════════════ STORY VIEWER ═══════════════ */
-  .story-viewer{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.94);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
+  .vault-view-actions{ display:flex; gap:8px; }
+  .vault-view-actions button{
+    flex:1; padding:11px; border-radius:12px;
+    border:none; cursor:pointer;
+    font-family:inherit; font-weight:700; font-size:.8rem;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    transition:all .2s;
+  }
+  .vault-view-actions .btn-edit{
+    background:rgba(31,78,103,0.1); color:#1F4E67;
+    border:1.5px solid rgba(31,78,103,0.2);
+  }
+  .vault-view-actions .btn-edit:hover{ background:rgba(31,78,103,0.2); }
+  .vault-view-actions .btn-share{
+    background:linear-gradient(135deg,#22d3ee,#0e94b0);
+    color:#001a22;
+  }
+  .vault-view-actions .btn-share:hover{ filter:brightness(1.1); }
+
+  /* ═══════════════ MAIN AREA ═══════════════ */
+  .main-panel{ padding:20px; border-radius:var(--radius-lg); }
+
+  .files-header{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:18px; flex-wrap:wrap; gap:12px;
+  }
+  .files-header h2{
+    margin:0; font-size:1.3rem; font-weight:700;
+    display:flex; align-items:center; gap:10px;
+  }
+  .files-header h2 i{ color:var(--hs-gold); }
+  .files-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+  .btn-cloud{
+    border:none; padding:10px 18px; border-radius:999px; font-weight:700; font-size:.82rem;
+    cursor:pointer; display:flex; align-items:center; gap:8px;
+    transition:all .2s; font-family:inherit;
+  }
+  .btn-primary{ background:linear-gradient(135deg,var(--hs-gold),#0e94b0); color:#001a22; }
+  .btn-primary:hover{ filter:brightness(1.1); transform:translateY(-1px); }
+  .btn-secondary{ background:rgba(255,255,255,0.1); color:var(--text-hi); border:1px solid var(--glass-border); }
+  .btn-secondary:hover{ background:rgba(255,255,255,0.18); }
+
+  .dropzone{
+    border:2px dashed rgba(255,255,255,0.25);
+    border-radius:20px;
+    padding:32px 20px;
+    text-align:center;
+    cursor:pointer;
+    transition:all .25s;
+    margin-bottom:20px;
+    background:rgba(0,0,0,0.15);
+    display:none;
+  }
+  .dropzone.active{ display:block; }
+  .dropzone.dragover{
+    border-color:var(--hs-gold);
+    background:rgba(34,211,238,0.1);
+    transform:scale(1.01);
+  }
+  .dropzone i{ font-size:2.6rem; color:var(--hs-gold); margin-bottom:12px; display:block; }
+  .dropzone p{ margin:0 0 6px; font-size:.95rem; font-weight:600; }
+  .dropzone small{ color:var(--text-low); font-size:.75rem; }
+  .dropzone input{ display:none; }
+
+  .search-bar{ position:relative; margin-bottom:16px; }
+  .search-bar input{
+    width:100%; padding:12px 44px 12px 44px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid var(--glass-border);
+    border-radius:14px; color:var(--text-hi);
+    font-family:inherit; font-size:.9rem;
+    outline:none;
+    transition:border-color .2s;
+  }
+  .search-bar input:focus{ border-color:var(--hs-gold); }
+  .search-bar input::placeholder{ color:var(--text-low); }
+  .search-bar .icon-left{
+    position:absolute; left:16px; top:50%; transform:translateY(-50%);
+    color:var(--text-low); pointer-events:none;
+  }
+  .search-bar .icon-right{
+    position:absolute; right:14px; top:50%; transform:translateY(-50%);
+    color:var(--text-low);
+  }
+
+  .filter-tabs{ display:flex; gap:6px; margin-bottom:18px; flex-wrap:wrap; }
+  .filter-tabs button{
+    background:rgba(255,255,255,0.06);
+    border:1px solid var(--glass-border);
+    color:var(--text-mid);
+    padding:8px 16px; border-radius:999px;
+    font-size:.78rem; font-weight:600; cursor:pointer;
+    font-family:inherit; transition:all .2s;
+    display:flex; align-items:center; gap:6px;
+  }
+  .filter-tabs button:hover{ background:rgba(255,255,255,0.12); color:var(--text-hi); }
+  .filter-tabs button.active{ background:var(--hs-gold); color:#001a22; border-color:var(--hs-gold); }
+
+  .files-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+    gap:14px;
+  }
+
+  .file-card{
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--glass-border);
+    border-radius:16px;
+    padding:14px;
+    transition:all .25s cubic-bezier(.175,.885,.32,1.275);
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    animation:fileIn .4s ease;
+  }
+  @keyframes fileIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+  .file-card:hover{
+    background:rgba(255,255,255,0.1);
+    transform:translateY(-4px);
+    border-color:var(--hs-gold);
+    box-shadow:0 12px 28px rgba(0,0,0,0.4);
+  }
+
+  .file-icon{
+    width:52px; height:52px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.6rem; color:#fff;
+    margin-bottom:12px;
+    position:relative;
+    box-shadow:0 6px 14px rgba(0,0,0,0.3);
+  }
+  .file-icon.doc{ background:linear-gradient(135deg, #2B579A, #1a3a6e); }
+  .file-icon.xls{ background:linear-gradient(135deg, #217346, #16542f); }
+  .file-icon.ppt{ background:linear-gradient(135deg, #B7472A, #8c2f18); }
+  .file-icon.pdf{ background:linear-gradient(135deg, #DC2626, #991b1b); }
+  .file-icon.img{ background:linear-gradient(135deg, #7C3AED, #5b21b6); }
+  .file-icon.vid{ background:linear-gradient(135deg, #0891B2, #075985); }
+  .file-icon.aud{ background:linear-gradient(135deg, #DB2777, #9d174d); }
+  .file-icon.zip{ background:linear-gradient(135deg, #F59E0B, #b45309); }
+  .file-icon.txt{ background:linear-gradient(135deg, #6B7280, #374151); }
+
+  .file-name{
+    font-weight:600; font-size:.88rem; color:var(--text-hi);
+    margin-bottom:4px;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .file-meta{
+    font-size:.72rem; color:var(--text-low);
+    display:flex; align-items:center; gap:8px;
+  }
+  .file-meta span{ display:flex; align-items:center; gap:4px; }
+
+  .file-overlay{
+    position:absolute; top:10px; right:10px;
+    display:flex; gap:4px; opacity:0;
+    transition:opacity .2s;
+  }
+  .file-card:hover .file-overlay{ opacity:1; }
+  .file-overlay button{
+    width:28px; height:28px; border-radius:8px;
+    background:rgba(0,0,0,0.6);
+    border:1px solid rgba(255,255,255,0.15);
+    color:#fff; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.75rem;
+    transition:background .2s;
+    backdrop-filter:blur(8px);
+  }
+  .file-overlay button:hover{ background:var(--hs-gold); color:#001a22; }
+  .file-overlay button.del:hover{ background:var(--hs-red); color:#fff; }
+
+  .empty-state{ text-align:center; padding:60px 20px; color:var(--text-low); }
+  .empty-state i{ font-size:3rem; margin-bottom:12px; display:block; color:var(--hs-gold); opacity:.5; }
+  .empty-state p{ margin:6px 0; font-size:.9rem; }
+
+  /* ═══════════════ FILE PREVIEW MODAL ═══════════════ */
+  .file-modal{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.9);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
     z-index:9999;
     display:none;
     align-items:center;
     justify-content:center;
+    padding:24px;
     animation:svFadeIn .25s ease;
   }
-  .story-viewer.active{ display:flex; }
+  .file-modal.active{ display:flex; }
   @keyframes svFadeIn{ from{opacity:0;} to{opacity:1;} }
 
-  .sv-stage{
-    position:relative;
-    width:100%;
-    max-width:420px;
-    height:min(88vh, 780px);
-    border-radius:20px;
+  .file-modal-box{
+    width:100%; max-width:920px; max-height:92vh;
+    border-radius:22px;
+    background:linear-gradient(180deg, rgba(31,78,103,0.95), rgba(10,14,20,0.98));
+    border:1px solid var(--glass-border);
+    box-shadow:0 30px 80px rgba(0,0,0,0.8);
+    display:flex; flex-direction:column;
     overflow:hidden;
-    background:#000;
-    box-shadow:0 30px 80px rgba(0,0,0,0.7);
     animation:svScaleIn .3s cubic-bezier(.2,.8,.2,1);
   }
   @keyframes svScaleIn{ from{transform:scale(0.94); opacity:0;} to{transform:scale(1); opacity:1;} }
 
-  .sv-progress{
-    position:absolute;
-    top:0; left:0; right:0;
-    display:flex;
-    gap:3px;
-    padding:10px 10px 0;
-    z-index:20;
+  .file-modal-header{
+    display:flex; align-items:center; gap:12px;
+    padding:16px 20px;
+    border-bottom:1px solid var(--glass-border);
+    background:rgba(0,0,0,0.3);
   }
-  .sv-progress-bar{
-    flex:1;
-    height:2.5px;
-    background:rgba(255,255,255,0.3);
-    border-radius:2px;
-    overflow:hidden;
-    position:relative;
-  }
-  .sv-progress-bar .fill{
-    height:100%;
-    width:0;
-    background:#fff;
-    border-radius:2px;
-    transition:width .1s linear;
-  }
-  .sv-progress-bar.done .fill{ width:100%; }
-  .sv-progress-bar.active .fill{ background:var(--hs-gold); }
-
-  .sv-header{
-    position:absolute;
-    top:22px; left:0; right:0;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:12px 14px;
-    z-index:20;
-    background:linear-gradient(180deg, rgba(0,0,0,0.6), transparent);
-  }
-  .sv-header img{
-    width:38px; height:38px; border-radius:50%;
-    object-fit:cover;
-    border:2px solid var(--hs-gold);
-  }
-  .sv-header-info{
-    display:flex; flex-direction:column;
-    flex:1; min-width:0;
-  }
-  .sv-header-name{
-    font-weight:700;
-    font-size:.9rem;
-    color:#fff;
-    font-style:italic;
-    display:flex; align-items:center; gap:6px;
-  }
-  .sv-header-time{
-    font-size:.7rem;
-    color:rgba(255,255,255,0.7);
-  }
-  .sv-close{
-    width:34px; height:34px;
-    border-radius:50%;
-    background:rgba(0,0,0,0.5);
-    color:#fff;
-    border:none;
+  .file-modal-header .icon{
+    width:42px; height:42px; border-radius:12px;
     display:flex; align-items:center; justify-content:center;
-    cursor:pointer;
-    font-size:1rem;
-    transition:background .2s;
-  }
-  .sv-close:hover{ background:var(--hs-red); }
-
-  .sv-content{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .sv-content img,
-  .sv-content video{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-  }
-  .sv-content .text-story{
-    width:100%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:60px 30px;
-    text-align:center;
-    font-family:'Space Grotesk';
-    font-size:1.6rem;
-    font-weight:600;
-    line-height:1.3;
-    color:#fff;
-    text-shadow:0 2px 20px rgba(0,0,0,0.5);
-  }
-
-  .sv-nav{
-    position:absolute;
-    inset:0;
-    display:flex;
-    z-index:10;
-  }
-  .sv-nav-left, .sv-nav-right{
-    flex:1;
-    cursor:pointer;
-  }
-
-  .sv-footer{
-    position:absolute;
-    bottom:0; left:0; right:0;
-    padding:14px;
-    z-index:20;
-    background:linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
-    display:flex;
-    gap:10px;
-    align-items:center;
-  }
-  .sv-footer input{
-    flex:1;
-    background:rgba(255,255,255,0.12);
-    border:1px solid rgba(255,255,255,0.25);
-    border-radius:999px;
-    padding:10px 18px;
-    color:#fff;
-    font-family:inherit;
-    font-size:.85rem;
-    outline:none;
-    backdrop-filter:blur(10px);
-  }
-  .sv-footer input::placeholder{ color:rgba(255,255,255,0.55); }
-  .sv-footer button{
-    width:40px; height:40px;
-    border-radius:50%;
-    background:var(--hs-gold);
-    color:#001a22;
-    border:none;
-    cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    font-size:.95rem;
-    transition:transform .2s;
+    font-size:1.3rem; color:#fff;
     flex-shrink:0;
   }
-  .sv-footer button:hover{ transform:scale(1.1); }
-
-  /* ═══════════════ COMPOSER ═══════════════ */
-  .composer{ padding:16px 18px; border-radius:var(--radius-lg); margin-bottom:18px;}
-  .composer-top{ display:flex; gap:12px; align-items:flex-start;}
-  .composer textarea{
-    flex:1; resize:none; min-height:46px; background:transparent; border:none; outline:none;
-    color:var(--text-hi); font-family:'Inter'; font-size:.95rem; line-height:1.4; padding-top:8px;
+  .file-modal-header .info{ flex:1; min-width:0; }
+  .file-modal-header .info h3{
+    margin:0 0 2px; font-size:1rem; color:#fff;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
   }
-  .composer textarea::placeholder{ color:var(--text-low); }
-  .composer-actions{ display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--glass-border);}
-  .composer-icons{ display:flex; gap:16px; color:var(--text-mid); font-size:1.05rem;}
-  .composer-icons i{ cursor:pointer; transition:color .2s, transform .2s; }
-  .composer-icons i:hover{ color:var(--hs-gold); transform:translateY(-2px); }
-  .btn-post{
-    border:none; padding:9px 22px; border-radius:999px; font-weight:700; font-size:.85rem; cursor:pointer;
-    background:linear-gradient(135deg,var(--hs-gold),#0e94b0); color:#001a22; transition:filter .2s;
+  .file-modal-header .info p{ margin:0; font-size:.75rem; color:var(--text-low); }
+  .file-modal-header .actions{ display:flex; gap:8px; }
+  .file-modal-header .actions button{
+    width:38px; height:38px; border-radius:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid var(--glass-border);
+    color:var(--text-hi); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .2s;
+  }
+  .file-modal-header .actions button:hover{ background:var(--hs-gold); color:#001a22; }
+  .file-modal-header .actions button.close:hover{ background:var(--hs-red); color:#fff; }
+
+  .file-modal-body{
+    flex:1; overflow:auto; padding:20px;
+    display:flex; align-items:center; justify-content:center;
+    min-height:400px;
+  }
+  .file-modal-body img{ max-width:100%; max-height:70vh; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,0.6); }
+  .file-modal-body video{ max-width:100%; max-height:70vh; border-radius:12px; }
+  .file-modal-body audio{ width:100%; max-width:500px; }
+  .file-modal-body iframe{ width:100%; height:70vh; border:none; border-radius:12px; background:#fff; }
+
+  .doc-preview{
+    width:100%; height:70vh; max-width:800px;
+    background:#fff; border-radius:12px;
+    padding:40px;
+    color:#222;
+    font-family:Georgia, serif;
+    overflow-y:auto;
+    box-shadow:0 12px 40px rgba(0,0,0,0.6);
+  }
+  .doc-preview h1{ font-size:1.6rem; margin:0 0 12px; color:#1F4E67; }
+  .doc-preview p{ line-height:1.6; margin:8px 0; font-size:.95rem; color:#333; }
+  .doc-preview .meta-bar{
+    padding:10px 14px; background:#f3f6f9; border-radius:8px;
+    font-size:.78rem; color:#666; margin-bottom:20px;
+    display:flex; justify-content:space-between;
+  }
+
+  .share-row{
+    display:flex; gap:10px; padding:14px 20px;
+    border-top:1px solid var(--glass-border);
+    background:rgba(0,0,0,0.25);
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .share-btn{
+    padding:9px 18px; border-radius:12px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid var(--glass-border);
+    color:var(--text-hi); cursor:pointer;
+    font-family:inherit; font-size:.82rem; font-weight:600;
     display:flex; align-items:center; gap:8px;
+    transition:all .2s;
   }
-  .btn-post:hover{ filter:brightness(1.08); }
+  .share-btn:hover{ background:var(--hs-gold); color:#001a22; transform:translateY(-2px); }
+  .share-btn.nfc:hover{ background:linear-gradient(135deg,#8b5cf6,#22d3ee); color:#fff; }
 
-  /* ═══════════════ FEED ═══════════════ */
-  .feed{ display:flex; flex-direction:column; gap:16px; }
-  .post{ padding:18px; border-radius:var(--radius-lg); }
-  .post-head{ display:flex; align-items:center; gap:12px; }
-  .post-head img{ width:46px;height:46px;border-radius:50%; object-fit:cover; border:2px solid var(--hs-gold); flex-shrink:0;}
-  .post-head .who{ display:flex; flex-direction:column; min-width:0;}
-  .post-head .name{ font-weight:700; font-size:.94rem; font-style:italic; color:var(--hs-gold); display:flex; align-items:center; gap:6px;}
-  .post-head .meta{ font-size:.74rem; color:var(--text-low); display:flex; align-items:center; gap:5px;}
-  .post-title{ font-size:1.05rem; font-weight:700; margin:10px 0 4px; }
-  .post-body{ margin:4px 0 4px; font-size:.92rem; line-height:1.55; color:rgba(255,255,255,.9); white-space:pre-line; }
-  .post-body a{ color:var(--hs-gold); text-decoration:none; }
-  .post-media{ margin-top:10px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--glass-border); }
-  .post-media img{ width:100%; display:block; max-height:420px; object-fit:cover;}
-  .post-grid{ display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:10px; border-radius:var(--radius-md); overflow:hidden;}
-  .post-grid img{ width:100%; height:170px; object-fit:cover; }
-  .post-actions{ display:flex; justify-content:space-around; margin-top:14px; padding-top:12px; border-top:1px solid var(--glass-border); }
-  .post-actions button{
-    background:none; border:none; color:var(--text-mid); font-size:.85rem; display:flex; align-items:center; gap:8px;
-    cursor:pointer; padding:6px 10px; border-radius:10px; transition:all .2s; font-family:inherit;
+  /* ═══════════════ SHARE MODAL ═══════════════ */
+  .share-modal{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.92);
+    backdrop-filter:blur(18px);
+    z-index:10001;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    animation:svFadeIn .25s ease;
   }
-  .post-actions button i{ font-size:.95rem; }
-  .post-actions button:hover{ color:var(--hs-gold); background:rgba(255,255,255,.08); transform:translateY(-2px);}
-  .post-actions button.liked{ color:var(--hs-red); }
-  .post-actions button.liked i{ animation:pop .35s ease; }
-  @keyframes pop{ 0%{transform:scale(1);} 50%{transform:scale(1.4);} 100%{transform:scale(1);} }
-  .badge{
-    display:inline-flex; align-items:center; gap:5px; font-size:.66rem; letter-spacing:.3px;
-    padding:3px 9px; border-radius:999px; background:rgba(34,211,238,.14); color:var(--hs-gold);
-    border:1px solid rgba(34,211,238,.4); font-style:normal;
-  }
+  .share-modal.active{ display:flex; }
 
-  /* ═══════════════ POLL ═══════════════ */
-  .poll-opt{
-    position:relative; margin-bottom:10px; border-radius:12px; overflow:hidden; cursor:pointer;
-    background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
-    transition:border-color .2s;
+  .share-modal-box{
+    width:100%; max-width:460px;
+    border-radius:24px;
+    padding:28px 24px;
+    background:linear-gradient(180deg, rgba(31,78,103,0.95), rgba(10,14,20,0.98));
+    border:1px solid var(--glass-border);
+    box-shadow:0 30px 80px rgba(0,0,0,0.8);
+    text-align:center;
+    position:relative;
+    animation:svScaleIn .3s cubic-bezier(.2,.8,.2,1);
   }
-  .poll-opt:hover:not(.voted){ border-color:var(--hs-gold); }
-  .poll-opt .fill{
-    position:absolute; top:0; left:0; bottom:0; width:0%;
-    background:linear-gradient(90deg, rgba(34,211,238,.4), rgba(34,211,238,.1));
-    transition:width .6s cubic-bezier(.2,.8,.2,1);
+  .share-modal-box h3{
+    margin:0 0 6px; font-size:1.2rem; color:var(--hs-gold);
+    display:flex; align-items:center; justify-content:center; gap:10px;
   }
-  .poll-opt .row{ position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; padding:11px 14px; font-size:.85rem; }
-  .poll-opt .row span:first-child{ display:flex; align-items:center; gap:8px; }
-  .poll-opt.voted{ cursor:default; }
-  .poll-foot{ font-size:.72rem; color:var(--text-low); margin-top:6px; display:flex; justify-content:space-between; align-items:center;}
+  .share-modal-box .sub{ margin:0 0 20px; font-size:.82rem; color:var(--text-mid); }
+
+  .qr-container{
+    background:#fff; padding:18px; border-radius:18px;
+    display:inline-block; margin:0 auto 16px;
+    box-shadow:0 12px 40px rgba(0,0,0,0.5);
+  }
+  .qr-container canvas, .qr-container img{ display:block; border-radius:6px; }
+
+  .share-file-info{
+    padding:12px 16px; margin:0 0 18px;
+    background:rgba(0,0,0,0.3); border-radius:12px;
+    display:flex; align-items:center; gap:12px;
+    border:1px solid var(--glass-border);
+    text-align:left;
+  }
+  .share-file-info .mini-icon{
+    width:38px; height:38px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; color:#fff; flex-shrink:0;
+  }
+  .share-file-info .info{ flex:1; min-width:0; }
+  .share-file-info .info b{
+    display:block; font-size:.85rem; color:#fff;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .share-file-info .info small{ font-size:.72rem; color:var(--text-low); }
+
+  .share-tabs{
+    display:flex; gap:6px; margin-bottom:18px;
+    background:rgba(0,0,0,0.3); padding:5px; border-radius:12px;
+  }
+  .share-tabs button{
+    flex:1; padding:10px; border-radius:8px;
+    background:transparent; border:none;
+    color:var(--text-mid); cursor:pointer;
+    font-family:inherit; font-size:.82rem; font-weight:600;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    transition:all .2s;
+  }
+  .share-tabs button.active{ background:var(--hs-gold); color:#001a22; }
+
+  .nfc-panel{ display:none; flex-direction:column; align-items:center; padding:12px 0; }
+  .nfc-panel.active{ display:flex; }
+
+  .nfc-circle{
+    width:140px; height:140px; border-radius:50%;
+    background:linear-gradient(135deg, rgba(139,92,246,0.3), rgba(34,211,238,0.3));
+    border:2px solid rgba(139,92,246,0.6);
+    display:flex; align-items:center; justify-content:center;
+    font-size:3.5rem; color:#fff;
+    margin-bottom:18px;
+    animation:nfcPulse 2s infinite;
+  }
+  @keyframes nfcPulse{
+    0%,100%{ box-shadow:0 0 0 0 rgba(139,92,246,0.6); }
+    50%{ box-shadow:0 0 0 30px rgba(139,92,246,0); }
+  }
+  .nfc-circle i{ animation:nfcWiggle 2s infinite; }
+  @keyframes nfcWiggle{
+    0%,100%{ transform:rotate(0); }
+    25%{ transform:rotate(-8deg); }
+    75%{ transform:rotate(8deg); }
+  }
+  .nfc-panel p{ font-size:.88rem; color:var(--text-mid); margin:0 0 8px; }
+  .nfc-panel small{ font-size:.75rem; color:var(--text-low); }
+
+  .qr-panel{ display:none; }
+  .qr-panel.active{ display:block; }
+
+  .share-close{
+    position:absolute; top:14px; right:14px;
+    width:32px; height:32px; border-radius:50%;
+    background:rgba(255,255,255,0.1);
+    border:1px solid var(--glass-border);
+    color:#fff; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .2s;
+  }
+  .share-close:hover{ background:var(--hs-red); }
 
   /* ═══════════════ SIDE RIGHT ═══════════════ */
   .side-right{ display:flex; flex-direction:column; gap:16px; position:sticky; top:90px; }
   .panel{ padding:16px; border-radius:var(--radius-lg); }
-  .panel h4{ margin:0 0 12px; font-size:.9rem; color:var(--text-mid); font-weight:600; letter-spacing:.2px; display:flex; align-items:center; gap:8px;}
-  .panel h4 i{ color:var(--hs-gold); }
-  .trend{ display:flex; justify-content:space-between; align-items:center; padding:9px 0; font-size:.82rem; border-bottom:1px solid var(--glass-border);}
-  .trend:last-child{ border-bottom:none; }
-  .trend .tag{ color:var(--text-hi); display:flex; align-items:center; gap:8px; }
-  .trend .tag i{ color:var(--hs-gold); font-size:.75rem; }
-  .trend .n{ color:var(--text-low); font-size:.72rem; }
-  .suggestion{ display:flex; align-items:center; gap:10px; padding:8px 0; }
-  .suggestion img{ width:38px;height:38px;border-radius:50%; object-fit:cover; border:2px solid var(--hs-gold); flex-shrink:0;}
-  .suggestion .s-name{ font-size:.82rem; font-weight:600; }
-  .suggestion .s-sub{ font-size:.7rem; color:var(--text-low); display:flex; align-items:center; gap:4px;}
-  .follow-btn{
-    margin-left:auto; font-size:.7rem; padding:6px 13px; border-radius:999px; border:1px solid var(--hs-gold);
-    background:transparent; color:var(--hs-gold); cursor:pointer; display:flex; align-items:center; gap:5px;
-    transition:all .2s; font-family:inherit; white-space:nowrap;
+  .panel h4{
+    margin:0 0 12px; font-size:.88rem; color:var(--text-mid);
+    font-weight:600; letter-spacing:.2px;
+    display:flex; align-items:center; gap:8px;
   }
-  .follow-btn:hover{ background:var(--hs-gold); color:#001a22; }
-  .follow-btn.following{ background:var(--hs-gold); color:#001a22; }
-  .follow-btn i{ font-size:.65rem; }
+  .panel h4 i{ color:var(--hs-gold); }
 
-  /* ═══════════════ MODAL SUBIR HISTORIA ═══════════════ */
-  .modal-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.85);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
+  .stat-item{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 0; font-size:.82rem;
+    border-bottom:1px solid var(--glass-border);
+  }
+  .stat-item:last-child{ border-bottom:none; }
+  .stat-item .left{ display:flex; align-items:center; gap:10px; color:var(--text-hi); }
+  .stat-item .left i{ color:var(--hs-gold); width:16px; text-align:center; }
+  .stat-item .right{ color:var(--text-low); font-size:.78rem; font-weight:600; }
+
+  /* ═══════════════ CONFIG MODAL ═══════════════ */
+  .config-modal{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.9);
+    backdrop-filter:blur(16px);
     z-index:10000;
     display:none;
     align-items:center;
@@ -552,192 +746,147 @@
     padding:20px;
     animation:svFadeIn .2s ease;
   }
-  .modal-overlay.active{ display:flex; }
+  .config-modal.active{ display:flex; }
 
-  .modal-box{
-    width:100%;
-    max-width:460px;
-    max-height:90vh;
+  .config-box{
+    width:100%; max-width:640px; max-height:92vh;
     overflow-y:auto;
     border-radius:24px;
-    padding:24px;
-    background:linear-gradient(180deg, rgba(31,78,103,0.9), rgba(10,14,20,0.95));
+    padding:28px;
+    background:linear-gradient(180deg, rgba(31,78,103,0.95), rgba(10,14,20,0.98));
     border:1px solid var(--glass-border);
-    box-shadow:0 30px 80px rgba(0,0,0,0.7);
+    box-shadow:0 30px 80px rgba(0,0,0,0.8);
     animation:svScaleIn .3s cubic-bezier(.2,.8,.2,1);
   }
-  .modal-box h3{
-    margin:0 0 6px;
-    font-size:1.2rem;
-    color:var(--hs-gold);
+  .config-box h3{
+    margin:0 0 6px; font-size:1.3rem; color:var(--hs-gold);
     display:flex; align-items:center; gap:10px;
   }
-  .modal-box .sub{
-    margin:0 0 18px;
-    font-size:.82rem;
-    color:var(--text-mid);
-  }
-  .story-type-tabs{
-    display:flex;
-    gap:8px;
-    margin-bottom:16px;
-    background:rgba(0,0,0,0.3);
-    padding:5px;
-    border-radius:12px;
-  }
-  .story-type-tabs button{
-    flex:1;
-    background:transparent;
-    border:none;
-    color:var(--text-mid);
-    padding:10px;
-    border-radius:8px;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:.82rem;
-    font-weight:600;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    transition:all .2s;
-  }
-  .story-type-tabs button.active{
-    background:var(--hs-gold);
-    color:#001a22;
-  }
-  .story-drop{
-    border:2px dashed rgba(255,255,255,0.25);
-    border-radius:16px;
-    padding:36px 20px;
-    text-align:center;
-    cursor:pointer;
-    transition:all .25s;
-    margin-bottom:16px;
-    background:rgba(0,0,0,0.2);
-  }
-  .story-drop:hover{
-    border-color:var(--hs-gold);
-    background:rgba(34,211,238,0.08);
-  }
-  .story-drop i{
-    font-size:2.2rem;
-    color:var(--hs-gold);
-    margin-bottom:10px;
-    display:block;
-  }
-  .story-drop p{
-    margin:0;
-    font-size:.85rem;
-    color:var(--text-mid);
-  }
-  .story-drop small{
-    display:block;
-    margin-top:6px;
-    font-size:.72rem;
-    color:var(--text-low);
-  }
-  .story-drop input{ display:none; }
+  .config-box .sub{ margin:0 0 22px; font-size:.82rem; color:var(--text-mid); }
 
-  .story-preview{
-    width:100%;
-    height:220px;
-    border-radius:16px;
-    overflow:hidden;
-    margin-bottom:16px;
-    background:#000;
-    display:none;
-    position:relative;
+  .config-section{
+    margin-bottom:24px; padding-bottom:20px;
+    border-bottom:1px solid var(--glass-border);
   }
-  .story-preview.active{ display:block; }
-  .story-preview img,
-  .story-preview video{
-    width:100%; height:100%; object-fit:cover; display:block;
+  .config-section:last-child{ border-bottom:none; }
+  .config-section h4{
+    margin:0 0 14px; font-size:.9rem; color:var(--text-mid);
+    font-weight:600; display:flex; align-items:center; gap:8px;
   }
-  .story-preview .remove{
-    position:absolute;
-    top:10px; right:10px;
-    width:32px; height:32px;
-    border-radius:50%;
-    background:var(--hs-red);
-    color:#fff;
-    border:none;
-    cursor:pointer;
+  .config-section h4 i{ color:var(--hs-gold); }
+
+  .cfg-field{ margin-bottom:14px; }
+  .cfg-field label{
+    display:block; font-size:.78rem; color:var(--text-mid);
+    margin-bottom:6px; font-weight:600; letter-spacing:.3px;
+  }
+  .cfg-field .row-input{ display:flex; gap:8px; }
+  .cfg-field input{
+    flex:1; padding:11px 16px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid var(--glass-border);
+    border-radius:12px; color:var(--text-hi);
+    font-family:inherit; font-size:.88rem; outline:none;
+    transition:border-color .2s;
+  }
+  .cfg-field input:focus{ border-color:var(--hs-gold); }
+  .cfg-field .row-input button{
+    padding:0 18px; border-radius:12px;
+    background:var(--hs-gold); color:#001a22;
+    border:none; cursor:pointer; font-weight:700;
     display:flex; align-items:center; justify-content:center;
-    font-size:.85rem;
+    transition:filter .2s;
   }
+  .cfg-field .row-input button:hover{ filter:brightness(1.1); }
 
-  .story-text-input{
-    width:100%;
-    min-height:200px;
-    background:linear-gradient(135deg, var(--hs-blue), var(--hs-red));
-    border:none;
-    border-radius:16px;
-    padding:24px;
-    color:#fff;
-    font-family:'Space Grotesk';
-    font-size:1.3rem;
-    font-weight:600;
-    text-align:center;
-    outline:none;
-    resize:none;
-    line-height:1.4;
-    margin-bottom:16px;
-    display:none;
+  .switch-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px; border-radius:14px;
+    background:rgba(255,255,255,0.05); border:1px solid var(--glass-border);
+    margin-bottom:14px;
   }
-  .story-text-input.active{ display:block; }
-  .story-text-input::placeholder{ color:rgba(255,255,255,0.6); }
+  .switch-row .label{ font-size:.85rem; }
+  .switch-row .label b{ display:block; }
+  .switch-row .label small{ font-size:.72rem; color:var(--text-low); }
+  .switch{ position:relative; display:inline-block; width:52px; height:30px; flex-shrink:0; }
+  .switch input{ display:none; }
+  .slider{
+    position:absolute; cursor:pointer; inset:0;
+    background-color:rgba(255,255,255,0.2);
+    transition:.4s; border-radius:30px;
+  }
+  .slider::before{
+    content:""; position:absolute;
+    height:22px; width:22px; left:4px; bottom:4px;
+    background-color:#fff; transition:.4s;
+    border-radius:50%;
+  }
+  input:checked + .slider{ background-color:var(--hs-gold); }
+  input:checked + .slider::before{ transform:translateX(22px); }
 
-  .modal-actions{
-    display:flex;
-    gap:10px;
-    margin-top:8px;
+  .btn-danger{
+    background:linear-gradient(135deg,#d71d00,#9a1200);
+    color:#fff; border:none;
+    padding:12px 22px; border-radius:12px;
+    font-family:inherit; font-weight:700; font-size:.85rem;
+    cursor:pointer; display:flex; align-items:center; gap:8px;
+    transition:filter .2s;
   }
-  .modal-actions button{
-    flex:1;
-    padding:13px;
-    border-radius:14px;
-    border:none;
-    cursor:pointer;
-    font-family:inherit;
-    font-weight:700;
-    font-size:.88rem;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
+  .btn-danger:hover{ filter:brightness(1.1); }
+
+  .config-actions{ display:flex; gap:10px; margin-top:10px; }
+  .config-actions button{
+    flex:1; padding:13px; border-radius:14px; border:none;
+    cursor:pointer; font-family:inherit; font-weight:700; font-size:.88rem;
+    display:flex; align-items:center; justify-content:center; gap:8px;
     transition:filter .2s;
   }
   .btn-cancel{
-    background:rgba(255,255,255,0.1);
-    color:var(--text-hi);
+    background:rgba(255,255,255,0.1); color:var(--text-hi);
     border:1px solid var(--glass-border);
   }
   .btn-cancel:hover{ background:rgba(255,255,255,0.18); }
-  .btn-publish-story{
+  .btn-save{
     background:linear-gradient(135deg, var(--hs-gold), #0e94b0);
     color:#001a22;
   }
-  .btn-publish-story:hover{ filter:brightness(1.1); }
+  .btn-save:hover{ filter:brightness(1.1); }
+
+  .toast{
+    position:fixed; bottom:32px; left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:linear-gradient(135deg, var(--hs-gold), #0e94b0);
+    color:#001a22; padding:14px 26px; border-radius:999px;
+    font-weight:700; font-size:.9rem;
+    box-shadow:0 12px 40px rgba(34,211,238,.5);
+    z-index:99999; opacity:0;
+    transition:all .35s cubic-bezier(.2,.8,.2,1);
+    font-family:'Inter', sans-serif;
+    display:flex; align-items:center; gap:10px;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
 </style>
 </head>
 <body>
 
+  <div style="position:fixed; bottom:0; left:0; right:0; z-index:100000; background:rgba(0,0,0,0.75); color:#fcc404; text-align:center; padding:6px 12px; font-family:'Inter',sans-serif; font-size:.72rem; letter-spacing:.3px;">
+  ⚠️ DEMO — Todos los usuarios, contraseñas y datos mostrados son ficticios y se incluyen únicamente con fines de demostración visual.
+</div>
   <!-- ═══════════════ TOP BAR ═══════════════ -->
-  <div class="topbar glass" style="max-width:1080px;">
+  <div class="topbar glass" style="max-width:1180px;">
     <div class="brand">
       <img src="https://i.ibb.co/G3XDtMJ/Logoapp.png" alt="Human System">
-      Human <span style="color:var(--hs-gold)">System</span>
+      Human <span style="color:var(--hs-gold)">Vault</span>
     </div>
     <div class="topnav">
-      <a href="#" class="active" title="Inicio"><i class="fas fa-house"></i></a>
-      <a href="#" title="Explorar"><i class="fas fa-compass"></i></a>
-      <a href="#" title="Notificaciones"><i class="fas fa-bell"></i><span class="dot"></span></a>
-      <a href="#" title="Mensajes"><i class="fas fa-envelope"></i></a>
-      <a href="#" title="Buscar"><i class="fas fa-magnifying-glass"></i></a>
+      <a href="#" class="active" title="Mis archivos"><i class="fas fa-cloud"></i></a>
+      <a href="#" title="Recientes"><i class="fas fa-clock-rotate-left"></i></a>
+      <a href="#" title="Compartidos"><i class="fas fa-share-nodes"></i></a>
+      <a href="#" title="Favoritos"><i class="fas fa-star"></i></a>
+      <a href="#" id="btnConfig" title="Configuración"><i class="fas fa-gear"></i></a>
     </div>
-    <img class="avatar-mini" src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
+    <img class="avatar-mini" src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio" onclick="openConfig()">
   </div>
 
   <div class="layout">
@@ -749,494 +898,341 @@
         <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
         <h3>Srgxio</h3>
         <p><i class="fas fa-fingerprint"></i> HUM-4B21XK9</p>
-        <div class="profile-stats">
-          <div><b>142</b><i class="fas fa-image"></i>Posts</div>
-          <div><b>3.2k</b><i class="fas fa-users"></i>Seguidores</div>
-          <div><b>410</b><i class="fas fa-user-plus"></i>Siguiendo</div>
+
+        <div class="storage-widget">
+          <div class="label">
+            <span>Almacenamiento</span>
+            <span><b>4.7 GB</b> / 10 GB</span>
+          </div>
+          <div class="storage-bar"><div class="fill"></div></div>
         </div>
       </div>
 
-      <!-- REDES SOCIALES -->
-      <div class="social-panel glass">
-        <h4><i class="fas fa-share-nodes"></i> Mis redes</h4>
-        <div class="social-grid">
-          <a href="https://www.instagram.com/" target="_blank" rel="noopener" data-net="instagram" title="Instagram">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="https://www.facebook.com/" target="_blank" rel="noopener" data-net="facebook" title="Facebook">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="https://wa.me/521234567890" target="_blank" rel="noopener" data-net="whatsapp" title="WhatsApp">
-            <i class="fab fa-whatsapp"></i>
-          </a>
-          <a href="https://www.youtube.com/" target="_blank" rel="noopener" data-net="youtube" title="YouTube">
-            <i class="fab fa-youtube"></i>
-          </a>
-          <a href="https://www.linkedin.com/" target="_blank" rel="noopener" data-net="linkedin" title="LinkedIn">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="https://www.twitter.com/" target="_blank" rel="noopener" data-net="twitter" title="Twitter / X">
-            <i class="fab fa-x-twitter"></i>
-          </a>
-          <a href="https://www.tiktok.com/" target="_blank" rel="noopener" data-net="tiktok" title="TikTok">
-            <i class="fab fa-tiktok"></i>
-          </a>
-          <a href="https://www.tusitio.com" target="_blank" rel="noopener" data-net="personal" title="Página personal">
-            <i class="fas fa-globe"></i>
-          </a>
+      <!-- VAULT DE CONTRASEÑAS -->
+      <div class="vault-panel glass">
+        <h4>
+          <i class="fas fa-shield-halved"></i> Vault
+          <span class="vault-badge" id="vaultCount">0</span>
+        </h4>
+
+        <div class="vault-search">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" id="vaultSearch" placeholder="Buscar..." oninput="renderVault()">
+        </div>
+
+        <button class="vault-add-btn" onclick="openVaultAdd()">
+          <i class="fas fa-plus"></i> Nueva contraseña
+        </button>
+
+        <div class="vault-list" id="vaultList">
+          <!-- JS renderiza aquí -->
+        </div>
+
+        <div class="vault-footer">
+          <div class="vault-lock">
+            <i class="fas fa-lock"></i>
+            <small>Cifrado AES-256</small>
+          </div>
+          <button class="vault-settings" onclick="showToast('Configurando vault...','fa-shield-halved')" title="Ajustes">
+            <i class="fas fa-sliders"></i>
+          </button>
         </div>
       </div>
 
-      <nav class="quick-nav glass">
-        <a href="#"><i class="fas fa-user"></i> Perfil</a>
-        <a href="#"><i class="fas fa-images"></i> Publicaciones</a>
-        <a href="#"><i class="fas fa-panorama"></i> Imágenes</a>
-        <a href="#"><i class="fas fa-video"></i> Videos</a>
-        <a href="#"><i class="fas fa-chart-simple"></i> Métricas</a>
-        <a href="#"><i class="fas fa-bookmark"></i> Guardados</a>
-        <a href="#"><i class="fas fa-gear"></i> Configuración</a>
-      </nav>
     </aside>
 
-    <!-- ═══════════════ FEED ═══════════════ -->
+    <!-- ═══════════════ MAIN AREA ═══════════════ -->
     <main>
 
-      <!-- ════════ STORIES BAR ════════ -->
-      <div class="stories-bar glass" id="storiesBar">
+      <div class="main-panel glass">
 
-        <div class="story-item mine" onclick="openStoryUpload()" title="Subir historia">
-          <div class="story-avatar-wrap">
-            <img class="story-thumb" src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Mi historia">
-            <div class="story-add-btn"><i class="fas fa-plus"></i></div>
-            <span class="story-name">Tu historia</span>
+        <div class="files-header">
+          <h2><i class="fas fa-cloud"></i> Mis archivos</h2>
+          <div class="files-actions">
+            <button class="btn-cloud btn-secondary" onclick="toggleDropzone()">
+              <i class="fas fa-folder-open"></i> Examinar
+            </button>
+            <button class="btn-cloud btn-primary" onclick="triggerUpload()">
+              <i class="fas fa-cloud-arrow-up"></i> Subir archivo
+            </button>
           </div>
         </div>
 
-        <div class="story-item unseen" onclick="openStory(0)">
-          <div class="story-avatar-wrap">
-            <img class="story-thumb" src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=400" alt="Human System">
-            <img class="story-author-avatar" src="https://i.ibb.co/Nxkbn3C/Dise-o-sin-t-tulo-3.png" alt="Human System">
-            <span class="story-name">Human System</span>
-          </div>
+        <div class="dropzone" id="dropzone">
+          <i class="fas fa-cloud-arrow-up"></i>
+          <p>Arrastra tus archivos aquí o haz clic para seleccionar</p>
+          <small>Word, Excel, PowerPoint, PDF, imágenes, videos, audio y más · Máx 100 MB</small>
+          <input type="file" id="fileInput" multiple accept="*/*">
         </div>
 
-        <div class="story-item unseen" onclick="openStory(1)">
-          <div class="story-avatar-wrap">
-            <img class="story-thumb" src="https://i.ibb.co/S5zQm4b/3.png" alt="Buena Wayka">
-            <img class="story-author-avatar" src="https://i.ibb.co/S7HB4g5/3.png" alt="Buena Wayka">
-            <span class="story-name">Buena Wayka</span>
-          </div>
+        <div class="search-bar">
+          <i class="fas fa-magnifying-glass icon-left"></i>
+          <input type="text" id="searchInput" placeholder="Buscar en la nube..." oninput="filterFiles()">
+          <i class="fas fa-sliders icon-right"></i>
         </div>
 
-        <div class="story-item unseen" onclick="openStory(2)">
-          <div class="story-avatar-wrap">
-            <img class="story-thumb" src="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=400" alt="María García">
-            <img class="story-author-avatar" src="https://i.ibb.co/H2h9hNW/1.png" alt="María García">
-            <span class="story-name">María G.</span>
-          </div>
+        <div class="filter-tabs" id="filterTabs">
+          <button class="active" data-filter="all"><i class="fas fa-border-all"></i> Todos</button>
+          <button data-filter="doc"><i class="fas fa-file-word"></i> Word</button>
+          <button data-filter="xls"><i class="fas fa-file-excel"></i> Excel</button>
+          <button data-filter="ppt"><i class="fas fa-file-powerpoint"></i> PowerPoint</button>
+          <button data-filter="pdf"><i class="fas fa-file-pdf"></i> PDF</button>
+          <button data-filter="img"><i class="fas fa-image"></i> Imágenes</button>
+          <button data-filter="vid"><i class="fas fa-video"></i> Videos</button>
         </div>
 
-        <div class="story-item seen" onclick="openStory(3)">
-          <div class="story-avatar-wrap">
-            <img class="story-thumb" src="https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=400" alt="Steven">
-            <img class="story-author-avatar" src="https://i.ibb.co/BV3FH5L/4.png" alt="Steven">
-            <span class="story-name">Steven G.</span>
-          </div>
-        </div>
-
-        <div class="story-item seen" onclick="openStory(4)">
-          <div class="story-avatar-wrap">
-            <img class="story-thumb" src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=400" alt="Juliana">
-            <img class="story-author-avatar" src="https://i.ibb.co/MDRRYBG/3.png" alt="Juliana">
-            <span class="story-name">Juliana M.</span>
-          </div>
-        </div>
-
-        <div class="story-item unseen" onclick="openStory(5)">
-          <div class="story-avatar-wrap">
-            <img class="story-thumb" src="https://i.ibb.co/S5zQm4b/3.png" alt="Carlos">
-            <img class="story-author-avatar" src="https://i.ibb.co/SyQ8JCY/2.png" alt="Carlos">
-            <span class="story-name">Carlos L.</span>
-          </div>
+        <div class="files-grid" id="filesGrid">
+          <!-- JS renderiza aquí -->
         </div>
 
       </div>
 
-      <!-- ════════ COMPOSER ════════ -->
-      <div class="composer glass">
-        <div class="composer-top">
-          <img class="avatar-mini" src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
-          <textarea placeholder="¿Qué quieres compartir, Srgxio?"></textarea>
-        </div>
-        <div class="composer-actions">
-          <div class="composer-icons">
-            <i class="fas fa-image" title="Foto"></i>
-            <i class="fas fa-video" title="Video"></i>
-            <i class="fas fa-chart-simple" title="Encuesta"></i>
-            <i class="fas fa-location-dot" title="Ubicación"></i>
-            <i class="fas fa-face-smile" title="Emoji"></i>
-          </div>
-          <button class="btn-post"><i class="fas fa-paper-plane"></i> Publicar</button>
-        </div>
-      </div>
-
-      <div class="feed" id="feed">
-
-        <!-- ═══════ PUBLICACIÓN 1: Srgxio — Presentación personal ═══════ -->
-        <article class="post glass">
-          <div class="post-head">
-            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
-            <div class="who">
-              <span class="name">Srgxio <i class="fas fa-circle-check" style="color:var(--hs-gold); font-size:.7rem;"></i></span>
-              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 15 min</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-hand-sparkles" style="color:var(--hs-gold); margin-right:6px;"></i> Hola mundo 👋</div>
-          <div class="post-body">Bienvenidos a mi espacio en Human System. Aquí compartiré proyectos, ideas y un poco de mi día a día. ¡Gracias por pasarse! ✨
-
-#HumanSystem #Srgxio #Bienvenidos</div>
-          <div class="post-media">
-            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=900" alt="Bienvenida">
-          </div>
-          <div class="post-actions">
-            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">204</span></button>
-            <button onclick="openComments(this)"><i class="far fa-comment"></i> 18</button>
-            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-        </article>
-
-        <!-- ═══════ PUBLICACIÓN 2: Srgxio — Viaje a Japón ═══════ -->
-        <article class="post glass">
-          <div class="post-head">
-            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
-            <div class="who">
-              <span class="name">Srgxio <span class="badge"><i class="fas fa-plane"></i> Viajes</span></span>
-              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 1 h</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-torii-gate" style="color:var(--hs-gold); margin-right:6px;"></i> 日本 — Crónicas desde Tokio 🗾</div>
-          <div class="post-body">Primer día en Japón y ya me enamoré del país. Los templos, la comida, la gente… Todo es tan diferente y hermoso a la vez.
-
-<i class="fas fa-location-dot" style="color:var(--hs-gold);"></i> Shibuya, Tokio
-<i class="fas fa-camera" style="color:var(--hs-gold);"></i> Shot on iPhone</div>
-          <div class="post-grid">
-            <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500" alt="Tokio">
-            <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=500" alt="Templo">
-            <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=500" alt="Shibuya">
-            <img src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=500" alt="Comida">
-          </div>
-          <div class="post-actions">
-            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">1876</span></button>
-            <button onclick="openComments(this)"><i class="far fa-comment"></i> 132</button>
-            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-        </article>
-
-        <!-- ═══════ PUBLICACIÓN 3: Srgxio — Reflexión / Texto ═══════ -->
-        <article class="post glass">
-          <div class="post-head">
-            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
-            <div class="who">
-              <span class="name">Srgxio</span>
-              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 4 h</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-quote-left" style="color:var(--hs-gold); margin-right:6px;"></i> Sobre construir en silencio</div>
-          <div class="post-body">A veces los proyectos más grandes nacen sin que nadie los vea. Se construyen de madrugada, con pruebas, errores y café. Y un día, simplemente aparecen.
-
-No le temas a los procesos lentos. Le teme más a no empezar nunca.
-
-#Motivación #Startup #HumanSystem</div>
-          <div class="post-actions">
-            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">3420</span></button>
-            <button onclick="openComments(this)"><i class="far fa-comment"></i> 287</button>
-            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-        </article>
-
-        <!-- ═══════ PUBLICACIÓN 4: Srgxio — Video ═══════ -->
-        <article class="post glass">
-          <div class="post-head">
-            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
-            <div class="who">
-              <span class="name">Srgxio <span class="badge"><i class="fas fa-video"></i> Video</span></span>
-              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 8 h</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-film" style="color:var(--hs-gold); margin-right:6px;"></i> Detrás de cámaras 🎬</div>
-          <div class="post-body">Un pequeño vistazo al proceso creativo de lo que estamos preparando en Human System. Spoiler: viene algo grande. 🔥</div>
-          <div class="post-media">
-            <video controls playsinline poster="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=900" style="width:100%; display:block; max-height:420px; object-fit:cover;">
-              <source src="https://cdn.coverr.co/videos/coverr-typing-on-a-laptop-1584/1080p.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="post-actions">
-            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">921</span></button>
-            <button onclick="openComments(this)"><i class="far fa-comment"></i> 54</button>
-            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-        </article>
-
-        <!-- ═══════ PUBLICACIÓN 5: Srgxio — Ubicación CDMX ═══════ -->
-        <article class="post glass">
-          <div class="post-head">
-            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
-            <div class="who">
-              <span class="name">Srgxio <span class="badge"><i class="fas fa-location-dot"></i> CDMX</span></span>
-              <span class="meta"><i class="fas fa-earth-americas"></i> Público · ayer</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-city" style="color:var(--hs-gold); margin-right:6px;"></i> Atardecer en la Ciudad de México 🌅</div>
-          <div class="post-body">No hay mejor vista que la del Valle de México cuando el sol cae detrás de las montañas. A veces olvidamos lo bonito que es nuestro país hasta que lo vemos desde arriba.
-
-<i class="fas fa-location-dot" style="color:var(--hs-gold);"></i> Mirador Torre Latinoamericana, CDMX 🇲🇽</div>
-          <div class="post-media">
-            <img src="https://images.unsplash.com/photo-1518659526054-190340b32735?w=900" alt="CDMX">
-          </div>
-          <div class="post-actions">
-            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">2314</span></button>
-            <button onclick="openComments(this)"><i class="far fa-comment"></i> 168</button>
-            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-        </article>
-
-        <!-- ═══════ PUBLICACIÓN 6: Srgxio — Encuesta ═══════ -->
-        <article class="post glass" id="poll-post">
-          <div class="post-head">
-            <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
-            <div class="who">
-              <span class="name">Srgxio</span>
-              <span class="meta"><i class="fas fa-square-poll-vertical"></i> Encuesta · termina en 2 días</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-chart-simple" style="color:var(--hs-gold); margin-right:6px;"></i> ¿Qué contenido te gustaría ver más?</div>
-
-          <div class="poll-opt" data-votes="41" onclick="votePoll(this)">
-            <div class="fill"></div>
-            <div class="row"><span><i class="fas fa-people-group" style="color:var(--hs-gold);"></i> Fotos de comunidad y eventos</span><span class="pct"></span></div>
-          </div>
-          <div class="poll-opt" data-votes="27" onclick="votePoll(this)">
-            <div class="fill"></div>
-            <div class="row"><span><i class="fas fa-bullhorn" style="color:var(--hs-gold);"></i> Noticias y avisos</span><span class="pct"></span></div>
-          </div>
-          <div class="poll-opt" data-votes="19" onclick="votePoll(this)">
-            <div class="fill"></div>
-            <div class="row"><span><i class="fas fa-film" style="color:var(--hs-gold);"></i> Cine y cultura</span><span class="pct"></span></div>
-          </div>
-          <div class="poll-opt" data-votes="8" onclick="votePoll(this)">
-            <div class="fill"></div>
-            <div class="row"><span><i class="fas fa-book-open" style="color:var(--hs-gold);"></i> Historias personales</span><span class="pct"></span></div>
-          </div>
-
-          <div class="poll-foot">
-            <span id="poll-total"><i class="fas fa-square-poll-vertical" style="margin-right:4px;"></i>95 votos</span>
-            <span id="poll-status">Toca una opción para votar</span>
-          </div>
-        </article>
-
-        <!-- ═══════ PUBLICACIÓN 7: Human System Oficial ═══════ -->
-        <article class="post glass">
-          <div class="post-head">
-            <img src="https://i.ibb.co/Nxkbn3C/Dise-o-sin-t-tulo-3.png" alt="Human System">
-            <div class="who">
-              <span class="name">Human System <i class="fas fa-circle-check" style="color:var(--hs-gold); font-size:.7rem;"></i></span>
-              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 2 días</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-rocket" style="color:var(--hs-gold); margin-right:6px;"></i> Nuevo hito alcanzado 🚀</div>
-          <div class="post-body">Gracias a toda la comunidad, hemos superado los 10,000 usuarios activos. Esto es solo el comienzo de un proyecto que busca conectar humanos reales con identidad digital verificada.
-
-#HumanSystem #Milestone #ComunidadGlobal</div>
-          <div class="post-media">
-            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900" alt="Hito">
-          </div>
-          <div class="post-actions">
-            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">5203</span></button>
-            <button onclick="openComments(this)"><i class="far fa-comment"></i> 412</button>
-            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-        </article>
-
-        <!-- ═══════ PUBLICACIÓN 8: Buena Wayka (Japón) ═══════ -->
-        <article class="post glass">
-          <div class="post-head">
-            <img src="https://i.ibb.co/S7HB4g5/3.png" alt="Buena Wayka">
-            <div class="who">
-              <span class="name">Buena Wayka <span class="badge"><i class="fas fa-film"></i> Cine</span></span>
-              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 3 días</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-video" style="color:var(--hs-gold); margin-right:6px;"></i> 『マイ・リトル・クイーンズ』8月21日ロードショー</div>
-          <div class="post-body">Corrección: algunos cines cambiaron. Historia sobre una madre en el Lima de los 90 que necesita el permiso de viaje del padre para salir del país con sus hijas. Con mucha música peruana de la época.
-
-<i class="fas fa-location-dot" style="color:var(--hs-gold);"></i> Cines: 8/21 ケイズシネマ・ヒューマントラストシネマ有楽町・シアターエンヤ(宮崎) · 9/5 第七藝術劇場(大阪)・シネマ5(大分) · 9/18 宮崎キネマ館
-<i class="fas fa-link" style="color:var(--hs-gold);"></i> <a href="https://www.buenawayka.info/reinas" target="_blank" rel="noopener">buenawayka.info/reinas</a></div>
-          <div class="post-media">
-            <img src="https://i.ibb.co/S5zQm4b/3.png" alt="cartel de la película">
-          </div>
-          <div class="post-actions">
-            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">567</span></button>
-            <button onclick="openComments(this)"><i class="far fa-comment"></i> 23</button>
-            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-        </article>
-
-        <!-- ═══════ PUBLICACIÓN 9: María García — Andes ═══════ -->
-        <article class="post glass">
-          <div class="post-head">
-            <img src="https://i.ibb.co/H2h9hNW/1.png" alt="María">
-            <div class="who">
-              <span class="name">María García</span>
-              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 4 días</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-mountain-sun" style="color:var(--hs-gold); margin-right:6px;"></i> La belleza de los Andes</div>
-          <div class="post-body">Desde las alturas de los Andes hasta las costas del Pacífico, nuestro continente guarda paisajes que quitan el aliento. Comparte tu rincón favorito del mundo. 🌄</div>
-          <div class="post-grid">
-            <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=500" alt="">
-            <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=500" alt="">
-          </div>
-          <div class="post-actions">
-            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">3102</span></button>
-            <button onclick="openComments(this)"><i class="far fa-comment"></i> 215</button>
-            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-        </article>
-
-        <!-- ═══════ PUBLICACIÓN 10: Human System Tech ═══════ -->
-        <article class="post glass">
-          <div class="post-head">
-            <img src="https://i.ibb.co/fkQ4fR6/Human-System.png" alt="Human System Tech">
-            <div class="who">
-              <span class="name">Human System Tech <span class="badge"><i class="fas fa-microchip"></i> Tech</span></span>
-              <span class="meta"><i class="fas fa-earth-americas"></i> Público · hace 5 días</span>
-            </div>
-          </div>
-          <div class="post-title"><i class="fas fa-shield-halved" style="color:var(--hs-gold); margin-right:6px;"></i> Identidad digital soberana</div>
-          <div class="post-body">Cada humano tiene un ID único e irrepetible. Tu identidad te pertenece, no a las plataformas.
-
-#HumanSystem #DigitalIdentity #Web3</div>
-          <div class="post-media">
-            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=900" alt="Identidad digital">
-          </div>
-          <div class="post-actions">
-            <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">892</span></button>
-            <button onclick="openComments(this)"><i class="far fa-comment"></i> 34</button>
-            <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-        </article>
-
-      </div>
     </main>
 
     <!-- ═══════════════ SIDE RIGHT ═══════════════ -->
     <aside class="side-right">
+
       <div class="panel glass">
-        <h4><i class="fas fa-fire"></i> Tendencias</h4>
-        <div class="trend"><span class="tag"><i class="fas fa-hashtag"></i>HumanSystemRed</span><span class="n">1.2k</span></div>
-        <div class="trend"><span class="tag"><i class="fas fa-hashtag"></i>BuenaWayka</span><span class="n">340</span></div>
-        <div class="trend"><span class="tag"><i class="fas fa-hashtag"></i>CineIndependiente</span><span class="n">210</span></div>
-        <div class="trend"><span class="tag"><i class="fas fa-hashtag"></i>Srgxio</span><span class="n">98</span></div>
+        <h4><i class="fas fa-chart-pie"></i> Resumen</h4>
+        <div class="stat-item">
+          <div class="left"><i class="fas fa-file"></i> Archivos</div>
+          <div class="right" id="statFiles">0</div>
+        </div>
+        <div class="stat-item">
+          <div class="left"><i class="fas fa-file-word"></i> Documentos</div>
+          <div class="right" id="statDocs">0</div>
+        </div>
+        <div class="stat-item">
+          <div class="left"><i class="fas fa-file-excel"></i> Hojas</div>
+          <div class="right" id="statSheets">0</div>
+        </div>
+        <div class="stat-item">
+          <div class="left"><i class="fas fa-file-powerpoint"></i> Slides</div>
+          <div class="right" id="statSlides">0</div>
+        </div>
+        <div class="stat-item">
+          <div class="left"><i class="fas fa-image"></i> Imágenes</div>
+          <div class="right" id="statImgs">0</div>
+        </div>
       </div>
+
       <div class="panel glass">
-        <h4><i class="fas fa-user-group"></i> A quién seguir</h4>
-        <div class="suggestion">
-          <img src="https://i.ibb.co/SyQ8JCY/2.png" alt="">
-          <div><div class="s-name">Carlos López</div><div class="s-sub"><i class="fas fa-at"></i>carlos</div></div>
-          <button class="follow-btn" onclick="toggleFollow(this)"><i class="fas fa-plus"></i>Seguir</button>
-        </div>
-        <div class="suggestion">
-          <img src="https://i.ibb.co/BV3FH5L/4.png" alt="">
-          <div><div class="s-name">Steven García</div><div class="s-sub"><i class="fas fa-at"></i>steven</div></div>
-          <button class="follow-btn" onclick="toggleFollow(this)"><i class="fas fa-plus"></i>Seguir</button>
-        </div>
-        <div class="suggestion">
-          <img src="https://i.ibb.co/MDRRYBG/3.png" alt="">
-          <div><div class="s-name">Juliana Main</div><div class="s-sub"><i class="fas fa-at"></i>juliana</div></div>
-          <button class="follow-btn" onclick="toggleFollow(this)"><i class="fas fa-plus"></i>Seguir</button>
-        </div>
+        <h4><i class="fas fa-bolt"></i> Acciones rápidas</h4>
+        <button class="btn-cloud btn-primary" style="width:100%; justify-content:center; margin-bottom:8px;" onclick="triggerUpload()">
+          <i class="fas fa-plus"></i> Nuevo archivo
+        </button>
+        <button class="btn-cloud btn-secondary" style="width:100%; justify-content:center; margin-bottom:8px;" onclick="showToast('Escaneando documentos...','fa-qrcode')">
+          <i class="fas fa-qrcode"></i> Escanear
+        </button>
+        <button class="btn-cloud btn-secondary" style="width:100%; justify-content:center;" onclick="showToast('Compartiendo carpeta...','fa-share-nodes')">
+          <i class="fas fa-share-nodes"></i> Compartir carpeta
+        </button>
       </div>
+
     </aside>
 
   </div>
 
-  <!-- ═══════════════ STORY VIEWER ═══════════════ -->
-  <div class="story-viewer" id="storyViewer">
-    <div class="sv-stage" id="svStage">
-      <div class="sv-progress" id="svProgress"></div>
-
-      <div class="sv-header">
-        <img id="svAvatar" src="" alt="">
-        <div class="sv-header-info">
-          <div class="sv-header-name" id="svName">—</div>
-          <div class="sv-header-time" id="svTime">—</div>
+  <!-- ═══════════════ FILE PREVIEW MODAL ═══════════════ -->
+  <div class="file-modal" id="fileModal">
+    <div class="file-modal-box">
+      <div class="file-modal-header">
+        <div class="icon" id="fmIcon"><i class="fas fa-file"></i></div>
+        <div class="info">
+          <h3 id="fmName">—</h3>
+          <p id="fmMeta">—</p>
         </div>
-        <button class="sv-close" onclick="closeStoryViewer()" title="Cerrar">
-          <i class="fas fa-xmark"></i>
+        <div class="actions">
+          <button title="Descargar" onclick="downloadCurrent()"><i class="fas fa-download"></i></button>
+          <button title="Compartir" onclick="openShare()"><i class="fas fa-share-nodes"></i></button>
+          <button class="close" title="Cerrar" onclick="closeFileModal()"><i class="fas fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <div class="file-modal-body" id="fmBody"></div>
+
+      <div class="share-row">
+        <button class="share-btn" onclick="openShareQR()">
+          <i class="fas fa-qrcode"></i> Compartir por QR
         </button>
-      </div>
-
-      <div class="sv-content" id="svContent"></div>
-
-      <div class="sv-nav">
-        <div class="sv-nav-left" onclick="prevStory()"></div>
-        <div class="sv-nav-right" onclick="nextStory()"></div>
-      </div>
-
-      <div class="sv-footer">
-        <input type="text" placeholder="Responde a la historia..." id="svReply">
-        <button onclick="sendStoryReply()" title="Enviar"><i class="fas fa-paper-plane"></i></button>
+        <button class="share-btn nfc" onclick="openShareNFC()">
+          <i class="fas fa-wifi"></i> Compartir por NFC
+        </button>
+        <button class="share-btn" onclick="showToast('Enlace copiado','fa-link')">
+          <i class="fas fa-link"></i> Copiar enlace
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════ MODAL SUBIR HISTORIA ═══════════════ -->
-  <div class="modal-overlay" id="uploadModal">
-    <div class="modal-box">
-      <h3><i class="fas fa-circle-plus"></i> Crear historia</h3>
-      <p class="sub">Comparte un momento. Se mostrará durante 24 horas.</p>
+  <!-- ═══════════════ SHARE MODAL ═══════════════ -->
+  <div class="share-modal" id="shareModal">
+    <div class="share-modal-box">
+      <button class="share-close" onclick="closeShareModal()"><i class="fas fa-xmark"></i></button>
+      <h3><i class="fas fa-share-nodes"></i> Compartir archivo</h3>
+      <p class="sub">Elige cómo quieres compartir este archivo</p>
 
-      <div class="story-type-tabs">
-        <button type="button" class="active" data-type="image" onclick="setStoryType('image', this)">
-          <i class="fas fa-image"></i> Foto
+      <div class="share-file-info">
+        <div class="mini-icon" id="shareMiniIcon"><i class="fas fa-file"></i></div>
+        <div class="info">
+          <b id="shareFileName">—</b>
+          <small id="shareFileMeta">—</small>
+        </div>
+      </div>
+
+      <div class="share-tabs">
+        <button class="active" data-share="qr" onclick="switchShareTab('qr')">
+          <i class="fas fa-qrcode"></i> QR
         </button>
-        <button type="button" data-type="video" onclick="setStoryType('video', this)">
-          <i class="fas fa-video"></i> Video
-        </button>
-        <button type="button" data-type="text" onclick="setStoryType('text', this)">
-          <i class="fas fa-font"></i> Texto
+        <button data-share="nfc" onclick="switchShareTab('nfc')">
+          <i class="fas fa-wifi"></i> NFC
         </button>
       </div>
 
-      <label class="story-drop" id="storyDrop">
-        <i class="fas fa-cloud-arrow-up"></i>
-        <p id="dropLabel">Toca para subir una foto</p>
-        <small>JPG, PNG · máx 10 MB</small>
-        <input type="file" id="storyFile" accept="image/*">
-      </label>
+      <div class="qr-panel active" id="qrPanel">
+        <div class="qr-container" id="qrContainer"></div>
+        <p style="font-size:.82rem; color:var(--text-mid); margin:12px 0 6px;">
+          Escanea este código para ver el archivo
+        </p>
+        <small style="color:var(--text-low); font-size:.72rem;">
+          Compatible con iPhone, Android y cualquier lector QR
+        </small>
+      </div>
 
-      <div class="story-preview" id="storyPreview">
-        <button class="remove" type="button" onclick="clearStoryPreview()" title="Quitar">
-          <i class="fas fa-xmark"></i>
+      <div class="nfc-panel" id="nfcPanel">
+        <div class="nfc-circle">
+          <i class="fas fa-wifi"></i>
+        </div>
+        <p><b>Acerca tu teléfono</b></p>
+        <small>Coloca la parte trasera de tu dispositivo cerca de otro dispositivo con NFC activado para compartir el archivo</small>
+        <button class="btn-cloud btn-primary" style="margin-top:16px;" onclick="activateNFC()">
+          <i class="fas fa-bolt"></i> Activar NFC
         </button>
       </div>
 
-      <textarea class="story-text-input" id="storyTextInput" placeholder="¿Qué estás pensando?"></textarea>
+    </div>
+  </div>
 
-      <div class="modal-actions">
-        <button type="button" class="btn-cancel" onclick="closeStoryUpload()">
+  <!-- ═══════════════ CONFIG MODAL ═══════════════ -->
+  <div class="config-modal" id="configModal">
+    <div class="config-box">
+      <h3><i class="fas fa-gear"></i> Configuración</h3>
+      <p class="sub">Administra tus datos personales y preferencias.</p>
+
+      <div class="config-section">
+        <h4><i class="fas fa-user"></i> Datos personales</h4>
+
+        <div class="cfg-field">
+          <label>Teléfono</label>
+          <div class="row-input">
+            <input type="tel" id="cfgPhone" placeholder="Nuevo teléfono..." maxlength="10">
+            <button onclick="updateField('teléfono')"><i class="fas fa-check"></i></button>
+          </div>
+        </div>
+
+        <div class="cfg-field">
+          <label>Correo electrónico</label>
+          <div class="row-input">
+            <input type="email" id="cfgEmail" placeholder="Nuevo correo...">
+            <button onclick="updateField('correo')"><i class="fas fa-check"></i></button>
+          </div>
+        </div>
+
+        <div class="cfg-field">
+          <label>Dirección</label>
+          <div class="row-input">
+            <input type="text" id="cfgAddress" placeholder="Nueva dirección...">
+            <button onclick="updateField('dirección')"><i class="fas fa-check"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="config-section">
+        <h4><i class="fas fa-key"></i> Cambiar contraseña</h4>
+        <div class="cfg-field">
+          <label>Contraseña actual</label>
+          <input type="password" id="cfgPwdOld" placeholder="••••••••">
+        </div>
+        <div class="cfg-field">
+          <label>Nueva contraseña</label>
+          <input type="password" id="cfgPwdNew" placeholder="••••••••">
+        </div>
+        <div class="cfg-field">
+          <label>Confirmar nueva contraseña</label>
+          <input type="password" id="cfgPwdConfirm" placeholder="••••••••">
+        </div>
+        <button class="btn-cloud btn-primary" onclick="updateField('contraseña')">
+          <i class="fas fa-shield-halved"></i> Actualizar contraseña
+        </button>
+      </div>
+
+      <div class="config-section">
+        <h4><i class="fas fa-sliders"></i> Preferencias</h4>
+
+        <div class="switch-row">
+          <div class="label">
+            <b>Mostrar información sensible</b>
+            <small>Oculta o muestra tus datos personales en pantalla</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="cfgToggleBlur" onchange="toggleBlur()">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="switch-row">
+          <div class="label">
+            <b>Compartir por NFC</b>
+            <small>Permitir compartir archivos por NFC entre dispositivos</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="cfgToggleNFC" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="switch-row">
+          <div class="label">
+            <b>Modo oscuro del visor</b>
+            <small>Ver documentos con fondo oscuro</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="cfgToggleViewer">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="config-section">
+        <h4 style="color:var(--hs-red)"><i class="fas fa-trash" style="color:var(--hs-red)"></i> Zona de peligro</h4>
+        <p style="font-size:.82rem; color:var(--text-mid); margin:0 0 12px;">
+          Eliminar tu perfil borrará todos tus archivos y datos permanentemente.
+        </p>
+        <button class="btn-danger" onclick="deleteProfile()">
+          <i class="fas fa-trash"></i> Eliminar perfil
+        </button>
+      </div>
+
+      <div class="config-actions">
+        <button class="btn-cancel" onclick="closeConfig()">
           <i class="fas fa-xmark"></i> Cancelar
         </button>
-        <button type="button" class="btn-publish-story" onclick="publishStory()">
-          <i class="fas fa-paper-plane"></i> Publicar historia
+        <button class="btn-save" onclick="closeConfig(); showToast('Configuración guardada','fa-check')">
+          <i class="fas fa-check"></i> Guardar
         </button>
       </div>
+
     </div>
   </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
 <script>
 // ══════════════════════════════════════════════════════════
-//  USUARIO ACTUAL
+//  USUARIO
 // ══════════════════════════════════════════════════════════
 const CURRENT_USER = {
   username: 'Srgxio',
@@ -1245,472 +1241,788 @@ const CURRENT_USER = {
 };
 
 // ══════════════════════════════════════════════════════════
-//  DATA DE HISTORIAS
+//  TIPOS DE ARCHIVO
 // ══════════════════════════════════════════════════════════
-const stories = [
-  {
-    avatar:'https://i.ibb.co/Nxkbn3C/Dise-o-sin-t-tulo-3.png',
-    name:'Human System',
-    time:'hace 30 min',
-    items:[
-      { type:'text', bg:'linear-gradient(135deg, #1F4E67, #22d3ee)', text:'¡Bienvenidos a las Historias de Human System! 🌎' },
-      { type:'image', src:'https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=700', caption:'今、私たちは世界とつながっています 🇯🇵🇲🇽' }
-    ]
-  },
-  {
-    avatar:'https://i.ibb.co/S7HB4g5/3.png',
-    name:'Buena Wayka',
-    time:'hace 1 h',
-    items:[
-      { type:'image', src:'https://i.ibb.co/S5zQm4b/3.png', caption:'『マイ・リトル・クイーンズ』8月21日ロードショー 🎬' }
-    ]
-  },
-  {
-    avatar:'https://i.ibb.co/H2h9hNW/1.png',
-    name:'María García',
-    time:'hace 3 h',
-    items:[
-      { type:'image', src:'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=700', caption:'La belleza de los Andes 🏔️' },
-      { type:'image', src:'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=700', caption:'Arte que inspira ✨' },
-      { type:'text', bg:'linear-gradient(135deg, #d71d00, #fcc404)', text:'Buenos días desde México ☀️' }
-    ]
-  },
-  {
-    avatar:'https://i.ibb.co/BV3FH5L/4.png',
-    name:'Steven García',
-    time:'hace 5 h',
-    items:[
-      { type:'image', src:'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=700', caption:'Nuevos horizontes 🎨' }
-    ]
-  },
-  {
-    avatar:'https://i.ibb.co/MDRRYBG/3.png',
-    name:'Juliana Main',
-    time:'hace 8 h',
-    items:[
-      { type:'image', src:'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=700', caption:'Colors of life 🌈' }
-    ]
-  },
-  {
-    avatar:'https://i.ibb.co/SyQ8JCY/2.png',
-    name:'Carlos López',
-    time:'hace 12 h',
-    items:[
-      { type:'text', bg:'linear-gradient(135deg, #0a0e14, #1F4E67)', text:'Human System — el futuro es humano 💫' }
-    ]
-  }
+const FILE_TYPES = {
+  doc:  { icon:'fa-file-word',       label:'Word',       cls:'doc' },
+  docx: { icon:'fa-file-word',       label:'Word',       cls:'doc' },
+  xls:  { icon:'fa-file-excel',      label:'Excel',      cls:'xls' },
+  xlsx: { icon:'fa-file-excel',      label:'Excel',      cls:'xls' },
+  ppt:  { icon:'fa-file-powerpoint', label:'PowerPoint', cls:'ppt' },
+  pptx: { icon:'fa-file-powerpoint', label:'PowerPoint', cls:'ppt' },
+  pdf:  { icon:'fa-file-pdf',        label:'PDF',        cls:'pdf' },
+  png:  { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
+  jpg:  { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
+  jpeg: { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
+  gif:  { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
+  webp: { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
+  mp4:  { icon:'fa-file-video',      label:'Video',      cls:'vid' },
+  mov:  { icon:'fa-file-video',      label:'Video',      cls:'vid' },
+  avi:  { icon:'fa-file-video',      label:'Video',      cls:'vid' },
+  mp3:  { icon:'fa-file-audio',      label:'Audio',      cls:'aud' },
+  wav:  { icon:'fa-file-audio',      label:'Audio',      cls:'aud' },
+  zip:  { icon:'fa-file-zipper',     label:'ZIP',        cls:'zip' },
+  rar:  { icon:'fa-file-zipper',     label:'RAR',        cls:'zip' },
+  txt:  { icon:'fa-file-lines',      label:'Texto',      cls:'txt' },
+};
+
+function getExt(name){
+  const i = name.lastIndexOf('.');
+  return i >= 0 ? name.slice(i + 1).toLowerCase() : 'txt';
+}
+function getFileType(name){
+  const ext = getExt(name);
+  return { ext, ...(FILE_TYPES[ext] || FILE_TYPES.txt) };
+}
+function formatBytes(bytes){
+  if(!bytes) return '0 KB';
+  const k = 1024, sizes = ['B','KB','MB','GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return (bytes / Math.pow(k, i)).toFixed(i > 1 ? 1 : 0) + ' ' + sizes[i];
+}
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ══════════════════════════════════════════════════════════
+//  ARCHIVOS DEMO
+// ══════════════════════════════════════════════════════════
+let files = [
+  { id:'f1', name:'Reporte_Anual_2025.docx', size: 245780, date:'hace 2 h', type:'doc', starred:true, url:'#', previewContent:`<h1>Reporte Anual 2025</h1><p>Este es un documento de demostración con contenido de ejemplo. Aquí verías el contenido de tu archivo Word renderizado correctamente.</p><p>Sección 1: Introducción al informe anual.</p><p>Sección 2: Análisis de resultados.</p><p>Sección 3: Conclusiones y recomendaciones.</p>` },
+  { id:'f2', name:'Presupuesto_Q1.xlsx', size: 89120, date:'hace 5 h', type:'xls', starred:false, url:'#' },
+  { id:'f3', name:'Presentacion_Japón.pptx', size: 1820450, date:'ayer', type:'ppt', starred:true, url:'#' },
+  { id:'f4', name:'Foto_Profesional_HS.png', size: 1240880, date:'hace 2 días', type:'img', starred:false, url:'https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png' },
+  { id:'f5', name:'Manual_Usuario.pdf', size: 4582000, date:'hace 3 días', type:'pdf', starred:false, url:'#' },
+  { id:'f6', name:'Video_Promo_Tokio.mp4', size: 18450000, date:'hace 4 días', type:'vid', starred:true, url:'https://cdn.coverr.co/videos/coverr-typing-on-a-laptop-1584/1080p.mp4' },
+  { id:'f7', name:'Carta_Presentacion.docx', size: 52100, date:'hace 5 días', type:'doc', starred:false, url:'#' },
+  { id:'f8', name:'Backup_Contactos.zip', size: 8900000, date:'hace 1 semana', type:'zip', starred:false, url:'#' },
 ];
 
-// ══════════════════════════════════════════════════════════
-//  STORY VIEWER
-// ══════════════════════════════════════════════════════════
-let svUserIndex = 0;
-let svItemIndex = 0;
-let svTimer = null;
-const STORY_DURATION = 5000;
+let currentFilter = 'all';
+let currentView = 'all';
+let currentFile = null;
 
-function openStory(userIndex){
-  svUserIndex = userIndex;
-  svItemIndex = 0;
-  document.getElementById('storyViewer').classList.add('active');
-  document.body.style.overflow = 'hidden';
-  renderStory();
-  const items = document.querySelectorAll('#storiesBar .story-item');
-  if(items[userIndex + 1]){
-    items[userIndex + 1].classList.remove('unseen');
-    items[userIndex + 1].classList.add('seen');
+// ══════════════════════════════════════════════════════════
+//  RENDER FILES
+// ══════════════════════════════════════════════════════════
+function renderFiles(){
+  const grid = document.getElementById('filesGrid');
+  const search = (document.getElementById('searchInput').value || '').toLowerCase();
+
+  let visible = files.filter(f => {
+    if(currentFilter !== 'all' && f.type !== currentFilter) return false;
+    if(search && !f.name.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  if(currentView === 'starred'){
+    visible = visible.filter(f => f.starred);
+  }
+
+  document.getElementById('statFiles').textContent = files.length;
+  document.getElementById('statDocs').textContent   = files.filter(f => f.type === 'doc').length;
+  document.getElementById('statSheets').textContent = files.filter(f => f.type === 'xls').length;
+  document.getElementById('statSlides').textContent = files.filter(f => f.type === 'ppt').length;
+  document.getElementById('statImgs').textContent   = files.filter(f => f.type === 'img').length;
+
+  if(visible.length === 0){
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        <i class="fas fa-cloud"></i>
+        <p>No hay archivos que mostrar</p>
+        <p style="font-size:.78rem;">Sube tu primer archivo para comenzar</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = visible.map(f => {
+    const t = getFileType(f.name);
+    return `
+      <div class="file-card" onclick="openFile('${f.id}')">
+        <div class="file-overlay">
+          <button title="Favorito" onclick="event.stopPropagation();toggleStar('${f.id}')">
+            <i class="${f.starred?'fas':'far'} fa-star" style="${f.starred?'color:#fcc404':''}"></i>
+          </button>
+          <button title="Compartir" onclick="event.stopPropagation();openShare('${f.id}')">
+            <i class="fas fa-share-nodes"></i>
+          </button>
+          <button class="del" title="Eliminar" onclick="event.stopPropagation();deleteFile('${f.id}')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        <div class="file-icon ${t.cls}">
+          <i class="fas ${t.icon}"></i>
+        </div>
+        <div class="file-name" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</div>
+        <div class="file-meta">
+          <span><i class="fas fa-hdd"></i> ${formatBytes(f.size)}</span>
+          <span><i class="fas fa-clock"></i> ${f.date}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function filterFiles(){ renderFiles(); }
+
+document.querySelectorAll('#filterTabs button').forEach(btn => {
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('#filterTabs button').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentFilter = this.dataset.filter;
+    renderFiles();
+  });
+});
+
+// ══════════════════════════════════════════════════════════
+//  SUBIR ARCHIVOS
+// ══════════════════════════════════════════════════════════
+function triggerUpload(){
+  document.getElementById('fileInput').click();
+}
+
+function toggleDropzone(){
+  document.getElementById('dropzone').classList.toggle('active');
+}
+
+document.getElementById('fileInput').addEventListener('change', function(e){
+  handleFiles(e.target.files);
+  this.value = '';
+});
+
+const dz = document.getElementById('dropzone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+dz.addEventListener('drop', e => {
+  e.preventDefault();
+  dz.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+
+function handleFiles(fileList){
+  Array.from(fileList).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const t = getFileType(file.name);
+      files.unshift({
+        id: 'f_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+        name: file.name,
+        size: file.size,
+        date: 'ahora',
+        type: t.cls === 'img' ? 'img' : (t.cls === 'vid' ? 'vid' : t.ext),
+        starred: false,
+        url: ev.target.result,
+      });
+      renderFiles();
+    };
+    reader.readAsDataURL(file);
+  });
+  showToast(fileList.length + ' archivo(s) subido(s)', 'fa-cloud-arrow-up');
+}
+
+// ══════════════════════════════════════════════════════════
+//  ABRIR ARCHIVO
+// ══════════════════════════════════════════════════════════
+function openFile(id){
+  const f = files.find(x => x.id === id);
+  if(!f) return;
+  currentFile = f;
+  const t = getFileType(f.name);
+
+  document.getElementById('fmIcon').className = 'icon ' + t.cls;
+  document.getElementById('fmIcon').style.background = getIconBg(t.cls);
+  document.getElementById('fmIcon').innerHTML = `<i class="fas ${t.icon}"></i>`;
+
+  document.getElementById('fmName').textContent = f.name;
+  document.getElementById('fmMeta').textContent = `${t.label} · ${formatBytes(f.size)} · ${f.date}`;
+
+  document.getElementById('fmBody').innerHTML = renderPreview(f, t);
+  document.getElementById('fileModal').classList.add('active');
+}
+
+function getIconBg(cls){
+  const map = {
+    doc:'linear-gradient(135deg,#2B579A,#1a3a6e)',
+    xls:'linear-gradient(135deg,#217346,#16542f)',
+    ppt:'linear-gradient(135deg,#B7472A,#8c2f18)',
+    pdf:'linear-gradient(135deg,#DC2626,#991b1b)',
+    img:'linear-gradient(135deg,#7C3AED,#5b21b6)',
+    vid:'linear-gradient(135deg,#0891B2,#075985)',
+    aud:'linear-gradient(135deg,#DB2777,#9d174d)',
+    zip:'linear-gradient(135deg,#F59E0B,#b45309)',
+    txt:'linear-gradient(135deg,#6B7280,#374151)'
+  };
+  return map[cls] || map.txt;
+}
+
+function closeFileModal(){
+  document.getElementById('fileModal').classList.remove('active');
+  document.getElementById('fmBody').innerHTML = '';
+  currentFile = null;
+}
+
+function renderPreview(f, t){
+  const isImage = t.cls === 'img';
+  const isVideo = t.cls === 'vid';
+  const isAudio = t.cls === 'aud';
+  const isPDF   = t.cls === 'pdf';
+  const isOffice = ['doc','xls','ppt'].includes(t.cls);
+  const isZip   = t.cls === 'zip';
+
+  if(isImage && f.url) return `<img src="${f.url}" alt="${escapeHtml(f.name)}">`;
+  if(isVideo && f.url) return `<video src="${f.url}" controls playsinline></video>`;
+  if(isAudio && f.url) return `<audio src="${f.url}" controls></audio>`;
+
+  if(isPDF){
+    if(f.url && f.url !== '#') return `<iframe src="${f.url}"></iframe>`;
+    return `
+      <div class="doc-preview" style="display:flex;align-items:center;justify-content:center;flex-direction:column;color:#666;">
+        <i class="fas fa-file-pdf" style="font-size:5rem;color:#DC2626;margin-bottom:20px;"></i>
+        <h3 style="color:#1F4E67;margin:0 0 8px;">${escapeHtml(f.name)}</h3>
+        <p>Vista previa del PDF disponible al descargar</p>
+        <p style="font-size:.8rem;color:#999;">${formatBytes(f.size)}</p>
+      </div>`;
+  }
+
+  if(isOffice){
+    return `
+      <div class="doc-preview">
+        <div class="meta-bar">
+          <span><i class="fas ${t.icon}" style="color:${t.cls==='doc'?'#2B579A':t.cls==='xls'?'#217346':'#B7472A'};"></i> ${t.label}</span>
+          <span>${formatBytes(f.size)} · ${f.date}</span>
+        </div>
+        ${f.previewContent || `
+          <h1>${escapeHtml(f.name.replace(/\.[^.]+$/, ''))}</h1>
+          <p>Este es un archivo ${t.label} de demostración. Aquí se mostraría el contenido real del documento.</p>
+          <p><b>Contenido de ejemplo:</b></p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+          <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
+          <p style="text-align:right;color:#666;font-size:.85rem;">
+            Documento generado por Human Cloud · ${new Date().toLocaleDateString('es-MX')}
+          </p>
+        `}
+      </div>`;
+  }
+
+  if(isZip){
+    return `
+      <div class="doc-preview" style="text-align:center;">
+        <i class="fas fa-file-zipper" style="font-size:5rem;color:#F59E0B;margin-bottom:20px;"></i>
+        <h3 style="color:#1F4E67;margin:0 0 8px;">${escapeHtml(f.name)}</h3>
+        <p>Archivo comprimido · ${formatBytes(f.size)}</p>
+        <p style="font-size:.82rem;color:#666;">Descarga para extraer su contenido</p>
+      </div>`;
+  }
+
+  return `<div class="doc-preview"><h1>${escapeHtml(f.name)}</h1><p>Vista previa no disponible.</p></div>`;
+}
+
+function downloadCurrent(){
+  if(!currentFile) return;
+  showToast('Descargando ' + currentFile.name, 'fa-download');
+}
+
+function toggleStar(id){
+  const f = files.find(x => x.id === id);
+  if(!f) return;
+  f.starred = !f.starred;
+  renderFiles();
+  showToast(f.starred ? 'Añadido a favoritos' : 'Quitado de favoritos', 'fa-star');
+}
+
+function deleteFile(id){
+  const f = files.find(x => x.id === id);
+  if(!f) return;
+  if(confirm(`¿Eliminar "${f.name}"?`)){
+    files = files.filter(x => x.id !== id);
+    renderFiles();
+    showToast('Archivo eliminado', 'fa-trash');
   }
 }
 
-function renderStory(){
-  const user = stories[svUserIndex];
-  const item = user.items[svItemIndex];
+// ══════════════════════════════════════════════════════════
+//  SHARE MODAL
+// ══════════════════════════════════════════════════════════
+function openShare(id){
+  if(typeof id === 'string') currentFile = files.find(x => x.id === id);
+  if(!currentFile){ showToast('Selecciona un archivo primero', 'fa-triangle-exclamation'); return; }
 
-  document.getElementById('svAvatar').src = user.avatar;
-  document.getElementById('svName').innerHTML = user.name + ' <i class="fas fa-circle-check" style="color:var(--hs-gold); font-size:.7rem;"></i>';
-  document.getElementById('svTime').textContent = user.time;
+  const t = getFileType(currentFile.name);
+  const mini = document.getElementById('shareMiniIcon');
+  mini.style.background = getIconBg(t.cls);
+  mini.innerHTML = `<i class="fas ${t.icon}"></i>`;
 
-  const progress = document.getElementById('svProgress');
-  progress.innerHTML = user.items.map((_, i) => `
-    <div class="sv-progress-bar ${i < svItemIndex ? 'done' : ''} ${i === svItemIndex ? 'active' : ''}">
-      <div class="fill"></div>
+  document.getElementById('shareFileName').textContent = currentFile.name;
+  document.getElementById('shareFileMeta').textContent = `${t.label} · ${formatBytes(currentFile.size)}`;
+
+  const fileUrl = currentFile.url && currentFile.url.startsWith('http')
+    ? currentFile.url
+    : window.location.href + '?file=' + encodeURIComponent(currentFile.id);
+
+  const qrContainer = document.getElementById('qrContainer');
+  qrContainer.innerHTML = '';
+  new QRCode(qrContainer, {
+    text: fileUrl,
+    width: 220,
+    height: 220,
+    colorDark: '#0a0e14',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
+  switchShareTab('qr');
+  document.getElementById('shareModal').classList.add('active');
+}
+
+function openShareQR(){ openShare(); switchShareTab('qr'); }
+function openShareNFC(){ openShare(); switchShareTab('nfc'); }
+
+function closeShareModal(){
+  document.getElementById('shareModal').classList.remove('active');
+}
+
+function switchShareTab(tab){
+  document.querySelectorAll('.share-tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.share-tabs button[data-share="${tab}"]`).classList.add('active');
+  document.getElementById('qrPanel').classList.toggle('active', tab === 'qr');
+  document.getElementById('nfcPanel').classList.toggle('active', tab === 'nfc');
+}
+
+function activateNFC(){
+  if('NDEFReader' in window){
+    const ndef = new NDEFReader();
+    ndef.write({ records: [{ recordType: 'url', data: window.location.href + '?file=' + currentFile.id }] })
+      .then(() => showToast('Archivo compartido por NFC ✓','fa-wifi'))
+      .catch(err => showToast('No se pudo activar NFC: ' + err.message, 'fa-triangle-exclamation'));
+  } else {
+    showToast('Acerca tu dispositivo a otro con NFC activado','fa-wifi');
+    setTimeout(() => showToast('✓ Archivo compartido correctamente','fa-check'), 2500);
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+//  VAULT DE CONTRASEÑAS
+// ══════════════════════════════════════════════════════════
+let vault = [
+  { id:'v1', name:'Gmail personal', user:'srgxio@gmail.com', pwd:'MyS3cur3!Pass', type:'gmail', url:'https://gmail.com' },
+  { id:'v2', name:'Facebook', user:'Srgxio_Official', pwd:'Fb#2025*Secur3', type:'facebook', url:'https://facebook.com' },
+  { id:'v3', name:'Instagram', user:'@srgxio', pwd:'Inst4gr4m!2025', type:'instagram', url:'https://instagram.com' },
+  { id:'v4', name:'GitHub', user:'srgxio-dev', pwd:'ghp_Xy9k2Lm4Pq8', type:'github', url:'https://github.com' },
+  { id:'v5', name:'Banco BBVA', user:'4B21XK9', pwd:'BBVA#Secure123!', type:'bank', url:'#' },
+];
+
+function renderVault(){
+  const list = document.getElementById('vaultList');
+  const badge = document.getElementById('vaultCount');
+  const search = (document.getElementById('vaultSearch').value || '').toLowerCase();
+
+  badge.textContent = vault.length;
+
+  const visible = vault.filter(v =>
+    !search || v.name.toLowerCase().includes(search) || v.user.toLowerCase().includes(search)
+  );
+
+  if(visible.length === 0){
+    list.innerHTML = `
+      <div class="vault-empty">
+        <i class="fas fa-lock"></i>
+        <p>${vault.length === 0 ? 'Sin contraseñas guardadas' : 'Sin resultados'}</p>
+      </div>`;
+    return;
+  }
+
+  const iconMap = {
+    gmail:'fa-envelope', facebook:'fa-facebook-f', instagram:'fa-instagram',
+    github:'fa-github', bank:'fa-building-columns', crypto:'fa-bitcoin',
+    netflix:'fa-play', other:'fa-key'
+  };
+
+  list.innerHTML = visible.map(v => `
+    <div class="vault-item" onclick="viewVaultItem('${v.id}')">
+      <div class="vault-item-icon ${v.type}">
+        <i class="fab ${iconMap[v.type] || 'fa-key'}"></i>
+      </div>
+      <div class="vault-item-info">
+        <div class="vault-item-name">${escapeHtml(v.name)}</div>
+        <div class="vault-item-user"><i class="fas fa-user"></i> ${escapeHtml(v.user)}</div>
+      </div>
+      <div class="vault-item-actions">
+        <button title="Copiar" onclick="event.stopPropagation();copyPwd('${v.id}')">
+          <i class="fas fa-copy"></i>
+        </button>
+        <button class="del" title="Eliminar" onclick="event.stopPropagation();deleteVaultItem('${v.id}')">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
     </div>
   `).join('');
-
-  const content = document.getElementById('svContent');
-  if(item.type === 'image'){
-    content.innerHTML = `<img src="${item.src}" alt="">`;
-  } else if(item.type === 'video'){
-    content.innerHTML = `<video src="${item.src}" autoplay muted playsinline></video>`;
-  } else {
-    content.innerHTML = `<div class="text-story" style="background:${item.bg};">${item.text}</div>`;
-  }
-
-  if(item.caption){
-    const cap = document.createElement('div');
-    cap.style.cssText = 'position:absolute; bottom:70px; left:0; right:0; padding:20px; text-align:center; font-size:.95rem; font-weight:600; text-shadow:0 2px 12px rgba(0,0,0,0.8); z-index:15;';
-    cap.textContent = item.caption;
-    content.appendChild(cap);
-  }
-
-  clearTimeout(svTimer);
-  const activeBar = progress.querySelector('.sv-progress-bar.active .fill');
-  if(activeBar){
-    activeBar.style.transition = 'width ' + STORY_DURATION + 'ms linear';
-    activeBar.style.width = '0';
-    requestAnimationFrame(() => { activeBar.style.width = '100%'; });
-  }
-
-  svTimer = setTimeout(() => nextStory(), STORY_DURATION);
 }
 
-function nextStory(){
-  clearTimeout(svTimer);
-  const user = stories[svUserIndex];
-  if(svItemIndex < user.items.length - 1){
-    svItemIndex++;
-    renderStory();
-  } else if(svUserIndex < stories.length - 1){
-    svUserIndex++;
-    svItemIndex = 0;
-    renderStory();
-  } else {
-    closeStoryViewer();
+function copyPwd(id){
+  const v = vault.find(x => x.id === id);
+  if(!v) return;
+  navigator.clipboard.writeText(v.pwd)
+    .then(() => showToast('Contraseña copiada ✓', 'fa-copy'))
+    .catch(() => showToast('No se pudo copiar', 'fa-triangle-exclamation'));
+}
+
+function deleteVaultItem(id){
+  const v = vault.find(x => x.id === id);
+  if(!v) return;
+  if(confirm(`¿Eliminar "${v.name}" del vault?`)){
+    vault = vault.filter(x => x.id !== id);
+    renderVault();
+    showToast('Eliminado del vault', 'fa-trash');
   }
 }
 
-function prevStory(){
-  clearTimeout(svTimer);
-  if(svItemIndex > 0){
-    svItemIndex--;
-    renderStory();
-  } else if(svUserIndex > 0){
-    svUserIndex--;
-    svItemIndex = stories[svUserIndex].items.length - 1;
-    renderStory();
-  }
-}
+function viewVaultItem(id){
+  const v = vault.find(x => x.id === id);
+  if(!v) return;
 
-function closeStoryViewer(){
-  clearTimeout(svTimer);
-  document.getElementById('storyViewer').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-function sendStoryReply(){
-  const input = document.getElementById('svReply');
-  const text = input.value.trim();
-  if(!text) return;
-  input.value = '';
-  const btn = input.nextElementSibling;
-  btn.innerHTML = '<i class="fas fa-check"></i>';
-  setTimeout(() => { btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; }, 1200);
-}
-
-document.addEventListener('keydown', (e) => {
-  if(!document.getElementById('storyViewer').classList.contains('active')) return;
-  if(e.key === 'Escape') closeStoryViewer();
-  if(e.key === 'ArrowRight') nextStory();
-  if(e.key === 'ArrowLeft') prevStory();
-});
-
-// ══════════════════════════════════════════════════════════
-//  SUBIR HISTORIA
-// ══════════════════════════════════════════════════════════
-let currentStoryType = 'image';
-let storyPreviewData = null;
-
-function openStoryUpload(){
-  document.getElementById('uploadModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-  resetStoryModal();
-}
-
-function closeStoryUpload(){
-  document.getElementById('uploadModal').classList.remove('active');
-  document.body.style.overflow = '';
-  resetStoryModal();
-}
-
-function resetStoryModal(){
-  document.getElementById('storyFile').value = '';
-  document.getElementById('storyTextInput').value = '';
-  document.getElementById('storyPreview').classList.remove('active');
-  document.getElementById('storyPreview').innerHTML = `
-    <button class="remove" type="button" onclick="clearStoryPreview()" title="Quitar">
-      <i class="fas fa-xmark"></i>
-    </button>`;
-  storyPreviewData = null;
-  setStoryType('image', document.querySelector('.story-type-tabs button[data-type="image"]'));
-}
-
-function setStoryType(type, btn){
-  currentStoryType = type;
-  document.querySelectorAll('.story-type-tabs button').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  const drop = document.getElementById('storyDrop');
-  const textarea = document.getElementById('storyTextInput');
-  const input = document.getElementById('storyFile');
-  const dropLabel = document.getElementById('dropLabel');
-  const dropSmall = drop.querySelector('small');
-
-  if(type === 'text'){
-    drop.style.display = 'none';
-    document.getElementById('storyPreview').classList.remove('active');
-    textarea.classList.add('active');
-    textarea.focus();
-  } else {
-    drop.style.display = 'block';
-    textarea.classList.remove('active');
-    if(type === 'image'){
-      input.accept = 'image/*';
-      dropLabel.textContent = 'Toca para subir una foto';
-      dropSmall.textContent = 'JPG, PNG · máx 10 MB';
-      drop.querySelector('i').className = 'fas fa-cloud-arrow-up';
-    } else {
-      input.accept = 'video/*';
-      dropLabel.textContent = 'Toca para subir un video';
-      dropSmall.textContent = 'MP4 · máx 50 MB';
-      drop.querySelector('i').className = 'fas fa-video';
-    }
-  }
-}
-
-document.getElementById('storyFile').addEventListener('change', function(e){
-  const file = e.target.files[0];
-  if(!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    storyPreviewData = ev.target.result;
-    const preview = document.getElementById('storyPreview');
-    const isVideo = file.type.startsWith('video/');
-    preview.innerHTML = `
-      <button class="remove" type="button" onclick="clearStoryPreview()" title="Quitar">
-        <i class="fas fa-xmark"></i>
-      </button>
-      ${isVideo
-        ? `<video src="${ev.target.result}" autoplay muted loop playsinline></video>`
-        : `<img src="${ev.target.result}" alt="">`}
-    `;
-    preview.classList.add('active');
+  const iconMap = {
+    gmail:'fa-envelope', facebook:'fa-facebook-f', instagram:'fa-instagram',
+    github:'fa-github', bank:'fa-building-columns', crypto:'fa-bitcoin',
+    netflix:'fa-play', other:'fa-key'
   };
-  reader.readAsDataURL(file);
+  const icon = iconMap[v.type] || 'fa-key';
+  const iconBg = getVaultIconBg(v.type);
+
+  Swal.fire({
+    html: `
+      <div class="vault-view">
+        <div class="big-icon" style="background:${iconBg};">
+          <i class="fab ${icon}"></i>
+        </div>
+        <h3>${escapeHtml(v.name)}</h3>
+        <p class="sub">${escapeHtml(v.user)}</p>
+
+        <div class="vault-view-info">
+          <div class="row">
+            <span><i class="fas fa-user"></i> Usuario</span>
+            <span>${escapeHtml(v.user)} <button class="copy-btn" onclick="navigator.clipboard.writeText('${escapeHtml(v.user)}');showToast('Usuario copiado','fa-copy')"><i class="fas fa-copy"></i></button></span>
+          </div>
+          <div class="row">
+            <span><i class="fas fa-lock"></i> Contraseña</span>
+            <span class="pwd-display" id="vwPwd">
+              ••••••••••
+              <button class="copy-btn" onclick="toggleVaultPwd('${escapeHtml(v.pwd).replace(/'/g, "\\'")}')"><i class="fas fa-eye" id="vwEye"></i></button>
+            </span>
+          </div>
+          ${v.url && v.url !== '#' ? `<div class="row"><span><i class="fas fa-link"></i> Sitio</span><span><a href="${v.url}" target="_blank" style="color:#22d3ee; text-decoration:none;">Abrir <i class="fas fa-external-link-alt" style="font-size:.65rem;"></i></a></span></div>` : ''}
+        </div>
+
+        <div class="vault-view-actions">
+          <button class="btn-edit" onclick="Swal.close();editVaultItem('${v.id}')">
+            <i class="fas fa-pen"></i> Editar
+          </button>
+          <button class="btn-share" onclick="Swal.close();shareVaultItem('${v.id}')">
+            <i class="fas fa-share-nodes"></i> Compartir
+          </button>
+        </div>
+      </div>
+    `,
+    showConfirmButton: false,
+    showCloseButton: true,
+    width: 420,
+    padding: '1.5rem',
+    background: '#ffffff'
+  });
+}
+
+function getVaultIconBg(type){
+  const map = {
+    gmail:'linear-gradient(135deg,#EA4335,#c5221f)',
+    facebook:'linear-gradient(135deg,#1877F2,#0f5bbf)',
+    instagram:'linear-gradient(45deg,#f09433,#dc2743,#bc1888)',
+    github:'linear-gradient(135deg,#24292e,#000)',
+    bank:'linear-gradient(135deg,#217346,#16542f)',
+    crypto:'linear-gradient(135deg,#f7931a,#c76f00)',
+    netflix:'linear-gradient(135deg,#E50914,#b00610)',
+    other:'linear-gradient(135deg,#6B7280,#374151)'
+  };
+  return map[type] || map.other;
+}
+
+function toggleVaultPwd(pwd){
+  const el = document.getElementById('vwPwd');
+  if(!el) return;
+  if(el.dataset.shown === '1'){
+    el.innerHTML = `•••••••••• <button class="copy-btn" onclick="toggleVaultPwd('${pwd.replace(/'/g, "\\'")}')"><i class="fas fa-eye" id="vwEye"></i></button>`;
+    el.dataset.shown = '0';
+  } else {
+    el.innerHTML = `${pwd} <button class="copy-btn" onclick="navigator.clipboard.writeText('${pwd.replace(/'/g, "\\'")}');showToast('Contraseña copiada','fa-copy')"><i class="fas fa-copy"></i></button>`;
+    el.dataset.shown = '1';
+  }
+}
+
+function editVaultItem(id){
+  const v = vault.find(x => x.id === id);
+  if(!v) return;
+  openVaultAdd(v);
+}
+
+function shareVaultItem(id){
+  const v = vault.find(x => x.id === id);
+  if(!v) return;
+
+  const payload = JSON.stringify({ n: v.name, u: v.user, p: v.pwd });
+
+  Swal.fire({
+    title: '<i class="fas fa-qrcode"></i> Compartir seguro',
+    html: `
+      <p style="color:#666; font-size:.85rem; margin-bottom:16px;">
+        Escanea este QR para recibir las credenciales de <b>${escapeHtml(v.name)}</b>
+      </p>
+      <div id="vaultQrBox" style="text-align:center; display:flex; justify-content:center;"></div>
+      <p style="color:#999; font-size:.72rem; margin-top:14px;">
+        <i class="fas fa-shield-halved"></i> Cifrado AES-256 · Solo visible una vez
+      </p>
+    `,
+    showConfirmButton: true,
+    confirmButtonText: 'Cerrar',
+    confirmButtonColor: '#1F4E67',
+    width: 380,
+    didOpen: () => {
+      const box = document.createElement('div');
+      box.style.cssText = 'background:#fff; padding:16px; border-radius:16px; display:inline-block;';
+      document.getElementById('vaultQrBox').appendChild(box);
+      new QRCode(box, {
+        text: payload,
+        width: 200,
+        height: 200,
+        colorDark: '#0a0e14',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+  });
+}
+
+function openVaultAdd(existing){
+  const isEdit = !!existing;
+  Swal.fire({
+    title: `<i class="fas fa-${isEdit?'pen':'plus-circle'}"></i> ${isEdit?'Editar':'Nueva'} contraseña`,
+    html: `
+      <div class="vault-field">
+        <label>Nombre / Servicio</label>
+        <input id="nvName" placeholder="Ej. Gmail personal" value="${existing ? escapeHtml(existing.name) : ''}">
+      </div>
+      <div class="vault-field">
+        <label>Usuario / Email</label>
+        <input id="nvUser" placeholder="usuario@correo.com" value="${existing ? escapeHtml(existing.user) : ''}">
+      </div>
+      <div class="vault-field">
+        <label>Contraseña</label>
+        <div class="pwd-row">
+          <input id="nvPwd" type="password" placeholder="••••••••" value="${existing ? escapeHtml(existing.pwd) : ''}" oninput="checkStrength(this.value)">
+          <button type="button" onclick="genPassword()" title="Generar"><i class="fas fa-dice"></i></button>
+          <button type="button" onclick="togglePwdVisibility('nvPwd', this)" title="Mostrar"><i class="fas fa-eye"></i></button>
+        </div>
+        <div class="strength-bar"><div class="fill" id="nvStrengthFill"></div></div>
+        <div class="strength-text">
+          <span id="nvStrengthText">—</span>
+          <span id="nvStrengthTime"></span>
+        </div>
+      </div>
+      <div class="vault-field">
+        <label>Tipo</label>
+        <select id="nvType">
+          <option value="gmail" ${existing?.type==='gmail'?'selected':''}>📧 Correo</option>
+          <option value="facebook" ${existing?.type==='facebook'?'selected':''}>📘 Facebook</option>
+          <option value="instagram" ${existing?.type==='instagram'?'selected':''}>📷 Instagram</option>
+          <option value="github" ${existing?.type==='github'?'selected':''}>💻 GitHub</option>
+          <option value="bank" ${existing?.type==='bank'?'selected':''}>🏦 Banco</option>
+          <option value="crypto" ${existing?.type==='crypto'?'selected':''}>₿ Crypto</option>
+          <option value="netflix" ${existing?.type==='netflix'?'selected':''}>🎬 Netflix</option>
+          <option value="other" ${existing?.type==='other'?'selected':''}>🔑 Otro</option>
+        </select>
+      </div>
+      <div class="vault-field">
+        <label>Sitio web (opcional)</label>
+        <input id="nvUrl" placeholder="https://..." value="${existing ? escapeHtml(existing.url || '') : ''}">
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: isEdit ? 'Guardar cambios' : 'Guardar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#1F4E67',
+    cancelButtonColor: '#d33',
+    width: 440,
+    didOpen: () => {
+      if(existing) checkStrength(existing.pwd);
+    },
+    preConfirm: () => {
+      const name = document.getElementById('nvName').value.trim();
+      const user = document.getElementById('nvUser').value.trim();
+      const pwd = document.getElementById('nvPwd').value;
+      const type = document.getElementById('nvType').value;
+      const url = document.getElementById('nvUrl').value.trim();
+
+      if(!name || !user || !pwd){
+        Swal.showValidationMessage('Completa nombre, usuario y contraseña');
+        return false;
+      }
+      return { name, user, pwd, type, url };
+    }
+  }).then(r => {
+    if(!r.isConfirmed) return;
+
+    if(isEdit){
+      Object.assign(existing, r.value);
+      showToast('Contraseña actualizada ✓', 'fa-check');
+    } else {
+      vault.unshift({ id:'v_' + Date.now(), ...r.value });
+      showToast('Contraseña guardada ✓', 'fa-shield-halved');
+    }
+    renderVault();
+  });
+}
+
+function togglePwdVisibility(id, btn){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const isText = el.type === 'text';
+  el.type = isText ? 'password' : 'text';
+  btn.innerHTML = `<i class="fas fa-eye${isText ? '' : '-slash'}"></i>`;
+}
+
+function genPassword(){
+  const length = 16;
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+';
+  let pwd = '';
+  for(let i = 0; i < length; i++){
+    pwd += chars[Math.floor(Math.random() * chars.length)];
+  }
+  const el = document.getElementById('nvPwd');
+  el.type = 'text';
+  el.value = pwd;
+  checkStrength(pwd);
+  showToast('Contraseña generada ✓', 'fa-dice');
+}
+
+function checkStrength(pwd){
+  const fill = document.getElementById('nvStrengthFill');
+  const text = document.getElementById('nvStrengthText');
+  const time = document.getElementById('nvStrengthTime');
+  if(!fill) return;
+
+  let score = 0;
+  if(pwd.length >= 8) score++;
+  if(pwd.length >= 12) score++;
+  if(/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) score++;
+  if(/\d/.test(pwd)) score++;
+  if(/[^a-zA-Z0-9]/.test(pwd)) score++;
+
+  const levels = [
+    { w:'0%',   c:'transparent', t:'—',             time:'' },
+    { w:'20%',  c:'#d71d00',     t:'Muy débil',     time:'Se crackea al instante' },
+    { w:'40%',  c:'#f97316',     t:'Débil',         time:'~5 minutos' },
+    { w:'60%',  c:'#fcc404',     t:'Aceptable',     time:'~2 horas' },
+    { w:'80%',  c:'#22c55e',     t:'Fuerte',        time:'~3 años' },
+    { w:'100%', c:'#22d3ee',     t:'Muy fuerte 🛡️', time:'~300 años' }
+  ];
+  const l = levels[Math.min(score, 5)];
+  fill.style.width = l.w;
+  fill.style.background = l.c;
+  text.textContent = l.t;
+  text.style.color = l.c;
+  time.textContent = l.time;
+}
+
+// ══════════════════════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════════════════════
+function openConfig(){ document.getElementById('configModal').classList.add('active'); }
+function closeConfig(){ document.getElementById('configModal').classList.remove('active'); }
+
+function updateField(field){
+  if(field === 'contraseña'){
+    const newP = document.getElementById('cfgPwdNew').value;
+    const conf = document.getElementById('cfgPwdConfirm').value;
+    if(!newP || newP.length < 8){ showToast('La contraseña debe tener al menos 8 caracteres','fa-triangle-exclamation'); return; }
+    if(newP !== conf){ showToast('Las contraseñas no coinciden','fa-triangle-exclamation'); return; }
+    document.getElementById('cfgPwdOld').value = '';
+    document.getElementById('cfgPwdNew').value = '';
+    document.getElementById('cfgPwdConfirm').value = '';
+    showToast('Contraseña actualizada ✓','fa-shield-halved');
+    return;
+  }
+  showToast(`Actualizando ${field}...`, 'fa-check');
+  setTimeout(() => showToast(`✓ ${field.charAt(0).toUpperCase() + field.slice(1)} actualizado`, 'fa-check'), 800);
+}
+
+function toggleBlur(){
+  const active = document.getElementById('cfgToggleBlur').checked;
+  document.querySelectorAll('.profile-card, .side-left, .main-panel').forEach(el => {
+    el.style.filter = active ? 'blur(6px)' : '';
+    el.style.userSelect = active ? 'none' : '';
+    el.style.pointerEvents = active ? 'none' : '';
+  });
+  showToast(active ? 'Datos personales ocultos' : 'Datos visibles', 'fa-eye');
+}
+
+function deleteProfile(){
+  if(!confirm('⚠️ ¿Estás seguro de que quieres eliminar tu perfil? Esta acción es irreversible.')) return;
+  if(!confirm('Última confirmación: se borrarán TODOS tus archivos y datos.')) return;
+  showToast('Perfil eliminado','fa-trash');
+  setTimeout(() => location.reload(), 1500);
+}
+
+// ══════════════════════════════════════════════════════════
+//  TOPNAV
+// ══════════════════════════════════════════════════════════
+document.getElementById('btnConfig').addEventListener('click', function(e){
+  e.preventDefault();
+  openConfig();
 });
-
-function clearStoryPreview(){
-  storyPreviewData = null;
-  document.getElementById('storyFile').value = '';
-  const preview = document.getElementById('storyPreview');
-  preview.classList.remove('active');
-  preview.innerHTML = `
-    <button class="remove" type="button" onclick="clearStoryPreview()" title="Quitar">
-      <i class="fas fa-xmark"></i>
-    </button>`;
-}
-
-function publishStory(){
-  let newStory;
-
-  if(currentStoryType === 'text'){
-    const txt = document.getElementById('storyTextInput').value.trim();
-    if(!txt){
-      alert('Escribe algo para tu historia');
-      return;
-    }
-    newStory = {
-      type: 'text',
-      bg: 'linear-gradient(135deg, #1F4E67, #d71d00)',
-      text: txt
-    };
-  } else {
-    if(!storyPreviewData){
-      alert('Selecciona una imagen o video');
-      return;
-    }
-    newStory = {
-      type: currentStoryType,
-      src: storyPreviewData,
-      caption: ''
-    };
-  }
-
-  if(!stories.userOwn){
-    stories.userOwn = {
-      avatar: CURRENT_USER.avatar,
-      name: CURRENT_USER.username,
-      time: 'ahora',
-      items: [newStory]
-    };
-    stories.unshift(stories.userOwn);
-  } else {
-    stories.userOwn.items.push(newStory);
-    stories.userOwn.time = 'ahora';
-  }
-
-  const mineItem = document.querySelector('.story-item.mine');
-  if(mineItem){
-    const thumb = mineItem.querySelector('.story-thumb');
-    if(thumb && newStory.src) thumb.src = newStory.src;
-
-    mineItem.classList.remove('mine');
-    mineItem.classList.add('unseen');
-
-    const addBtn = mineItem.querySelector('.story-add-btn');
-    if(!addBtn){
-      const newBtn = document.createElement('div');
-      newBtn.className = 'story-add-btn';
-      newBtn.innerHTML = '<i class="fas fa-plus"></i>';
-      mineItem.querySelector('.story-avatar-wrap').appendChild(newBtn);
-    }
-
-    const nameEl = mineItem.querySelector('.story-name');
-    if(nameEl) nameEl.textContent = CURRENT_USER.username;
-
-    let authorAvatar = mineItem.querySelector('.story-author-avatar');
-    if(!authorAvatar){
-      authorAvatar = document.createElement('img');
-      authorAvatar.className = 'story-author-avatar';
-      authorAvatar.src = CURRENT_USER.avatar;
-      authorAvatar.alt = CURRENT_USER.username;
-      mineItem.querySelector('.story-avatar-wrap').appendChild(authorAvatar);
-    }
-
-    mineItem.setAttribute('onclick', 'openStory(0)');
-  }
-
-  closeStoryUpload();
-  showToast('¡Historia publicada! 🎉');
-}
+document.querySelectorAll('.topnav a:not(#btnConfig)').forEach(a => {
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    document.querySelectorAll('.topnav a').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+    showToast(this.title, 'fa-info-circle');
+  });
+});
 
 // ══════════════════════════════════════════════════════════
 //  TOAST
 // ══════════════════════════════════════════════════════════
-function showToast(msg){
-  const t = document.createElement('div');
-  t.textContent = msg;
-  t.style.cssText = `
-    position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(20px);
-    background:linear-gradient(135deg, var(--hs-gold), #0e94b0);
-    color:#001a22; padding:14px 26px; border-radius:999px; font-weight:700; font-size:.9rem;
-    box-shadow:0 12px 40px rgba(34,211,238,.5); z-index:99999;
-    opacity:0; transition:all .35s cubic-bezier(.2,.8,.2,1);
-    font-family:'Inter', sans-serif;
-  `;
-  document.body.appendChild(t);
-  requestAnimationFrame(() => {
-    t.style.opacity = '1';
-    t.style.transform = 'translateX(-50%) translateY(0)';
-  });
-  setTimeout(() => {
-    t.style.opacity = '0';
-    t.style.transform = 'translateX(-50%) translateY(20px)';
-    setTimeout(() => t.remove(), 400);
-  }, 2200);
+let toastTimer;
+function showToast(msg, icon){
+  const t = document.getElementById('toast');
+  t.innerHTML = `<i class="fas ${icon || 'fa-check'}"></i> ${msg}`;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
 }
 
 // ══════════════════════════════════════════════════════════
-//  LIKE / FOLLOW / COMMENTS / SHARE / POLL
+//  ESC + click fuera
 // ══════════════════════════════════════════════════════════
-function toggleLike(btn){
-  const icon = btn.querySelector('i');
-  const cnt = btn.querySelector('.cnt');
-  const liked = btn.classList.toggle('liked');
-  icon.classList.toggle('far');
-  icon.classList.toggle('fas');
-  cnt.textContent = parseInt(cnt.textContent.replace(/,/g,'')) + (liked ? 1 : -1);
-}
-
-function toggleFollow(btn){
-  const following = btn.classList.toggle('following');
-  btn.innerHTML = following
-    ? '<i class="fas fa-check"></i>Siguiendo'
-    : '<i class="fas fa-plus"></i>Seguir';
-}
-
-function openComments(btn){
-  const post = btn.closest('.post');
-  const author = post.querySelector('.name').textContent.trim();
-  alert(`Comentarios en la publicación de ${author}\n\n(Aquí se cargarían los comentarios reales)`);
-}
-
-function openShare(btn){
-  const url = window.location.href;
-  if(navigator.share){
-    navigator.share({ title:'Human System', url }).catch(()=>{});
-  } else {
-    navigator.clipboard.writeText(url).then(()=>showToast('Enlace copiado ✓')).catch(()=>alert('Enlace: ' + url));
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){
+    closeFileModal();
+    closeShareModal();
+    closeConfig();
   }
-}
-
-let pollVoted = false;
-function votePoll(el){
-  if(pollVoted) return;
-  pollVoted = true;
-  const opts = document.querySelectorAll('#poll-post .poll-opt');
-  let total = 0;
-  opts.forEach(o => total += parseInt(o.dataset.votes));
-  const chosenVotes = parseInt(el.dataset.votes) + 1;
-  total += 1;
-
-  opts.forEach(o => {
-    const votes = (o === el) ? chosenVotes : parseInt(o.dataset.votes);
-    const pct = Math.round((votes/total)*100);
-    o.classList.add('voted');
-    o.querySelector('.fill').style.width = pct + '%';
-    o.querySelector('.pct').textContent = pct + '%';
-  });
-
-  document.getElementById('poll-total').innerHTML =
-    '<i class="fas fa-square-poll-vertical" style="margin-right:4px;"></i>' + total + ' votos';
-  document.getElementById('poll-status').innerHTML =
-    '<i class="fas fa-circle-check" style="color:var(--hs-gold); margin-right:4px;"></i> Votaste';
-}
-
-// ══════════════════════════════════════════════════════════
-//  PUBLICAR NUEVO POST
-// ══════════════════════════════════════════════════════════
-document.querySelector('.btn-post').addEventListener('click', function(){
-  const ta = document.querySelector('.composer textarea');
-  const text = ta.value.trim();
-  if(!text) return;
-
-  const feed = document.getElementById('feed');
-  const article = document.createElement('article');
-  article.className = 'post glass';
-  article.innerHTML = `
-    <div class="post-head">
-      <img src="${CURRENT_USER.avatar}" alt="tú">
-      <div class="who">
-        <span class="name">${CURRENT_USER.username} <i class="fas fa-circle-check" style="color:var(--hs-gold); font-size:.7rem;"></i></span>
-        <span class="meta"><i class="fas fa-earth-americas"></i> Público · ahora</span>
-      </div>
-    </div>
-    <div class="post-body">${text.replace(/</g,'&lt;')}</div>
-    <div class="post-actions">
-      <button onclick="toggleLike(this)"><i class="far fa-heart"></i> <span class="cnt">0</span></button>
-      <button onclick="openComments(this)"><i class="far fa-comment"></i> 0</button>
-      <button onclick="openShare(this)"><i class="fas fa-share"></i> Compartir</button>
-    </div>
-  `;
-  feed.insertBefore(article, feed.firstChild);
-  ta.value = '';
-  ta.style.height = 'auto';
-  showToast('¡Publicación creada! 🚀');
+});
+document.getElementById('fileModal').addEventListener('click', e => {
+  if(e.target.id === 'fileModal') closeFileModal();
+});
+document.getElementById('shareModal').addEventListener('click', e => {
+  if(e.target.id === 'shareModal') closeShareModal();
+});
+document.getElementById('configModal').addEventListener('click', e => {
+  if(e.target.id === 'configModal') closeConfig();
 });
 
-const tx = document.querySelector('.composer textarea');
-if(tx){
-  tx.addEventListener('input', function(){
-    this.style.height = 'auto';
-    this.style.height = Math.min(this.scrollHeight, 200) + 'px';
-  });
-}
-
-document.getElementById('uploadModal').addEventListener('click', function(e){
-  if(e.target === this) closeStoryUpload();
-});
+// ══════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════
+renderFiles();
+renderVault();
 </script>
 
 </body>
