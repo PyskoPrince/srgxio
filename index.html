@@ -4,17 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="theme-color" content="#0a1c4f">
-    <title>Tintorería y Lavandería Marlo</title>
+    <meta name="description" content="Sitio web oficial de Sergio Campos. Próximamente disponible.">
+    <meta name="author" content="Sergio Campos">
+    <title>Sergio Campos | Próximamente</title>
     <style>
-        /* --- VARIABLES --- */
-        :root {
-            --azul-marlo: #0a1c4f;
-            --rojo-marlo: #d32f2f;
-            --gris-fondo: #f4f6f9;
-            --texto-oscuro: #333;
-            --blanco: #ffffff;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -23,555 +16,199 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html {
-            scroll-behavior: smooth;
+        html, body {
+            height: 100%;
+            overflow: hidden;
         }
 
         body {
-            background-color: var(--gris-fondo);
-            color: var(--texto-oscuro);
-            overflow-x: hidden;
-            line-height: 1.5;
-        }
-
-        /* --- ENCABEZADO --- */
-        header {
-            background-color: var(--blanco);
-            padding: 12px 15px;
+            background-color: #0a1c4f;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(211, 47, 47, 0.22) 0%, transparent 45%),
+                radial-gradient(circle at 80% 80%, rgba(255, 204, 0, 0.12) 0%, transparent 45%);
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            text-align: center;
+            color: white;
+            padding: 25px;
+            position: relative;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        /* Grid sutil de fondo */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
         }
 
-        .logo-placeholder {
-            width: 45px;
-            height: 45px;
-            border: 3px solid var(--azul-marlo);
+        /* --- CONTENEDOR CENTRAL --- */
+        .contenedor {
+            position: relative;
+            z-index: 1;
+            max-width: 480px;
+            width: 100%;
+            animation: aparecer 1.2s ease-out;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Monograma */
+        .monograma {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 30px;
+            border: 3px solid #ffcc00;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--rojo-marlo);
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 38px;
             font-weight: bold;
-            font-size: 20px;
-            font-family: Georgia, serif;
-            flex-shrink: 0;
-        }
-
-        .logo-texto h1 {
-            color: var(--rojo-marlo);
-            font-family: Georgia, serif;
-            font-size: 20px;
-            letter-spacing: 1px;
-        }
-
-        .logo-texto p {
-            color: var(--azul-marlo);
-            font-size: 8px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        /* --- BOTÓN HAMBURGUESA --- */
-        .menu-toggle {
-            display: block;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            z-index: 1001;
-        }
-
-        .menu-toggle span {
-            display: block;
-            width: 26px;
-            height: 3px;
-            background-color: var(--azul-marlo);
-            margin: 5px 0;
-            border-radius: 2px;
-            transition: all 0.3s;
-        }
-
-        .menu-toggle.activo span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .menu-toggle.activo span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-toggle.activo span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
-        }
-
-        /* --- NAVEGACIÓN MÓVIL --- */
-        nav {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 70%;
-            max-width: 300px;
-            height: 100vh;
-            background-color: var(--azul-marlo);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            transition: right 0.4s ease;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
-        }
-
-        nav.abierto {
-            right: 0;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--blanco);
-            font-weight: bold;
-            font-size: 18px;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-
-        nav a:hover, nav a:active {
-            background-color: var(--rojo-marlo);
-        }
-
-        /* --- HERO --- */
-        .hero {
-            background-color: var(--azul-marlo);
-            color: var(--blanco);
-            text-align: center;
-            padding: 45px 20px;
-        }
-
-        .hero h2 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            line-height: 1.3;
-        }
-
-        .hero p {
-            font-size: 15px;
-            font-style: italic;
             color: #ffcc00;
+            background: rgba(255, 204, 0, 0.05);
+            letter-spacing: 2px;
         }
 
-        /* --- CATÁLOGO --- */
-        .catalogo {
-            padding: 40px 15px;
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        .catalogo h3 {
-            text-align: center;
-            color: var(--azul-marlo);
-            font-size: 24px;
+        .etiqueta {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ffcc00;
+            font-weight: 600;
+            padding: 6px 16px;
+            border: 1px solid rgba(255, 204, 0, 0.4);
+            border-radius: 50px;
             margin-bottom: 25px;
         }
 
-        .grid-servicios {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        .tarjeta-servicio {
-            background: var(--blanco);
-            border-radius: 12px;
-            padding: 22px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            border-top: 5px solid var(--rojo-marlo);
-            transition: transform 0.3s;
-        }
-
-        .tarjeta-servicio h4 {
-            color: var(--azul-marlo);
-            font-size: 19px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        .tarjeta-servicio ul {
-            list-style: none;
-        }
-
-        .tarjeta-servicio li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 15px;
-            padding: 4px 0;
-        }
-
-        .precio {
+        .nombre {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 38px;
             font-weight: bold;
-            color: var(--rojo-marlo);
-            background: #ffebee;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 14px;
+            letter-spacing: 3px;
+            line-height: 1.1;
+            margin-bottom: 18px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
-        /* --- SECCIÓN DE PAGO --- */
-        .seccion-pago {
-            background-color: var(--blanco);
-            padding: 45px 20px;
-            text-align: center;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
+        .subtitulo {
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0.85;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .seccion-pago h3 {
-            color: var(--azul-marlo);
-            font-size: 22px;
-            margin-bottom: 12px;
-        }
-
-        .seccion-pago p {
-            margin-bottom: 22px;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .btn-pagar {
-            background-color: var(--rojo-marlo);
-            color: var(--blanco);
-            border: none;
-            padding: 16px 45px;
-            font-size: 17px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 6px 15px rgba(211, 47, 47, 0.35);
+        /* Barra de progreso */
+        .progreso {
             width: 100%;
             max-width: 320px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 2px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
         }
 
-        .btn-pagar:active {
-            transform: scale(0.97);
-            background-color: #b71c1c;
-        }
-
-        /* --- PIE DE PÁGINA --- */
-        footer {
-            background-color: var(--azul-marlo);
-            color: var(--blanco);
-            padding: 40px 20px 25px;
-            text-align: center;
-        }
-
-        .footer-contenido {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            max-width: 1000px;
-            margin: auto;
-        }
-
-        .footer-info h4 {
-            color: #ffcc00;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-
-        .footer-info p {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .redes-sociales {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 25px;
-        }
-
-        .redes-sociales a {
-            color: var(--blanco);
-            text-decoration: none;
-            font-size: 15px;
-            padding: 12px 20px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            transition: background 0.3s;
-        }
-
-        .redes-sociales a:active {
-            background: var(--rojo-marlo);
-        }
-
-        .copyright {
-            margin-top: 30px;
-            font-size: 11px;
-            color: #a0aec0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 20px;
-        }
-
-        /* --- OVERLAY CUANDO EL MENÚ ESTÁ ABIERTO --- */
-        .overlay {
-            position: fixed;
+        .progreso::after {
+            content: "";
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            z-index: 999;
+            width: 40%;
+            background: linear-gradient(90deg, #ffcc00, #d32f2f);
+            border-radius: 2px;
+            animation: cargando 2.2s ease-in-out infinite;
         }
 
-        .overlay.activo {
-            opacity: 1;
-            visibility: visible;
+        @keyframes cargando {
+            0% { left: -40%; }
+            100% { left: 100%; }
         }
 
-        /* --- TABLETS Y ESCRITORIO --- */
-        @media (min-width: 768px) {
-            header {
-                padding: 15px 5%;
-            }
+        /* Pie de página */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
+            z-index: 1;
+            padding: 0 20px;
+        }
 
-            .menu-toggle {
-                display: none;
-            }
+        .footer a {
+            color: rgba(255, 204, 0, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
 
-            nav {
-                position: static;
-                width: auto;
-                height: auto;
-                background: transparent;
-                flex-direction: row;
-                box-shadow: none;
-                gap: 0;
-            }
+        .footer a:hover {
+            color: #ffcc00;
+        }
 
-            nav a {
-                color: var(--azul-marlo);
-                font-size: 15px;
-                margin-left: 20px;
-                padding: 8px 0;
-                border-radius: 0;
-                border-bottom: 2px solid transparent;
-            }
-
-            nav a:hover, nav a:active {
-                background: transparent;
-                color: var(--rojo-marlo);
-                border-bottom: 2px solid var(--rojo-marlo);
-            }
-
-            .logo-placeholder {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-            }
-
-            .logo-texto h1 {
-                font-size: 26px;
-            }
-
-            .logo-texto p {
-                font-size: 10px;
-            }
-
-            .hero h2 {
+        /* --- CELULARES PEQUEÑOS --- */
+        @media (max-width: 380px) {
+            .nombre { font-size: 30px; }
+            .subtitulo { font-size: 14px; }
+            .monograma {
+                width: 75px;
+                height: 75px;
                 font-size: 32px;
             }
+        }
 
-            .hero p {
-                font-size: 18px;
-            }
-
-            .grid-servicios {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            }
-
-            .catalogo h3 {
-                font-size: 28px;
-            }
-
-            .footer-contenido {
-                flex-direction: row;
-                justify-content: space-around;
-            }
-
-            .redes-sociales {
-                flex-direction: row;
-                justify-content: center;
-                margin-top: 15px;
-            }
-
-            .btn-pagar {
-                width: auto;
+        /* --- PANTALLAS GRANDES --- */
+        @media (min-width: 768px) {
+            .nombre { font-size: 52px; }
+            .subtitulo { font-size: 18px; }
+            .monograma {
+                width: 110px;
+                height: 110px;
+                font-size: 46px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ENCABEZADO CON MENÚ MÓVIL -->
-    <header>
-        <div class="logo-container">
-            <!-- Reemplaza esto con tu etiqueta <img src="logo.png" alt="Marlo"> -->
-            <div class="logo-placeholder">M</div>
-            <div class="logo-texto">
-                <h1>MARLO</h1>
-                <p>Tintorería y Lavandería</p>
-            </div>
-        </div>
+    <div class="contenedor">
+        <div class="monograma">SC</div>
 
-        <!-- Botón Hamburguesa (solo visible en móvil) -->
-        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+        <span class="etiqueta">Sitio en construcción</span>
 
-        <!-- Menú de Navegación -->
-        <nav id="menuNav">
-            <a href="#inicio">Inicio</a>
-            <a href="#catalogo">Catálogo</a>
-            <a href="#pago">Pagar en Línea</a>
-            <a href="#contacto">Contacto</a>
-        </nav>
-    </header>
+        <h1 class="nombre">Sergio Campos</h1>
 
-    <!-- Fondo oscuro al abrir menú -->
-    <div class="overlay" id="overlay"></div>
+        <p class="subtitulo">
+            Estoy trabajando en mi sitio web oficial.<br>
+            Muy pronto estará disponible.
+        </p>
 
-    <!-- BIENVENIDA -->
-    <section class="hero" id="inicio">
-        <h2>¡Bienvenido a Tintorería y Lavandería Marlo!</h2>
-        <p>"Pintamos y lavamos como usted lo merece"</p>
-    </section>
+        <div class="progreso"></div>
+    </div>
 
-    <!-- CATÁLOGO -->
-    <section class="catalogo" id="catalogo">
-        <h3>Nuestros Servicios</h3>
-        <div class="grid-servicios">
-            
-            <div class="tarjeta-servicio">
-                <h4>🧺 Lavandería</h4>
-                <ul>
-                    <li>Carga estándar (hasta 6 kg) <span class="precio">$240</span></li>
-                    <li>Kilo adicional <span class="precio">$40</span></li>
-                    <li>Kilo de toallas <span class="precio">$45</span></li>
-                    <li>Edredón <span class="precio">$155</span></li>
-                </ul>
-            </div>
-
-            <div class="tarjeta-servicio">
-                <h4>👔 Tintorería</h4>
-                <ul>
-                    <li>Camisa / Pantalón / Blusa <span class="precio">$59</span></li>
-                    <li>Saco o Chaleco <span class="precio">$69</span></li>
-                    <li>Traje completo <span class="precio">$120</span></li>
-                    <li>Abrigo corto <span class="precio">$70</span></li>
-                    <li>Abrigo largo <span class="precio">$89</span></li>
-                    <li>Chamarra <span class="precio">$90</span></li>
-                    <li>Vestido sencillo <span class="precio">$85</span></li>
-                    <li>Vestido de noche <span class="precio">$120</span></li>
-                </ul>
-            </div>
-
-            <div class="tarjeta-servicio">
-                <h4>🔥 Planchado</h4>
-                <ul>
-                    <li>Pieza sencilla <span class="precio">$25</span></li>
-                    <li>Docena <span class="precio">$250</span></li>
-                </ul>
-                <h4 style="margin-top: 20px;">✨ Especiales</h4>
-                <ul>
-                    <li>Limpieza de cortinas <span class="precio">Cotizar</span></li>
-                    <li>Tapicería <span class="precio">Cotizar</span></li>
-                    <li>Tratamiento de manchas <span class="precio">Cotizar</span></li>
-                </ul>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- PAGO EN LÍNEA -->
-    <section class="seccion-pago" id="pago">
-        <h3>💳 Paga tus servicios en línea</h3>
-        <p>Aceptamos tarjetas de crédito, débito, transferencia SPEI y pago en OXXO.</p>
-        <button class="btn-pagar" onclick="alert('Aquí se abriría la pasarela de pago (Mercado Pago, Stripe, etc.)')">Pagar Ahora</button>
-    </section>
-
-    <!-- PIE DE PÁGINA -->
-    <footer id="contacto">
-        <div class="footer-contenido">
-            <div class="footer-info">
-                <h4>📞 Teléfonos</h4>
-                <p>55 5286 8171</p>
-                <p>55 2976 1277 (WhatsApp)</p>
-            </div>
-            <div class="footer-info">
-                <h4>✉️ Correo</h4>
-                <p>TINTORERIA_MARLO@OUTLOOK.COM</p>
-            </div>
-            <div class="footer-info">
-                <h4>📍 Horario</h4>
-                <p>Lunes a Sábado: 9:00 - 19:00</p>
-                <p>Domingo: Cerrado</p>
-            </div>
-        </div>
-        
-        <div class="redes-sociales">
-            <a href="#">📘 Facebook</a>
-            <a href="#">📸 Instagram: @marlo_tintoreria</a>
-        </div>
-
-        <div class="copyright">
-            &copy; 2026 Tintorería y Lavandería Marlo. Todos los derechos reservados.
-        </div>
-    </footer>
-
-    <!-- SCRIPT PARA EL MENÚ MÓVIL -->
-    <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const menuNav = document.getElementById('menuNav');
-        const overlay = document.getElementById('overlay');
-        const enlaces = document.querySelectorAll('nav a');
-
-        function abrirMenu() {
-            menuToggle.classList.toggle('activo');
-            menuNav.classList.toggle('abierto');
-            overlay.classList.toggle('activo');
-            // Bloquea el scroll del fondo cuando el menú está abierto
-            document.body.style.overflow = menuNav.classList.contains('abierto') ? 'hidden' : '';
-        }
-
-        menuToggle.addEventListener('click', abrirMenu);
-        overlay.addEventListener('click', abrirMenu);
-
-        // Cierra el menú al tocar un enlace
-        enlaces.forEach(enlace => {
-            enlace.addEventListener('click', () => {
-                if (menuNav.classList.contains('abierto')) {
-                    abrirMenu();
-                }
-            });
-        });
-    </script>
+    <div class="footer">
+        © 2026 <a href="https://sergiocampos.mx">sergiocampos.mx</a> · Todos los derechos reservados
+    </div>
 
 </body>
 </html>
