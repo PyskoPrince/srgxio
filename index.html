@@ -1,2029 +1,387 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Srgxio — Human Cloud</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<style>
-  :root{
-    --hs-blue:#1F4E67;
-    --hs-blue-lt:#2f6d8c;
-    --hs-red:#d71d00;
-    --hs-gold:#22d3ee;
-    --hs-gold-warm:#fcc404;
-    --glass:rgba(255,255,255,0.08);
-    --glass-strong:rgba(255,255,255,0.14);
-    --glass-border:rgba(255,255,255,0.18);
-    --text-hi:#ffffff;
-    --text-mid:rgba(255,255,255,0.72);
-    --text-low:rgba(255,255,255,0.48);
-    --radius-lg:26px;
-    --radius-md:18px;
-    --radius-sm:12px;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    font-family:'Inter',system-ui,-apple-system,sans-serif;
-    color:var(--text-hi);
-    min-height:100vh;
-    background:
-      radial-gradient(1100px 650px at 8% -10%, rgba(252,196,4,0.14), transparent 55%),
-      radial-gradient(900px 600px at 100% 0%, rgba(215,29,0,0.16), transparent 55%),
-      linear-gradient(135deg,#070a10 0%, var(--hs-blue) 55%, var(--hs-red) 130%);
-    background-attachment:fixed;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-  }
-  h1,h2,h3,.brand,.nav-label{font-family:'Space Grotesk',sans-serif;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tintorería y Lavandería Marlo</title>
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        :root {
+            --azul-marlo: #0a1c4f;
+            --rojo-marlo: #d32f2f;
+            --gris-fondo: #f4f6f9;
+            --texto-oscuro: #333;
+        }
 
-  .glass{
-    background:var(--glass);
-    border:1px solid var(--glass-border);
-    backdrop-filter:blur(22px) saturate(160%);
-    -webkit-backdrop-filter:blur(22px) saturate(160%);
-    box-shadow:0 1px 0 rgba(255,255,255,0.15) inset, 0 20px 40px -20px rgba(0,0,0,0.55);
-  }
-  .glass-strong{ background:var(--glass-strong); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  i.fas, i.far, i.fab, i.fa-solid, i.fa-regular, i.fa-brands {
-    display:inline-block; font-style:normal; font-variant:normal;
-    text-rendering:auto; line-height:1; -webkit-font-smoothing:antialiased;
-  }
+        body {
+            background-color: var(--gris-fondo);
+            color: var(--texto-oscuro);
+        }
 
-  /* ═══════════════ TOP BAR ═══════════════ */
-  .topbar{
-    position:sticky; top:0; z-index:50;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:12px 22px; border-radius:0 0 24px 24px; margin:0 auto;
-  }
-  .brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.05rem; letter-spacing:.2px;}
-  .brand img{ height:40px; border-radius:12px; box-shadow:0 4px 14px rgba(34,211,238,.45); }
-  .topnav{display:flex; gap:6px;}
-  .topnav a{
-    color:var(--text-mid); text-decoration:none; font-size:1.05rem;
-    width:40px; height:40px; display:flex; align-items:center; justify-content:center;
-    border-radius:50%; transition:all .25s cubic-bezier(.175,.885,.32,1.275);
-    position:relative; cursor:pointer;
-  }
-  .topnav a.active, .topnav a:hover{ background:var(--hs-gold); color:#1a1200; transform:translateY(-3px) scale(1.1); }
-  .avatar-mini{
-    width:38px;height:38px;border-radius:50%;object-fit:cover;
-    border:2px solid var(--hs-gold);
-    box-shadow:0 0 12px rgba(34,211,238,.5);
-    flex-shrink:0; cursor:pointer;
-  }
+        /* --- ENCABEZADO --- */
+        header {
+            background-color: white;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-  /* ═══════════════ LAYOUT ═══════════════ */
-  .layout{
-    max-width:1180px; margin:22px auto 60px; padding:0 18px;
-    display:grid; grid-template-columns:260px minmax(0,1fr) 260px; gap:22px;
-    align-items:start;
-  }
-  @media (max-width:1080px){ .layout{ grid-template-columns:1fr; } .side-left,.side-right{ display:none; } }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-  /* ═══════════════ SIDE LEFT ═══════════════ */
-  .side-left{ position:sticky; top:90px; display:flex; flex-direction:column; gap:14px; }
-  .profile-card{ padding:20px 18px; border-radius:var(--radius-lg); text-align:center; }
-  .profile-card img{ width:76px;height:76px;border-radius:50%; object-fit:cover; border:3px solid var(--hs-gold); box-shadow:0 0 18px rgba(34,211,238,.5);}
-  .profile-card h3{ margin:10px 0 2px; font-size:1rem; font-style:italic; color:var(--hs-gold); }
-  .profile-card p{ margin:0; font-size:.76rem; color:var(--text-low); display:flex; align-items:center; justify-content:center; gap:6px;}
+        /* Aquí iría tu logo real */
+        .logo-placeholder {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--azul-marlo);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--rojo-marlo);
+            font-weight: bold;
+            font-size: 24px;
+            font-family: Georgia, serif;
+        }
 
-  .storage-widget{ margin-top:16px; padding:14px; border-radius:14px; background:rgba(0,0,0,0.25); border:1px solid var(--glass-border); }
-  .storage-widget .label{ font-size:.72rem; color:var(--text-mid); display:flex; justify-content:space-between; margin-bottom:8px; letter-spacing:.4px; }
-  .storage-widget .label b{ color:var(--hs-gold); }
-  .storage-bar{ height:8px; border-radius:6px; background:rgba(255,255,255,0.08); overflow:hidden; }
-  .storage-bar .fill{
-    height:100%; width:47%;
-    background:linear-gradient(90deg, var(--hs-gold), var(--hs-red));
-    border-radius:6px; transition:width .6s ease;
-  }
+        .logo-texto h1 {
+            color: var(--rojo-marlo);
+            font-family: Georgia, serif;
+            font-size: 28px;
+            letter-spacing: 2px;
+        }
 
-  /* ═══════════════ VAULT DE CONTRASEÑAS ═══════════════ */
-  .vault-panel{ padding:16px; border-radius:var(--radius-lg); }
-  .vault-panel h4{
-    margin:0 0 12px; font-size:.88rem; color:var(--text-mid); font-weight:600;
-    letter-spacing:.2px; display:flex; align-items:center; gap:8px;
-  }
-  .vault-panel h4 i{ color:var(--hs-gold); }
-  .vault-badge{
-    margin-left:auto; font-size:.7rem; font-weight:700;
-    padding:2px 8px; border-radius:999px;
-    background:rgba(34,211,238,0.18); color:var(--hs-gold);
-    border:1px solid rgba(34,211,238,0.4);
-  }
+        .logo-texto p {
+            color: var(--azul-marlo);
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-  .vault-search{ position:relative; margin-bottom:10px; }
-  .vault-search i{
-    position:absolute; left:12px; top:50%; transform:translateY(-50%);
-    color:var(--text-low); font-size:.75rem; pointer-events:none;
-  }
-  .vault-search input{
-    width:100%; padding:8px 12px 8px 32px;
-    background:rgba(0,0,0,0.25);
-    border:1px solid var(--glass-border);
-    border-radius:10px; color:var(--text-hi);
-    font-family:inherit; font-size:.78rem; outline:none;
-    transition:border-color .2s;
-  }
-  .vault-search input:focus{ border-color:var(--hs-gold); }
-  .vault-search input::placeholder{ color:var(--text-low); }
+        nav a {
+            text-decoration: none;
+            color: var(--azul-marlo);
+            font-weight: bold;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
 
-  .vault-add-btn{
-    width:100%; padding:9px; margin-bottom:10px;
-    border-radius:10px; border:none;
-    background:linear-gradient(135deg,var(--hs-gold),#0e94b0);
-    color:#001a22; font-family:inherit; font-weight:700; font-size:.78rem;
-    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;
-    transition:filter .2s;
-  }
-  .vault-add-btn:hover{ filter:brightness(1.1); }
+        nav a:hover {
+            color: var(--rojo-marlo);
+        }
 
-  .vault-list{
-    max-height:260px; overflow-y:auto; margin-bottom:10px;
-    display:flex; flex-direction:column; gap:6px;
-    scrollbar-width:thin; scrollbar-color:var(--hs-gold) transparent;
-  }
-  .vault-list::-webkit-scrollbar{ width:5px; }
-  .vault-list::-webkit-scrollbar-thumb{ background:var(--hs-gold); border-radius:10px; }
+        /* --- HERO SECTION --- */
+        .hero {
+            background-color: var(--azul-marlo);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
 
-  .vault-item{
-    display:flex; align-items:center; gap:10px;
-    padding:9px 10px;
-    background:rgba(255,255,255,0.05);
-    border:1px solid var(--glass-border);
-    border-radius:10px;
-    transition:all .2s;
-    cursor:pointer;
-  }
-  .vault-item:hover{
-    background:rgba(255,255,255,0.1);
-    border-color:var(--hs-gold);
-    transform:translateX(3px);
-  }
+        .hero h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
 
-  .vault-item-icon{
-    width:32px; height:32px; border-radius:8px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:.85rem; color:#fff;
-    flex-shrink:0;
-    background:linear-gradient(135deg, var(--hs-blue), var(--hs-blue-lt));
-  }
-  .vault-item-icon.gmail{ background:linear-gradient(135deg,#EA4335,#c5221f); }
-  .vault-item-icon.facebook{ background:linear-gradient(135deg,#1877F2,#0f5bbf); }
-  .vault-item-icon.instagram{ background:linear-gradient(45deg,#f09433,#dc2743,#bc1888); }
-  .vault-item-icon.github{ background:linear-gradient(135deg,#24292e,#000); }
-  .vault-item-icon.bank{ background:linear-gradient(135deg,#217346,#16542f); }
-  .vault-item-icon.crypto{ background:linear-gradient(135deg,#f7931a,#c76f00); }
-  .vault-item-icon.netflix{ background:linear-gradient(135deg,#E50914,#b00610); }
-  .vault-item-icon.other{ background:linear-gradient(135deg,#6B7280,#374151); }
+        .hero p {
+            font-size: 18px;
+            font-style: italic;
+            color: #ffcc00; /* Un toque dorado para resaltar */
+        }
 
-  .vault-item-info{ flex:1; min-width:0; }
-  .vault-item-name{
-    font-size:.8rem; font-weight:600; color:var(--text-hi);
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-    margin-bottom:2px;
-  }
-  .vault-item-user{
-    font-size:.68rem; color:var(--text-low);
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-    display:flex; align-items:center; gap:4px;
-  }
-  .vault-item-user i{ font-size:.6rem; }
+        /* --- CATÁLOGO --- */
+        .catalogo {
+            padding: 50px 5%;
+            max-width: 1200px;
+            margin: auto;
+        }
 
-  .vault-item-actions{
-    display:flex; gap:4px; opacity:0;
-    transition:opacity .2s;
-  }
-  .vault-item:hover .vault-item-actions{ opacity:1; }
-  .vault-item-actions button{
-    width:24px; height:24px; border-radius:6px;
-    background:rgba(0,0,0,0.5);
-    border:1px solid rgba(255,255,255,0.15);
-    color:#fff; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    font-size:.65rem;
-    transition:background .2s;
-  }
-  .vault-item-actions button:hover{ background:var(--hs-gold); color:#001a22; }
-  .vault-item-actions button.del:hover{ background:var(--hs-red); color:#fff; }
+        .catalogo h3 {
+            text-align: center;
+            color: var(--azul-marlo);
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
 
-  .vault-empty{ text-align:center; padding:20px 10px; color:var(--text-low); }
-  .vault-empty i{ font-size:1.6rem; margin-bottom:6px; display:block; opacity:.5; color:var(--hs-gold); }
-  .vault-empty p{ margin:0; font-size:.72rem; }
+        .grid-servicios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
 
-  .vault-footer{
-    display:flex; align-items:center; justify-content:space-between;
-    padding-top:10px; border-top:1px solid var(--glass-border);
-  }
-  .vault-lock{
-    display:flex; align-items:center; gap:6px;
-    font-size:.7rem; color:var(--text-low);
-  }
-  .vault-lock i{ color:var(--hs-gold); font-size:.7rem; }
-  .vault-settings{
-    width:26px; height:26px; border-radius:8px;
-    background:rgba(255,255,255,0.06);
-    border:1px solid var(--glass-border);
-    color:var(--text-mid); cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    font-size:.7rem;
-    transition:all .2s;
-  }
-  .vault-settings:hover{ background:var(--hs-gold); color:#001a22; }
+        .tarjeta-servicio {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--rojo-marlo);
+            transition: transform 0.3s;
+        }
 
-  /* Vault fields para SweetAlert */
-  .vault-field{ margin-bottom:12px; text-align:left; }
-  .vault-field label{
-    display:block; font-size:.75rem; color:#555;
-    margin-bottom:6px; font-weight:600; letter-spacing:.3px;
-  }
-  .vault-field input,
-  .vault-field select{
-    width:100%; padding:11px 14px;
-    background:rgba(255,255,255,0.9);
-    border:1.5px solid #dde3ea;
-    border-radius:12px; color:#1F4E67;
-    font-family:inherit; font-size:.88rem; outline:none;
-    transition:border-color .2s;
-  }
-  .vault-field input:focus,
-  .vault-field select:focus{ border-color:#22d3ee; }
-  .vault-field .pwd-row{ display:flex; gap:6px; }
-  .vault-field .pwd-row input{ flex:1; }
-  .vault-field .pwd-row button{
-    width:42px; border-radius:12px;
-    background:rgba(31,78,103,0.1);
-    border:1.5px solid #dde3ea;
-    color:#1F4E67; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition:all .2s;
-  }
-  .vault-field .pwd-row button:hover{ background:#22d3ee; color:#001a22; }
+        .tarjeta-servicio:hover {
+            transform: translateY(-5px);
+        }
 
-  .strength-bar{
-    height:5px; border-radius:4px; margin-top:6px;
-    background:rgba(0,0,0,0.1); overflow:hidden;
-  }
-  .strength-bar .fill{
-    height:100%; width:0; border-radius:4px;
-    transition:all .3s;
-  }
-  .strength-text{
-    font-size:.68rem; color:#888; margin-top:4px;
-    display:flex; justify-content:space-between;
-  }
+        .tarjeta-servicio h4 {
+            color: var(--azul-marlo);
+            font-size: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
 
-  /* Vault view */
-  .vault-view{ text-align:center; }
-  .vault-view .big-icon{
-    width:72px; height:72px; margin:0 auto 14px;
-    border-radius:20px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:2rem; color:#fff;
-    background:linear-gradient(135deg, var(--hs-blue), var(--hs-blue-lt));
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
-  }
-  .vault-view h3{ justify-content:center; margin:0 0 4px; color:#1F4E67; font-size:1.2rem; }
-  .vault-view .sub{ text-align:center; color:#888; font-size:.85rem; margin:0 0 16px; }
-  .vault-view-info{
-    background:rgba(31,78,103,0.08); border-radius:14px;
-    padding:14px 16px; margin-bottom:16px;
-    border:1px solid rgba(31,78,103,0.15);
-    text-align:left;
-  }
-  .vault-view-info .row{
-    display:flex; justify-content:space-between; align-items:center;
-    padding:8px 0; font-size:.82rem;
-    border-bottom:1px solid rgba(0,0,0,0.06);
-  }
-  .vault-view-info .row:last-child{ border-bottom:none; }
-  .vault-view-info .row span:first-child{ color:#666; display:flex; align-items:center; gap:6px; }
-  .vault-view-info .row span:last-child{
-    color:#1F4E67; font-weight:600;
-    font-family:monospace;
-    display:flex; align-items:center; gap:6px;
-  }
-  .vault-view-info .pwd-display{
-    font-family:monospace; font-size:1rem;
-    letter-spacing:1px; color:#1F4E67;
-    display:flex; align-items:center; gap:6px;
-  }
-  .vault-view-info .copy-btn{
-    width:24px; height:24px; border-radius:6px;
-    background:rgba(31,78,103,0.1);
-    border:1px solid rgba(31,78,103,0.2);
-    color:#1F4E67; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    font-size:.65rem;
-    transition:background .2s;
-  }
-  .vault-view-info .copy-btn:hover{ background:#22d3ee; color:#001a22; border-color:#22d3ee; }
+        .tarjeta-servicio ul {
+            list-style: none;
+        }
 
-  .vault-view-actions{ display:flex; gap:8px; }
-  .vault-view-actions button{
-    flex:1; padding:11px; border-radius:12px;
-    border:none; cursor:pointer;
-    font-family:inherit; font-weight:700; font-size:.8rem;
-    display:flex; align-items:center; justify-content:center; gap:6px;
-    transition:all .2s;
-  }
-  .vault-view-actions .btn-edit{
-    background:rgba(31,78,103,0.1); color:#1F4E67;
-    border:1.5px solid rgba(31,78,103,0.2);
-  }
-  .vault-view-actions .btn-edit:hover{ background:rgba(31,78,103,0.2); }
-  .vault-view-actions .btn-share{
-    background:linear-gradient(135deg,#22d3ee,#0e94b0);
-    color:#001a22;
-  }
-  .vault-view-actions .btn-share:hover{ filter:brightness(1.1); }
+        .tarjeta-servicio li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
 
-  /* ═══════════════ MAIN AREA ═══════════════ */
-  .main-panel{ padding:20px; border-radius:var(--radius-lg); }
+        .precio {
+            font-weight: bold;
+            color: var(--rojo-marlo);
+        }
 
-  .files-header{
-    display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:18px; flex-wrap:wrap; gap:12px;
-  }
-  .files-header h2{
-    margin:0; font-size:1.3rem; font-weight:700;
-    display:flex; align-items:center; gap:10px;
-  }
-  .files-header h2 i{ color:var(--hs-gold); }
-  .files-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+        /* --- SECCIÓN DE PAGO --- */
+        .seccion-pago {
+            background-color: white;
+            padding: 50px 5%;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
 
-  .btn-cloud{
-    border:none; padding:10px 18px; border-radius:999px; font-weight:700; font-size:.82rem;
-    cursor:pointer; display:flex; align-items:center; gap:8px;
-    transition:all .2s; font-family:inherit;
-  }
-  .btn-primary{ background:linear-gradient(135deg,var(--hs-gold),#0e94b0); color:#001a22; }
-  .btn-primary:hover{ filter:brightness(1.1); transform:translateY(-1px); }
-  .btn-secondary{ background:rgba(255,255,255,0.1); color:var(--text-hi); border:1px solid var(--glass-border); }
-  .btn-secondary:hover{ background:rgba(255,255,255,0.18); }
+        .seccion-pago h3 {
+            color: var(--azul-marlo);
+            font-size: 26px;
+            margin-bottom: 15px;
+        }
 
-  .dropzone{
-    border:2px dashed rgba(255,255,255,0.25);
-    border-radius:20px;
-    padding:32px 20px;
-    text-align:center;
-    cursor:pointer;
-    transition:all .25s;
-    margin-bottom:20px;
-    background:rgba(0,0,0,0.15);
-    display:none;
-  }
-  .dropzone.active{ display:block; }
-  .dropzone.dragover{
-    border-color:var(--hs-gold);
-    background:rgba(34,211,238,0.1);
-    transform:scale(1.01);
-  }
-  .dropzone i{ font-size:2.6rem; color:var(--hs-gold); margin-bottom:12px; display:block; }
-  .dropzone p{ margin:0 0 6px; font-size:.95rem; font-weight:600; }
-  .dropzone small{ color:var(--text-low); font-size:.75rem; }
-  .dropzone input{ display:none; }
+        .seccion-pago p {
+            margin-bottom: 25px;
+            color: #666;
+        }
 
-  .search-bar{ position:relative; margin-bottom:16px; }
-  .search-bar input{
-    width:100%; padding:12px 44px 12px 44px;
-    background:rgba(255,255,255,0.06);
-    border:1px solid var(--glass-border);
-    border-radius:14px; color:var(--text-hi);
-    font-family:inherit; font-size:.9rem;
-    outline:none;
-    transition:border-color .2s;
-  }
-  .search-bar input:focus{ border-color:var(--hs-gold); }
-  .search-bar input::placeholder{ color:var(--text-low); }
-  .search-bar .icon-left{
-    position:absolute; left:16px; top:50%; transform:translateY(-50%);
-    color:var(--text-low); pointer-events:none;
-  }
-  .search-bar .icon-right{
-    position:absolute; right:14px; top:50%; transform:translateY(-50%);
-    color:var(--text-low);
-  }
+        .btn-pagar {
+            background-color: var(--rojo-marlo);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.3);
+        }
 
-  .filter-tabs{ display:flex; gap:6px; margin-bottom:18px; flex-wrap:wrap; }
-  .filter-tabs button{
-    background:rgba(255,255,255,0.06);
-    border:1px solid var(--glass-border);
-    color:var(--text-mid);
-    padding:8px 16px; border-radius:999px;
-    font-size:.78rem; font-weight:600; cursor:pointer;
-    font-family:inherit; transition:all .2s;
-    display:flex; align-items:center; gap:6px;
-  }
-  .filter-tabs button:hover{ background:rgba(255,255,255,0.12); color:var(--text-hi); }
-  .filter-tabs button.active{ background:var(--hs-gold); color:#001a22; border-color:var(--hs-gold); }
+        .btn-pagar:hover {
+            background-color: #b71c1c;
+            transform: scale(1.05);
+        }
 
-  .files-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
-    gap:14px;
-  }
+        /* --- PIE DE PÁGINA --- */
+        footer {
+            background-color: var(--azul-marlo);
+            color: white;
+            padding: 40px 5%;
+            text-align: center;
+        }
 
-  .file-card{
-    background:rgba(255,255,255,0.05);
-    border:1px solid var(--glass-border);
-    border-radius:16px;
-    padding:14px;
-    transition:all .25s cubic-bezier(.175,.885,.32,1.275);
-    cursor:pointer;
-    position:relative;
-    overflow:hidden;
-    animation:fileIn .4s ease;
-  }
-  @keyframes fileIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-  .file-card:hover{
-    background:rgba(255,255,255,0.1);
-    transform:translateY(-4px);
-    border-color:var(--hs-gold);
-    box-shadow:0 12px 28px rgba(0,0,0,0.4);
-  }
+        .footer-contenido {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
 
-  .file-icon{
-    width:52px; height:52px; border-radius:14px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.6rem; color:#fff;
-    margin-bottom:12px;
-    position:relative;
-    box-shadow:0 6px 14px rgba(0,0,0,0.3);
-  }
-  .file-icon.doc{ background:linear-gradient(135deg, #2B579A, #1a3a6e); }
-  .file-icon.xls{ background:linear-gradient(135deg, #217346, #16542f); }
-  .file-icon.ppt{ background:linear-gradient(135deg, #B7472A, #8c2f18); }
-  .file-icon.pdf{ background:linear-gradient(135deg, #DC2626, #991b1b); }
-  .file-icon.img{ background:linear-gradient(135deg, #7C3AED, #5b21b6); }
-  .file-icon.vid{ background:linear-gradient(135deg, #0891B2, #075985); }
-  .file-icon.aud{ background:linear-gradient(135deg, #DB2777, #9d174d); }
-  .file-icon.zip{ background:linear-gradient(135deg, #F59E0B, #b45309); }
-  .file-icon.txt{ background:linear-gradient(135deg, #6B7280, #374151); }
+        .footer-info {
+            margin-bottom: 20px;
+        }
 
-  .file-name{
-    font-weight:600; font-size:.88rem; color:var(--text-hi);
-    margin-bottom:4px;
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-  }
-  .file-meta{
-    font-size:.72rem; color:var(--text-low);
-    display:flex; align-items:center; gap:8px;
-  }
-  .file-meta span{ display:flex; align-items:center; gap:4px; }
+        .footer-info h4 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
 
-  .file-overlay{
-    position:absolute; top:10px; right:10px;
-    display:flex; gap:4px; opacity:0;
-    transition:opacity .2s;
-  }
-  .file-card:hover .file-overlay{ opacity:1; }
-  .file-overlay button{
-    width:28px; height:28px; border-radius:8px;
-    background:rgba(0,0,0,0.6);
-    border:1px solid rgba(255,255,255,0.15);
-    color:#fff; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    font-size:.75rem;
-    transition:background .2s;
-    backdrop-filter:blur(8px);
-  }
-  .file-overlay button:hover{ background:var(--hs-gold); color:#001a22; }
-  .file-overlay button.del:hover{ background:var(--hs-red); color:#fff; }
+        .footer-info p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
 
-  .empty-state{ text-align:center; padding:60px 20px; color:var(--text-low); }
-  .empty-state i{ font-size:3rem; margin-bottom:12px; display:block; color:var(--hs-gold); opacity:.5; }
-  .empty-state p{ margin:6px 0; font-size:.9rem; }
+        .redes-sociales a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 16px;
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
 
-  /* ═══════════════ FILE PREVIEW MODAL ═══════════════ */
-  .file-modal{
-    position:fixed; inset:0;
-    background:rgba(0,0,0,0.9);
-    backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px);
-    z-index:9999;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:24px;
-    animation:svFadeIn .25s ease;
-  }
-  .file-modal.active{ display:flex; }
-  @keyframes svFadeIn{ from{opacity:0;} to{opacity:1;} }
+        .redes-sociales a:hover {
+            background: var(--rojo-marlo);
+        }
 
-  .file-modal-box{
-    width:100%; max-width:920px; max-height:92vh;
-    border-radius:22px;
-    background:linear-gradient(180deg, rgba(31,78,103,0.95), rgba(10,14,20,0.98));
-    border:1px solid var(--glass-border);
-    box-shadow:0 30px 80px rgba(0,0,0,0.8);
-    display:flex; flex-direction:column;
-    overflow:hidden;
-    animation:svScaleIn .3s cubic-bezier(.2,.8,.2,1);
-  }
-  @keyframes svScaleIn{ from{transform:scale(0.94); opacity:0;} to{transform:scale(1); opacity:1;} }
+        .copyright {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #a0aec0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
 
-  .file-modal-header{
-    display:flex; align-items:center; gap:12px;
-    padding:16px 20px;
-    border-bottom:1px solid var(--glass-border);
-    background:rgba(0,0,0,0.3);
-  }
-  .file-modal-header .icon{
-    width:42px; height:42px; border-radius:12px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.3rem; color:#fff;
-    flex-shrink:0;
-  }
-  .file-modal-header .info{ flex:1; min-width:0; }
-  .file-modal-header .info h3{
-    margin:0 0 2px; font-size:1rem; color:#fff;
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-  }
-  .file-modal-header .info p{ margin:0; font-size:.75rem; color:var(--text-low); }
-  .file-modal-header .actions{ display:flex; gap:8px; }
-  .file-modal-header .actions button{
-    width:38px; height:38px; border-radius:10px;
-    background:rgba(255,255,255,0.08);
-    border:1px solid var(--glass-border);
-    color:var(--text-hi); cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition:all .2s;
-  }
-  .file-modal-header .actions button:hover{ background:var(--hs-gold); color:#001a22; }
-  .file-modal-header .actions button.close:hover{ background:var(--hs-red); color:#fff; }
-
-  .file-modal-body{
-    flex:1; overflow:auto; padding:20px;
-    display:flex; align-items:center; justify-content:center;
-    min-height:400px;
-  }
-  .file-modal-body img{ max-width:100%; max-height:70vh; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,0.6); }
-  .file-modal-body video{ max-width:100%; max-height:70vh; border-radius:12px; }
-  .file-modal-body audio{ width:100%; max-width:500px; }
-  .file-modal-body iframe{ width:100%; height:70vh; border:none; border-radius:12px; background:#fff; }
-
-  .doc-preview{
-    width:100%; height:70vh; max-width:800px;
-    background:#fff; border-radius:12px;
-    padding:40px;
-    color:#222;
-    font-family:Georgia, serif;
-    overflow-y:auto;
-    box-shadow:0 12px 40px rgba(0,0,0,0.6);
-  }
-  .doc-preview h1{ font-size:1.6rem; margin:0 0 12px; color:#1F4E67; }
-  .doc-preview p{ line-height:1.6; margin:8px 0; font-size:.95rem; color:#333; }
-  .doc-preview .meta-bar{
-    padding:10px 14px; background:#f3f6f9; border-radius:8px;
-    font-size:.78rem; color:#666; margin-bottom:20px;
-    display:flex; justify-content:space-between;
-  }
-
-  .share-row{
-    display:flex; gap:10px; padding:14px 20px;
-    border-top:1px solid var(--glass-border);
-    background:rgba(0,0,0,0.25);
-    justify-content:center;
-    flex-wrap:wrap;
-  }
-  .share-btn{
-    padding:9px 18px; border-radius:12px;
-    background:rgba(255,255,255,0.08);
-    border:1px solid var(--glass-border);
-    color:var(--text-hi); cursor:pointer;
-    font-family:inherit; font-size:.82rem; font-weight:600;
-    display:flex; align-items:center; gap:8px;
-    transition:all .2s;
-  }
-  .share-btn:hover{ background:var(--hs-gold); color:#001a22; transform:translateY(-2px); }
-  .share-btn.nfc:hover{ background:linear-gradient(135deg,#8b5cf6,#22d3ee); color:#fff; }
-
-  /* ═══════════════ SHARE MODAL ═══════════════ */
-  .share-modal{
-    position:fixed; inset:0;
-    background:rgba(0,0,0,0.92);
-    backdrop-filter:blur(18px);
-    z-index:10001;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:24px;
-    animation:svFadeIn .25s ease;
-  }
-  .share-modal.active{ display:flex; }
-
-  .share-modal-box{
-    width:100%; max-width:460px;
-    border-radius:24px;
-    padding:28px 24px;
-    background:linear-gradient(180deg, rgba(31,78,103,0.95), rgba(10,14,20,0.98));
-    border:1px solid var(--glass-border);
-    box-shadow:0 30px 80px rgba(0,0,0,0.8);
-    text-align:center;
-    position:relative;
-    animation:svScaleIn .3s cubic-bezier(.2,.8,.2,1);
-  }
-  .share-modal-box h3{
-    margin:0 0 6px; font-size:1.2rem; color:var(--hs-gold);
-    display:flex; align-items:center; justify-content:center; gap:10px;
-  }
-  .share-modal-box .sub{ margin:0 0 20px; font-size:.82rem; color:var(--text-mid); }
-
-  .qr-container{
-    background:#fff; padding:18px; border-radius:18px;
-    display:inline-block; margin:0 auto 16px;
-    box-shadow:0 12px 40px rgba(0,0,0,0.5);
-  }
-  .qr-container canvas, .qr-container img{ display:block; border-radius:6px; }
-
-  .share-file-info{
-    padding:12px 16px; margin:0 0 18px;
-    background:rgba(0,0,0,0.3); border-radius:12px;
-    display:flex; align-items:center; gap:12px;
-    border:1px solid var(--glass-border);
-    text-align:left;
-  }
-  .share-file-info .mini-icon{
-    width:38px; height:38px; border-radius:10px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.1rem; color:#fff; flex-shrink:0;
-  }
-  .share-file-info .info{ flex:1; min-width:0; }
-  .share-file-info .info b{
-    display:block; font-size:.85rem; color:#fff;
-    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-  }
-  .share-file-info .info small{ font-size:.72rem; color:var(--text-low); }
-
-  .share-tabs{
-    display:flex; gap:6px; margin-bottom:18px;
-    background:rgba(0,0,0,0.3); padding:5px; border-radius:12px;
-  }
-  .share-tabs button{
-    flex:1; padding:10px; border-radius:8px;
-    background:transparent; border:none;
-    color:var(--text-mid); cursor:pointer;
-    font-family:inherit; font-size:.82rem; font-weight:600;
-    display:flex; align-items:center; justify-content:center; gap:6px;
-    transition:all .2s;
-  }
-  .share-tabs button.active{ background:var(--hs-gold); color:#001a22; }
-
-  .nfc-panel{ display:none; flex-direction:column; align-items:center; padding:12px 0; }
-  .nfc-panel.active{ display:flex; }
-
-  .nfc-circle{
-    width:140px; height:140px; border-radius:50%;
-    background:linear-gradient(135deg, rgba(139,92,246,0.3), rgba(34,211,238,0.3));
-    border:2px solid rgba(139,92,246,0.6);
-    display:flex; align-items:center; justify-content:center;
-    font-size:3.5rem; color:#fff;
-    margin-bottom:18px;
-    animation:nfcPulse 2s infinite;
-  }
-  @keyframes nfcPulse{
-    0%,100%{ box-shadow:0 0 0 0 rgba(139,92,246,0.6); }
-    50%{ box-shadow:0 0 0 30px rgba(139,92,246,0); }
-  }
-  .nfc-circle i{ animation:nfcWiggle 2s infinite; }
-  @keyframes nfcWiggle{
-    0%,100%{ transform:rotate(0); }
-    25%{ transform:rotate(-8deg); }
-    75%{ transform:rotate(8deg); }
-  }
-  .nfc-panel p{ font-size:.88rem; color:var(--text-mid); margin:0 0 8px; }
-  .nfc-panel small{ font-size:.75rem; color:var(--text-low); }
-
-  .qr-panel{ display:none; }
-  .qr-panel.active{ display:block; }
-
-  .share-close{
-    position:absolute; top:14px; right:14px;
-    width:32px; height:32px; border-radius:50%;
-    background:rgba(255,255,255,0.1);
-    border:1px solid var(--glass-border);
-    color:#fff; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition:background .2s;
-  }
-  .share-close:hover{ background:var(--hs-red); }
-
-  /* ═══════════════ SIDE RIGHT ═══════════════ */
-  .side-right{ display:flex; flex-direction:column; gap:16px; position:sticky; top:90px; }
-  .panel{ padding:16px; border-radius:var(--radius-lg); }
-  .panel h4{
-    margin:0 0 12px; font-size:.88rem; color:var(--text-mid);
-    font-weight:600; letter-spacing:.2px;
-    display:flex; align-items:center; gap:8px;
-  }
-  .panel h4 i{ color:var(--hs-gold); }
-
-  .stat-item{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:10px 0; font-size:.82rem;
-    border-bottom:1px solid var(--glass-border);
-  }
-  .stat-item:last-child{ border-bottom:none; }
-  .stat-item .left{ display:flex; align-items:center; gap:10px; color:var(--text-hi); }
-  .stat-item .left i{ color:var(--hs-gold); width:16px; text-align:center; }
-  .stat-item .right{ color:var(--text-low); font-size:.78rem; font-weight:600; }
-
-  /* ═══════════════ CONFIG MODAL ═══════════════ */
-  .config-modal{
-    position:fixed; inset:0;
-    background:rgba(0,0,0,0.9);
-    backdrop-filter:blur(16px);
-    z-index:10000;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    animation:svFadeIn .2s ease;
-  }
-  .config-modal.active{ display:flex; }
-
-  .config-box{
-    width:100%; max-width:640px; max-height:92vh;
-    overflow-y:auto;
-    border-radius:24px;
-    padding:28px;
-    background:linear-gradient(180deg, rgba(31,78,103,0.95), rgba(10,14,20,0.98));
-    border:1px solid var(--glass-border);
-    box-shadow:0 30px 80px rgba(0,0,0,0.8);
-    animation:svScaleIn .3s cubic-bezier(.2,.8,.2,1);
-  }
-  .config-box h3{
-    margin:0 0 6px; font-size:1.3rem; color:var(--hs-gold);
-    display:flex; align-items:center; gap:10px;
-  }
-  .config-box .sub{ margin:0 0 22px; font-size:.82rem; color:var(--text-mid); }
-
-  .config-section{
-    margin-bottom:24px; padding-bottom:20px;
-    border-bottom:1px solid var(--glass-border);
-  }
-  .config-section:last-child{ border-bottom:none; }
-  .config-section h4{
-    margin:0 0 14px; font-size:.9rem; color:var(--text-mid);
-    font-weight:600; display:flex; align-items:center; gap:8px;
-  }
-  .config-section h4 i{ color:var(--hs-gold); }
-
-  .cfg-field{ margin-bottom:14px; }
-  .cfg-field label{
-    display:block; font-size:.78rem; color:var(--text-mid);
-    margin-bottom:6px; font-weight:600; letter-spacing:.3px;
-  }
-  .cfg-field .row-input{ display:flex; gap:8px; }
-  .cfg-field input{
-    flex:1; padding:11px 16px;
-    background:rgba(255,255,255,0.06);
-    border:1px solid var(--glass-border);
-    border-radius:12px; color:var(--text-hi);
-    font-family:inherit; font-size:.88rem; outline:none;
-    transition:border-color .2s;
-  }
-  .cfg-field input:focus{ border-color:var(--hs-gold); }
-  .cfg-field .row-input button{
-    padding:0 18px; border-radius:12px;
-    background:var(--hs-gold); color:#001a22;
-    border:none; cursor:pointer; font-weight:700;
-    display:flex; align-items:center; justify-content:center;
-    transition:filter .2s;
-  }
-  .cfg-field .row-input button:hover{ filter:brightness(1.1); }
-
-  .switch-row{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:14px; border-radius:14px;
-    background:rgba(255,255,255,0.05); border:1px solid var(--glass-border);
-    margin-bottom:14px;
-  }
-  .switch-row .label{ font-size:.85rem; }
-  .switch-row .label b{ display:block; }
-  .switch-row .label small{ font-size:.72rem; color:var(--text-low); }
-  .switch{ position:relative; display:inline-block; width:52px; height:30px; flex-shrink:0; }
-  .switch input{ display:none; }
-  .slider{
-    position:absolute; cursor:pointer; inset:0;
-    background-color:rgba(255,255,255,0.2);
-    transition:.4s; border-radius:30px;
-  }
-  .slider::before{
-    content:""; position:absolute;
-    height:22px; width:22px; left:4px; bottom:4px;
-    background-color:#fff; transition:.4s;
-    border-radius:50%;
-  }
-  input:checked + .slider{ background-color:var(--hs-gold); }
-  input:checked + .slider::before{ transform:translateX(22px); }
-
-  .btn-danger{
-    background:linear-gradient(135deg,#d71d00,#9a1200);
-    color:#fff; border:none;
-    padding:12px 22px; border-radius:12px;
-    font-family:inherit; font-weight:700; font-size:.85rem;
-    cursor:pointer; display:flex; align-items:center; gap:8px;
-    transition:filter .2s;
-  }
-  .btn-danger:hover{ filter:brightness(1.1); }
-
-  .config-actions{ display:flex; gap:10px; margin-top:10px; }
-  .config-actions button{
-    flex:1; padding:13px; border-radius:14px; border:none;
-    cursor:pointer; font-family:inherit; font-weight:700; font-size:.88rem;
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    transition:filter .2s;
-  }
-  .btn-cancel{
-    background:rgba(255,255,255,0.1); color:var(--text-hi);
-    border:1px solid var(--glass-border);
-  }
-  .btn-cancel:hover{ background:rgba(255,255,255,0.18); }
-  .btn-save{
-    background:linear-gradient(135deg, var(--hs-gold), #0e94b0);
-    color:#001a22;
-  }
-  .btn-save:hover{ filter:brightness(1.1); }
-
-  .toast{
-    position:fixed; bottom:32px; left:50%;
-    transform:translateX(-50%) translateY(20px);
-    background:linear-gradient(135deg, var(--hs-gold), #0e94b0);
-    color:#001a22; padding:14px 26px; border-radius:999px;
-    font-weight:700; font-size:.9rem;
-    box-shadow:0 12px 40px rgba(34,211,238,.5);
-    z-index:99999; opacity:0;
-    transition:all .35s cubic-bezier(.2,.8,.2,1);
-    font-family:'Inter', sans-serif;
-    display:flex; align-items:center; gap:10px;
-  }
-  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
-
-</style>
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav a {
+                margin: 0 10px;
+                font-size: 14px;
+            }
+            .hero h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <div style="position:fixed; bottom:0; left:0; right:0; z-index:100000; background:rgba(0,0,0,0.75); color:#fcc404; text-align:center; padding:6px 12px; font-family:'Inter',sans-serif; font-size:.72rem; letter-spacing:.3px;">
-  ⚠️ DEMO — Todos los usuarios, contraseñas y datos mostrados son ficticios y se incluyen únicamente con fines de demostración visual.
-</div>
-  <!-- ═══════════════ TOP BAR ═══════════════ -->
-  <div class="topbar glass" style="max-width:1180px;">
-    <div class="brand">
-      <img src="https://i.ibb.co/G3XDtMJ/Logoapp.png" alt="Human System">
-      Human <span style="color:var(--hs-gold)">Vault</span>
-    </div>
-    <div class="topnav">
-      <a href="#" class="active" title="Mis archivos"><i class="fas fa-cloud"></i></a>
-      <a href="#" title="Recientes"><i class="fas fa-clock-rotate-left"></i></a>
-      <a href="#" title="Compartidos"><i class="fas fa-share-nodes"></i></a>
-      <a href="#" title="Favoritos"><i class="fas fa-star"></i></a>
-      <a href="#" id="btnConfig" title="Configuración"><i class="fas fa-gear"></i></a>
-    </div>
-    <img class="avatar-mini" src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio" onclick="openConfig()">
-  </div>
-
-  <div class="layout">
-
-    <!-- ═══════════════ SIDE LEFT ═══════════════ -->
-    <aside class="side-left">
-
-      <div class="profile-card glass">
-        <img src="https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png" alt="Srgxio">
-        <h3>Srgxio</h3>
-        <p><i class="fas fa-fingerprint"></i> HUM-4B21XK9</p>
-
-        <div class="storage-widget">
-          <div class="label">
-            <span>Almacenamiento</span>
-            <span><b>4.7 GB</b> / 10 GB</span>
-          </div>
-          <div class="storage-bar"><div class="fill"></div></div>
+    <!-- ENCABEZADO -->
+    <header>
+        <div class="logo-container">
+            <!-- Reemplaza este div con tu etiqueta <img> real -->
+            <div class="logo-placeholder">M</div>
+            <div class="logo-texto">
+                <h1>MARLO</h1>
+                <p>Tintorería y Lavandería</p>
+            </div>
         </div>
-      </div>
+        <nav>
+            <a href="#inicio">Inicio</a>
+            <a href="#catalogo">Catálogo</a>
+            <a href="#pago">Pagar en Línea</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+    </header>
 
-      <!-- VAULT DE CONTRASEÑAS -->
-      <div class="vault-panel glass">
-        <h4>
-          <i class="fas fa-shield-halved"></i> Vault
-          <span class="vault-badge" id="vaultCount">0</span>
-        </h4>
+    <!-- HERO / BIENVENIDA -->
+    <section class="hero" id="inicio">
+        <h2>¡Bienvenido a Tintorería y Lavandería Marlo!</h2>
+        <p>"Pintamos y lavamos como usted lo merece"</p>
+    </section>
 
-        <div class="vault-search">
-          <i class="fas fa-magnifying-glass"></i>
-          <input type="text" id="vaultSearch" placeholder="Buscar..." oninput="renderVault()">
+    <!-- CATÁLOGO DE SERVICIOS -->
+    <section class="catalogo" id="catalogo">
+        <h3>Nuestros Servicios</h3>
+        <div class="grid-servicios">
+            
+            <!-- Tarjeta 1 -->
+            <div class="tarjeta-servicio">
+                <h4>🧺 Lavandería</h4>
+                <ul>
+                    <li>Carga estándar (hasta 6 kg) <span class="precio">$240</span></li>
+                    <li>Kilo adicional <span class="precio">$40</span></li>
+                    <li>Kilo de toallas <span class="precio">$45</span></li>
+                    <li>Edredón <span class="precio">$155</span></li>
+                </ul>
+            </div>
+
+            <!-- Tarjeta 2 -->
+            <div class="tarjeta-servicio">
+                <h4>👔 Tintorería</h4>
+                <ul>
+                    <li>Camisa / Pantalón / Blusa <span class="precio">$59</span></li>
+                    <li>Saco o Chaleco <span class="precio">$69</span></li>
+                    <li>Traje completo <span class="precio">$120</span></li>
+                    <li>Abrigo corto <span class="precio">$70</span></li>
+                    <li>Abrigo largo <span class="precio">$89</span></li>
+                    <li>Chamarra <span class="precio">$90</span></li>
+                    <li>Vestido sencillo <span class="precio">$85</span></li>
+                    <li>Vestido de noche <span class="precio">$120</span></li>
+                </ul>
+            </div>
+
+            <!-- Tarjeta 3 -->
+            <div class="tarjeta-servicio">
+                <h4>🔥 Planchado</h4>
+                <ul>
+                    <li>Pieza sencilla <span class="precio">$25</span></li>
+                    <li>Docena <span class="precio">$250</span></li>
+                </ul>
+                <h4 style="margin-top: 20px;">✨ Especiales</h4>
+                <ul>
+                    <li>Limpieza de cortinas <span class="precio">Cotizar</span></li>
+                    <li>Tapicería <span class="precio">Cotizar</span></li>
+                    <li>Tratamiento de manchas <span class="precio">Cotizar</span></li>
+                </ul>
+            </div>
+
         </div>
+    </section>
 
-        <button class="vault-add-btn" onclick="openVaultAdd()">
-          <i class="fas fa-plus"></i> Nueva contraseña
-        </button>
+    <!-- SECCIÓN DE PAGO EN LÍNEA -->
+    <section class="seccion-pago" id="pago">
+        <h3>💳 Paga tus servicios en línea</h3>
+        <p>Aceptamos tarjetas de crédito, débito, transferencia SPEI y pago en OXXO.</p>
+        <!-- Este botón simula la pasarela de pago -->
+        <button class="btn-pagar" onclick="alert('Aquí se abriría la pasarela de pago (Mercado Pago, Stripe, etc.)')">Pagar Ahora</button>
+    </section>
 
-        <div class="vault-list" id="vaultList">
-          <!-- JS renderiza aquí -->
+    <!-- PIE DE PÁGINA -->
+    <footer id="contacto">
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <h4>📞 Teléfonos</h4>
+                <p>55 5286 8171</p>
+                <p>55 2976 1277 (WhatsApp)</p>
+            </div>
+            <div class="footer-info">
+                <h4>✉️ Correo</h4>
+                <p>TINTORERIA_MARLO@OUTLOOK.COM</p>
+            </div>
+            <div class="footer-info">
+                <h4>📍 Horario</h4>
+                <p>Lunes a Sábado: 9:00 - 19:00</p>
+                <p>Domingo: Cerrado</p>
+            </div>
         </div>
-
-        <div class="vault-footer">
-          <div class="vault-lock">
-            <i class="fas fa-lock"></i>
-            <small>Cifrado AES-256</small>
-          </div>
-          <button class="vault-settings" onclick="showToast('Configurando vault...','fa-shield-halved')" title="Ajustes">
-            <i class="fas fa-sliders"></i>
-          </button>
-        </div>
-      </div>
-
-    </aside>
-
-    <!-- ═══════════════ MAIN AREA ═══════════════ -->
-    <main>
-
-      <div class="main-panel glass">
-
-        <div class="files-header">
-          <h2><i class="fas fa-cloud"></i> Mis archivos</h2>
-          <div class="files-actions">
-            <button class="btn-cloud btn-secondary" onclick="toggleDropzone()">
-              <i class="fas fa-folder-open"></i> Examinar
-            </button>
-            <button class="btn-cloud btn-primary" onclick="triggerUpload()">
-              <i class="fas fa-cloud-arrow-up"></i> Subir archivo
-            </button>
-          </div>
-        </div>
-
-        <div class="dropzone" id="dropzone">
-          <i class="fas fa-cloud-arrow-up"></i>
-          <p>Arrastra tus archivos aquí o haz clic para seleccionar</p>
-          <small>Word, Excel, PowerPoint, PDF, imágenes, videos, audio y más · Máx 100 MB</small>
-          <input type="file" id="fileInput" multiple accept="*/*">
-        </div>
-
-        <div class="search-bar">
-          <i class="fas fa-magnifying-glass icon-left"></i>
-          <input type="text" id="searchInput" placeholder="Buscar en la nube..." oninput="filterFiles()">
-          <i class="fas fa-sliders icon-right"></i>
-        </div>
-
-        <div class="filter-tabs" id="filterTabs">
-          <button class="active" data-filter="all"><i class="fas fa-border-all"></i> Todos</button>
-          <button data-filter="doc"><i class="fas fa-file-word"></i> Word</button>
-          <button data-filter="xls"><i class="fas fa-file-excel"></i> Excel</button>
-          <button data-filter="ppt"><i class="fas fa-file-powerpoint"></i> PowerPoint</button>
-          <button data-filter="pdf"><i class="fas fa-file-pdf"></i> PDF</button>
-          <button data-filter="img"><i class="fas fa-image"></i> Imágenes</button>
-          <button data-filter="vid"><i class="fas fa-video"></i> Videos</button>
+        
+        <div class="redes-sociales">
+            <a href="#">📘 Facebook</a>
+            <a href="#">📸 Instagram: @marlo_tintoreria</a>
         </div>
 
-        <div class="files-grid" id="filesGrid">
-          <!-- JS renderiza aquí -->
+        <div class="copyright">
+            &copy; 2026 Tintorería y Lavandería Marlo. Todos los derechos reservados.
         </div>
-
-      </div>
-
-    </main>
-
-    <!-- ═══════════════ SIDE RIGHT ═══════════════ -->
-    <aside class="side-right">
-
-      <div class="panel glass">
-        <h4><i class="fas fa-chart-pie"></i> Resumen</h4>
-        <div class="stat-item">
-          <div class="left"><i class="fas fa-file"></i> Archivos</div>
-          <div class="right" id="statFiles">0</div>
-        </div>
-        <div class="stat-item">
-          <div class="left"><i class="fas fa-file-word"></i> Documentos</div>
-          <div class="right" id="statDocs">0</div>
-        </div>
-        <div class="stat-item">
-          <div class="left"><i class="fas fa-file-excel"></i> Hojas</div>
-          <div class="right" id="statSheets">0</div>
-        </div>
-        <div class="stat-item">
-          <div class="left"><i class="fas fa-file-powerpoint"></i> Slides</div>
-          <div class="right" id="statSlides">0</div>
-        </div>
-        <div class="stat-item">
-          <div class="left"><i class="fas fa-image"></i> Imágenes</div>
-          <div class="right" id="statImgs">0</div>
-        </div>
-      </div>
-
-      <div class="panel glass">
-        <h4><i class="fas fa-bolt"></i> Acciones rápidas</h4>
-        <button class="btn-cloud btn-primary" style="width:100%; justify-content:center; margin-bottom:8px;" onclick="triggerUpload()">
-          <i class="fas fa-plus"></i> Nuevo archivo
-        </button>
-        <button class="btn-cloud btn-secondary" style="width:100%; justify-content:center; margin-bottom:8px;" onclick="showToast('Escaneando documentos...','fa-qrcode')">
-          <i class="fas fa-qrcode"></i> Escanear
-        </button>
-        <button class="btn-cloud btn-secondary" style="width:100%; justify-content:center;" onclick="showToast('Compartiendo carpeta...','fa-share-nodes')">
-          <i class="fas fa-share-nodes"></i> Compartir carpeta
-        </button>
-      </div>
-
-    </aside>
-
-  </div>
-
-  <!-- ═══════════════ FILE PREVIEW MODAL ═══════════════ -->
-  <div class="file-modal" id="fileModal">
-    <div class="file-modal-box">
-      <div class="file-modal-header">
-        <div class="icon" id="fmIcon"><i class="fas fa-file"></i></div>
-        <div class="info">
-          <h3 id="fmName">—</h3>
-          <p id="fmMeta">—</p>
-        </div>
-        <div class="actions">
-          <button title="Descargar" onclick="downloadCurrent()"><i class="fas fa-download"></i></button>
-          <button title="Compartir" onclick="openShare()"><i class="fas fa-share-nodes"></i></button>
-          <button class="close" title="Cerrar" onclick="closeFileModal()"><i class="fas fa-xmark"></i></button>
-        </div>
-      </div>
-
-      <div class="file-modal-body" id="fmBody"></div>
-
-      <div class="share-row">
-        <button class="share-btn" onclick="openShareQR()">
-          <i class="fas fa-qrcode"></i> Compartir por QR
-        </button>
-        <button class="share-btn nfc" onclick="openShareNFC()">
-          <i class="fas fa-wifi"></i> Compartir por NFC
-        </button>
-        <button class="share-btn" onclick="showToast('Enlace copiado','fa-link')">
-          <i class="fas fa-link"></i> Copiar enlace
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════ SHARE MODAL ═══════════════ -->
-  <div class="share-modal" id="shareModal">
-    <div class="share-modal-box">
-      <button class="share-close" onclick="closeShareModal()"><i class="fas fa-xmark"></i></button>
-      <h3><i class="fas fa-share-nodes"></i> Compartir archivo</h3>
-      <p class="sub">Elige cómo quieres compartir este archivo</p>
-
-      <div class="share-file-info">
-        <div class="mini-icon" id="shareMiniIcon"><i class="fas fa-file"></i></div>
-        <div class="info">
-          <b id="shareFileName">—</b>
-          <small id="shareFileMeta">—</small>
-        </div>
-      </div>
-
-      <div class="share-tabs">
-        <button class="active" data-share="qr" onclick="switchShareTab('qr')">
-          <i class="fas fa-qrcode"></i> QR
-        </button>
-        <button data-share="nfc" onclick="switchShareTab('nfc')">
-          <i class="fas fa-wifi"></i> NFC
-        </button>
-      </div>
-
-      <div class="qr-panel active" id="qrPanel">
-        <div class="qr-container" id="qrContainer"></div>
-        <p style="font-size:.82rem; color:var(--text-mid); margin:12px 0 6px;">
-          Escanea este código para ver el archivo
-        </p>
-        <small style="color:var(--text-low); font-size:.72rem;">
-          Compatible con iPhone, Android y cualquier lector QR
-        </small>
-      </div>
-
-      <div class="nfc-panel" id="nfcPanel">
-        <div class="nfc-circle">
-          <i class="fas fa-wifi"></i>
-        </div>
-        <p><b>Acerca tu teléfono</b></p>
-        <small>Coloca la parte trasera de tu dispositivo cerca de otro dispositivo con NFC activado para compartir el archivo</small>
-        <button class="btn-cloud btn-primary" style="margin-top:16px;" onclick="activateNFC()">
-          <i class="fas fa-bolt"></i> Activar NFC
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ═══════════════ CONFIG MODAL ═══════════════ -->
-  <div class="config-modal" id="configModal">
-    <div class="config-box">
-      <h3><i class="fas fa-gear"></i> Configuración</h3>
-      <p class="sub">Administra tus datos personales y preferencias.</p>
-
-      <div class="config-section">
-        <h4><i class="fas fa-user"></i> Datos personales</h4>
-
-        <div class="cfg-field">
-          <label>Teléfono</label>
-          <div class="row-input">
-            <input type="tel" id="cfgPhone" placeholder="Nuevo teléfono..." maxlength="10">
-            <button onclick="updateField('teléfono')"><i class="fas fa-check"></i></button>
-          </div>
-        </div>
-
-        <div class="cfg-field">
-          <label>Correo electrónico</label>
-          <div class="row-input">
-            <input type="email" id="cfgEmail" placeholder="Nuevo correo...">
-            <button onclick="updateField('correo')"><i class="fas fa-check"></i></button>
-          </div>
-        </div>
-
-        <div class="cfg-field">
-          <label>Dirección</label>
-          <div class="row-input">
-            <input type="text" id="cfgAddress" placeholder="Nueva dirección...">
-            <button onclick="updateField('dirección')"><i class="fas fa-check"></i></button>
-          </div>
-        </div>
-      </div>
-
-      <div class="config-section">
-        <h4><i class="fas fa-key"></i> Cambiar contraseña</h4>
-        <div class="cfg-field">
-          <label>Contraseña actual</label>
-          <input type="password" id="cfgPwdOld" placeholder="••••••••">
-        </div>
-        <div class="cfg-field">
-          <label>Nueva contraseña</label>
-          <input type="password" id="cfgPwdNew" placeholder="••••••••">
-        </div>
-        <div class="cfg-field">
-          <label>Confirmar nueva contraseña</label>
-          <input type="password" id="cfgPwdConfirm" placeholder="••••••••">
-        </div>
-        <button class="btn-cloud btn-primary" onclick="updateField('contraseña')">
-          <i class="fas fa-shield-halved"></i> Actualizar contraseña
-        </button>
-      </div>
-
-      <div class="config-section">
-        <h4><i class="fas fa-sliders"></i> Preferencias</h4>
-
-        <div class="switch-row">
-          <div class="label">
-            <b>Mostrar información sensible</b>
-            <small>Oculta o muestra tus datos personales en pantalla</small>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="cfgToggleBlur" onchange="toggleBlur()">
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="switch-row">
-          <div class="label">
-            <b>Compartir por NFC</b>
-            <small>Permitir compartir archivos por NFC entre dispositivos</small>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="cfgToggleNFC" checked>
-            <span class="slider"></span>
-          </label>
-        </div>
-
-        <div class="switch-row">
-          <div class="label">
-            <b>Modo oscuro del visor</b>
-            <small>Ver documentos con fondo oscuro</small>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="cfgToggleViewer">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-
-      <div class="config-section">
-        <h4 style="color:var(--hs-red)"><i class="fas fa-trash" style="color:var(--hs-red)"></i> Zona de peligro</h4>
-        <p style="font-size:.82rem; color:var(--text-mid); margin:0 0 12px;">
-          Eliminar tu perfil borrará todos tus archivos y datos permanentemente.
-        </p>
-        <button class="btn-danger" onclick="deleteProfile()">
-          <i class="fas fa-trash"></i> Eliminar perfil
-        </button>
-      </div>
-
-      <div class="config-actions">
-        <button class="btn-cancel" onclick="closeConfig()">
-          <i class="fas fa-xmark"></i> Cancelar
-        </button>
-        <button class="btn-save" onclick="closeConfig(); showToast('Configuración guardada','fa-check')">
-          <i class="fas fa-check"></i> Guardar
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-
-<script>
-// ══════════════════════════════════════════════════════════
-//  USUARIO
-// ══════════════════════════════════════════════════════════
-const CURRENT_USER = {
-  username: 'Srgxio',
-  fullName: 'Sergio Campos Medina',
-  avatar: 'https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png'
-};
-
-// ══════════════════════════════════════════════════════════
-//  TIPOS DE ARCHIVO
-// ══════════════════════════════════════════════════════════
-const FILE_TYPES = {
-  doc:  { icon:'fa-file-word',       label:'Word',       cls:'doc' },
-  docx: { icon:'fa-file-word',       label:'Word',       cls:'doc' },
-  xls:  { icon:'fa-file-excel',      label:'Excel',      cls:'xls' },
-  xlsx: { icon:'fa-file-excel',      label:'Excel',      cls:'xls' },
-  ppt:  { icon:'fa-file-powerpoint', label:'PowerPoint', cls:'ppt' },
-  pptx: { icon:'fa-file-powerpoint', label:'PowerPoint', cls:'ppt' },
-  pdf:  { icon:'fa-file-pdf',        label:'PDF',        cls:'pdf' },
-  png:  { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
-  jpg:  { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
-  jpeg: { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
-  gif:  { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
-  webp: { icon:'fa-file-image',      label:'Imagen',     cls:'img' },
-  mp4:  { icon:'fa-file-video',      label:'Video',      cls:'vid' },
-  mov:  { icon:'fa-file-video',      label:'Video',      cls:'vid' },
-  avi:  { icon:'fa-file-video',      label:'Video',      cls:'vid' },
-  mp3:  { icon:'fa-file-audio',      label:'Audio',      cls:'aud' },
-  wav:  { icon:'fa-file-audio',      label:'Audio',      cls:'aud' },
-  zip:  { icon:'fa-file-zipper',     label:'ZIP',        cls:'zip' },
-  rar:  { icon:'fa-file-zipper',     label:'RAR',        cls:'zip' },
-  txt:  { icon:'fa-file-lines',      label:'Texto',      cls:'txt' },
-};
-
-function getExt(name){
-  const i = name.lastIndexOf('.');
-  return i >= 0 ? name.slice(i + 1).toLowerCase() : 'txt';
-}
-function getFileType(name){
-  const ext = getExt(name);
-  return { ext, ...(FILE_TYPES[ext] || FILE_TYPES.txt) };
-}
-function formatBytes(bytes){
-  if(!bytes) return '0 KB';
-  const k = 1024, sizes = ['B','KB','MB','GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return (bytes / Math.pow(k, i)).toFixed(i > 1 ? 1 : 0) + ' ' + sizes[i];
-}
-function escapeHtml(s){
-  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-// ══════════════════════════════════════════════════════════
-//  ARCHIVOS DEMO
-// ══════════════════════════════════════════════════════════
-let files = [
-  { id:'f1', name:'Reporte_Anual_2025.docx', size: 245780, date:'hace 2 h', type:'doc', starred:true, url:'#', previewContent:`<h1>Reporte Anual 2025</h1><p>Este es un documento de demostración con contenido de ejemplo. Aquí verías el contenido de tu archivo Word renderizado correctamente.</p><p>Sección 1: Introducción al informe anual.</p><p>Sección 2: Análisis de resultados.</p><p>Sección 3: Conclusiones y recomendaciones.</p>` },
-  { id:'f2', name:'Presupuesto_Q1.xlsx', size: 89120, date:'hace 5 h', type:'xls', starred:false, url:'#' },
-  { id:'f3', name:'Presentacion_Japón.pptx', size: 1820450, date:'ayer', type:'ppt', starred:true, url:'#' },
-  { id:'f4', name:'Foto_Profesional_HS.png', size: 1240880, date:'hace 2 días', type:'img', starred:false, url:'https://i.ibb.co/fVdKx1zX/Foto-profesional-HS.png' },
-  { id:'f5', name:'Manual_Usuario.pdf', size: 4582000, date:'hace 3 días', type:'pdf', starred:false, url:'#' },
-  { id:'f6', name:'Video_Promo_Tokio.mp4', size: 18450000, date:'hace 4 días', type:'vid', starred:true, url:'https://cdn.coverr.co/videos/coverr-typing-on-a-laptop-1584/1080p.mp4' },
-  { id:'f7', name:'Carta_Presentacion.docx', size: 52100, date:'hace 5 días', type:'doc', starred:false, url:'#' },
-  { id:'f8', name:'Backup_Contactos.zip', size: 8900000, date:'hace 1 semana', type:'zip', starred:false, url:'#' },
-];
-
-let currentFilter = 'all';
-let currentView = 'all';
-let currentFile = null;
-
-// ══════════════════════════════════════════════════════════
-//  RENDER FILES
-// ══════════════════════════════════════════════════════════
-function renderFiles(){
-  const grid = document.getElementById('filesGrid');
-  const search = (document.getElementById('searchInput').value || '').toLowerCase();
-
-  let visible = files.filter(f => {
-    if(currentFilter !== 'all' && f.type !== currentFilter) return false;
-    if(search && !f.name.toLowerCase().includes(search)) return false;
-    return true;
-  });
-
-  if(currentView === 'starred'){
-    visible = visible.filter(f => f.starred);
-  }
-
-  document.getElementById('statFiles').textContent = files.length;
-  document.getElementById('statDocs').textContent   = files.filter(f => f.type === 'doc').length;
-  document.getElementById('statSheets').textContent = files.filter(f => f.type === 'xls').length;
-  document.getElementById('statSlides').textContent = files.filter(f => f.type === 'ppt').length;
-  document.getElementById('statImgs').textContent   = files.filter(f => f.type === 'img').length;
-
-  if(visible.length === 0){
-    grid.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1;">
-        <i class="fas fa-cloud"></i>
-        <p>No hay archivos que mostrar</p>
-        <p style="font-size:.78rem;">Sube tu primer archivo para comenzar</p>
-      </div>`;
-    return;
-  }
-
-  grid.innerHTML = visible.map(f => {
-    const t = getFileType(f.name);
-    return `
-      <div class="file-card" onclick="openFile('${f.id}')">
-        <div class="file-overlay">
-          <button title="Favorito" onclick="event.stopPropagation();toggleStar('${f.id}')">
-            <i class="${f.starred?'fas':'far'} fa-star" style="${f.starred?'color:#fcc404':''}"></i>
-          </button>
-          <button title="Compartir" onclick="event.stopPropagation();openShare('${f.id}')">
-            <i class="fas fa-share-nodes"></i>
-          </button>
-          <button class="del" title="Eliminar" onclick="event.stopPropagation();deleteFile('${f.id}')">
-            <i class="fas fa-trash"></i>
-          </button>
-        </div>
-        <div class="file-icon ${t.cls}">
-          <i class="fas ${t.icon}"></i>
-        </div>
-        <div class="file-name" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</div>
-        <div class="file-meta">
-          <span><i class="fas fa-hdd"></i> ${formatBytes(f.size)}</span>
-          <span><i class="fas fa-clock"></i> ${f.date}</span>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function filterFiles(){ renderFiles(); }
-
-document.querySelectorAll('#filterTabs button').forEach(btn => {
-  btn.addEventListener('click', function(){
-    document.querySelectorAll('#filterTabs button').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    currentFilter = this.dataset.filter;
-    renderFiles();
-  });
-});
-
-// ══════════════════════════════════════════════════════════
-//  SUBIR ARCHIVOS
-// ══════════════════════════════════════════════════════════
-function triggerUpload(){
-  document.getElementById('fileInput').click();
-}
-
-function toggleDropzone(){
-  document.getElementById('dropzone').classList.toggle('active');
-}
-
-document.getElementById('fileInput').addEventListener('change', function(e){
-  handleFiles(e.target.files);
-  this.value = '';
-});
-
-const dz = document.getElementById('dropzone');
-dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
-dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
-dz.addEventListener('drop', e => {
-  e.preventDefault();
-  dz.classList.remove('dragover');
-  handleFiles(e.dataTransfer.files);
-});
-
-function handleFiles(fileList){
-  Array.from(fileList).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      const t = getFileType(file.name);
-      files.unshift({
-        id: 'f_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
-        name: file.name,
-        size: file.size,
-        date: 'ahora',
-        type: t.cls === 'img' ? 'img' : (t.cls === 'vid' ? 'vid' : t.ext),
-        starred: false,
-        url: ev.target.result,
-      });
-      renderFiles();
-    };
-    reader.readAsDataURL(file);
-  });
-  showToast(fileList.length + ' archivo(s) subido(s)', 'fa-cloud-arrow-up');
-}
-
-// ══════════════════════════════════════════════════════════
-//  ABRIR ARCHIVO
-// ══════════════════════════════════════════════════════════
-function openFile(id){
-  const f = files.find(x => x.id === id);
-  if(!f) return;
-  currentFile = f;
-  const t = getFileType(f.name);
-
-  document.getElementById('fmIcon').className = 'icon ' + t.cls;
-  document.getElementById('fmIcon').style.background = getIconBg(t.cls);
-  document.getElementById('fmIcon').innerHTML = `<i class="fas ${t.icon}"></i>`;
-
-  document.getElementById('fmName').textContent = f.name;
-  document.getElementById('fmMeta').textContent = `${t.label} · ${formatBytes(f.size)} · ${f.date}`;
-
-  document.getElementById('fmBody').innerHTML = renderPreview(f, t);
-  document.getElementById('fileModal').classList.add('active');
-}
-
-function getIconBg(cls){
-  const map = {
-    doc:'linear-gradient(135deg,#2B579A,#1a3a6e)',
-    xls:'linear-gradient(135deg,#217346,#16542f)',
-    ppt:'linear-gradient(135deg,#B7472A,#8c2f18)',
-    pdf:'linear-gradient(135deg,#DC2626,#991b1b)',
-    img:'linear-gradient(135deg,#7C3AED,#5b21b6)',
-    vid:'linear-gradient(135deg,#0891B2,#075985)',
-    aud:'linear-gradient(135deg,#DB2777,#9d174d)',
-    zip:'linear-gradient(135deg,#F59E0B,#b45309)',
-    txt:'linear-gradient(135deg,#6B7280,#374151)'
-  };
-  return map[cls] || map.txt;
-}
-
-function closeFileModal(){
-  document.getElementById('fileModal').classList.remove('active');
-  document.getElementById('fmBody').innerHTML = '';
-  currentFile = null;
-}
-
-function renderPreview(f, t){
-  const isImage = t.cls === 'img';
-  const isVideo = t.cls === 'vid';
-  const isAudio = t.cls === 'aud';
-  const isPDF   = t.cls === 'pdf';
-  const isOffice = ['doc','xls','ppt'].includes(t.cls);
-  const isZip   = t.cls === 'zip';
-
-  if(isImage && f.url) return `<img src="${f.url}" alt="${escapeHtml(f.name)}">`;
-  if(isVideo && f.url) return `<video src="${f.url}" controls playsinline></video>`;
-  if(isAudio && f.url) return `<audio src="${f.url}" controls></audio>`;
-
-  if(isPDF){
-    if(f.url && f.url !== '#') return `<iframe src="${f.url}"></iframe>`;
-    return `
-      <div class="doc-preview" style="display:flex;align-items:center;justify-content:center;flex-direction:column;color:#666;">
-        <i class="fas fa-file-pdf" style="font-size:5rem;color:#DC2626;margin-bottom:20px;"></i>
-        <h3 style="color:#1F4E67;margin:0 0 8px;">${escapeHtml(f.name)}</h3>
-        <p>Vista previa del PDF disponible al descargar</p>
-        <p style="font-size:.8rem;color:#999;">${formatBytes(f.size)}</p>
-      </div>`;
-  }
-
-  if(isOffice){
-    return `
-      <div class="doc-preview">
-        <div class="meta-bar">
-          <span><i class="fas ${t.icon}" style="color:${t.cls==='doc'?'#2B579A':t.cls==='xls'?'#217346':'#B7472A'};"></i> ${t.label}</span>
-          <span>${formatBytes(f.size)} · ${f.date}</span>
-        </div>
-        ${f.previewContent || `
-          <h1>${escapeHtml(f.name.replace(/\.[^.]+$/, ''))}</h1>
-          <p>Este es un archivo ${t.label} de demostración. Aquí se mostraría el contenido real del documento.</p>
-          <p><b>Contenido de ejemplo:</b></p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          <hr style="border:none;border-top:1px solid #eee;margin:24px 0;">
-          <p style="text-align:right;color:#666;font-size:.85rem;">
-            Documento generado por Human Cloud · ${new Date().toLocaleDateString('es-MX')}
-          </p>
-        `}
-      </div>`;
-  }
-
-  if(isZip){
-    return `
-      <div class="doc-preview" style="text-align:center;">
-        <i class="fas fa-file-zipper" style="font-size:5rem;color:#F59E0B;margin-bottom:20px;"></i>
-        <h3 style="color:#1F4E67;margin:0 0 8px;">${escapeHtml(f.name)}</h3>
-        <p>Archivo comprimido · ${formatBytes(f.size)}</p>
-        <p style="font-size:.82rem;color:#666;">Descarga para extraer su contenido</p>
-      </div>`;
-  }
-
-  return `<div class="doc-preview"><h1>${escapeHtml(f.name)}</h1><p>Vista previa no disponible.</p></div>`;
-}
-
-function downloadCurrent(){
-  if(!currentFile) return;
-  showToast('Descargando ' + currentFile.name, 'fa-download');
-}
-
-function toggleStar(id){
-  const f = files.find(x => x.id === id);
-  if(!f) return;
-  f.starred = !f.starred;
-  renderFiles();
-  showToast(f.starred ? 'Añadido a favoritos' : 'Quitado de favoritos', 'fa-star');
-}
-
-function deleteFile(id){
-  const f = files.find(x => x.id === id);
-  if(!f) return;
-  if(confirm(`¿Eliminar "${f.name}"?`)){
-    files = files.filter(x => x.id !== id);
-    renderFiles();
-    showToast('Archivo eliminado', 'fa-trash');
-  }
-}
-
-// ══════════════════════════════════════════════════════════
-//  SHARE MODAL
-// ══════════════════════════════════════════════════════════
-function openShare(id){
-  if(typeof id === 'string') currentFile = files.find(x => x.id === id);
-  if(!currentFile){ showToast('Selecciona un archivo primero', 'fa-triangle-exclamation'); return; }
-
-  const t = getFileType(currentFile.name);
-  const mini = document.getElementById('shareMiniIcon');
-  mini.style.background = getIconBg(t.cls);
-  mini.innerHTML = `<i class="fas ${t.icon}"></i>`;
-
-  document.getElementById('shareFileName').textContent = currentFile.name;
-  document.getElementById('shareFileMeta').textContent = `${t.label} · ${formatBytes(currentFile.size)}`;
-
-  const fileUrl = currentFile.url && currentFile.url.startsWith('http')
-    ? currentFile.url
-    : window.location.href + '?file=' + encodeURIComponent(currentFile.id);
-
-  const qrContainer = document.getElementById('qrContainer');
-  qrContainer.innerHTML = '';
-  new QRCode(qrContainer, {
-    text: fileUrl,
-    width: 220,
-    height: 220,
-    colorDark: '#0a0e14',
-    colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.H
-  });
-
-  switchShareTab('qr');
-  document.getElementById('shareModal').classList.add('active');
-}
-
-function openShareQR(){ openShare(); switchShareTab('qr'); }
-function openShareNFC(){ openShare(); switchShareTab('nfc'); }
-
-function closeShareModal(){
-  document.getElementById('shareModal').classList.remove('active');
-}
-
-function switchShareTab(tab){
-  document.querySelectorAll('.share-tabs button').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.share-tabs button[data-share="${tab}"]`).classList.add('active');
-  document.getElementById('qrPanel').classList.toggle('active', tab === 'qr');
-  document.getElementById('nfcPanel').classList.toggle('active', tab === 'nfc');
-}
-
-function activateNFC(){
-  if('NDEFReader' in window){
-    const ndef = new NDEFReader();
-    ndef.write({ records: [{ recordType: 'url', data: window.location.href + '?file=' + currentFile.id }] })
-      .then(() => showToast('Archivo compartido por NFC ✓','fa-wifi'))
-      .catch(err => showToast('No se pudo activar NFC: ' + err.message, 'fa-triangle-exclamation'));
-  } else {
-    showToast('Acerca tu dispositivo a otro con NFC activado','fa-wifi');
-    setTimeout(() => showToast('✓ Archivo compartido correctamente','fa-check'), 2500);
-  }
-}
-
-// ══════════════════════════════════════════════════════════
-//  VAULT DE CONTRASEÑAS
-// ══════════════════════════════════════════════════════════
-let vault = [
-  { id:'v1', name:'Gmail personal', user:'srgxio@gmail.com', pwd:'MyS3cur3!Pass', type:'gmail', url:'https://gmail.com' },
-  { id:'v2', name:'Facebook', user:'Srgxio_Official', pwd:'Fb#2025*Secur3', type:'facebook', url:'https://facebook.com' },
-  { id:'v3', name:'Instagram', user:'@srgxio', pwd:'Inst4gr4m!2025', type:'instagram', url:'https://instagram.com' },
-  { id:'v4', name:'GitHub', user:'srgxio-dev', pwd:'ghp_Xy9k2Lm4Pq8', type:'github', url:'https://github.com' },
-  { id:'v5', name:'Banco BBVA', user:'4B21XK9', pwd:'BBVA#Secure123!', type:'bank', url:'#' },
-];
-
-function renderVault(){
-  const list = document.getElementById('vaultList');
-  const badge = document.getElementById('vaultCount');
-  const search = (document.getElementById('vaultSearch').value || '').toLowerCase();
-
-  badge.textContent = vault.length;
-
-  const visible = vault.filter(v =>
-    !search || v.name.toLowerCase().includes(search) || v.user.toLowerCase().includes(search)
-  );
-
-  if(visible.length === 0){
-    list.innerHTML = `
-      <div class="vault-empty">
-        <i class="fas fa-lock"></i>
-        <p>${vault.length === 0 ? 'Sin contraseñas guardadas' : 'Sin resultados'}</p>
-      </div>`;
-    return;
-  }
-
-  const iconMap = {
-    gmail:'fa-envelope', facebook:'fa-facebook-f', instagram:'fa-instagram',
-    github:'fa-github', bank:'fa-building-columns', crypto:'fa-bitcoin',
-    netflix:'fa-play', other:'fa-key'
-  };
-
-  list.innerHTML = visible.map(v => `
-    <div class="vault-item" onclick="viewVaultItem('${v.id}')">
-      <div class="vault-item-icon ${v.type}">
-        <i class="fab ${iconMap[v.type] || 'fa-key'}"></i>
-      </div>
-      <div class="vault-item-info">
-        <div class="vault-item-name">${escapeHtml(v.name)}</div>
-        <div class="vault-item-user"><i class="fas fa-user"></i> ${escapeHtml(v.user)}</div>
-      </div>
-      <div class="vault-item-actions">
-        <button title="Copiar" onclick="event.stopPropagation();copyPwd('${v.id}')">
-          <i class="fas fa-copy"></i>
-        </button>
-        <button class="del" title="Eliminar" onclick="event.stopPropagation();deleteVaultItem('${v.id}')">
-          <i class="fas fa-trash"></i>
-        </button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function copyPwd(id){
-  const v = vault.find(x => x.id === id);
-  if(!v) return;
-  navigator.clipboard.writeText(v.pwd)
-    .then(() => showToast('Contraseña copiada ✓', 'fa-copy'))
-    .catch(() => showToast('No se pudo copiar', 'fa-triangle-exclamation'));
-}
-
-function deleteVaultItem(id){
-  const v = vault.find(x => x.id === id);
-  if(!v) return;
-  if(confirm(`¿Eliminar "${v.name}" del vault?`)){
-    vault = vault.filter(x => x.id !== id);
-    renderVault();
-    showToast('Eliminado del vault', 'fa-trash');
-  }
-}
-
-function viewVaultItem(id){
-  const v = vault.find(x => x.id === id);
-  if(!v) return;
-
-  const iconMap = {
-    gmail:'fa-envelope', facebook:'fa-facebook-f', instagram:'fa-instagram',
-    github:'fa-github', bank:'fa-building-columns', crypto:'fa-bitcoin',
-    netflix:'fa-play', other:'fa-key'
-  };
-  const icon = iconMap[v.type] || 'fa-key';
-  const iconBg = getVaultIconBg(v.type);
-
-  Swal.fire({
-    html: `
-      <div class="vault-view">
-        <div class="big-icon" style="background:${iconBg};">
-          <i class="fab ${icon}"></i>
-        </div>
-        <h3>${escapeHtml(v.name)}</h3>
-        <p class="sub">${escapeHtml(v.user)}</p>
-
-        <div class="vault-view-info">
-          <div class="row">
-            <span><i class="fas fa-user"></i> Usuario</span>
-            <span>${escapeHtml(v.user)} <button class="copy-btn" onclick="navigator.clipboard.writeText('${escapeHtml(v.user)}');showToast('Usuario copiado','fa-copy')"><i class="fas fa-copy"></i></button></span>
-          </div>
-          <div class="row">
-            <span><i class="fas fa-lock"></i> Contraseña</span>
-            <span class="pwd-display" id="vwPwd">
-              ••••••••••
-              <button class="copy-btn" onclick="toggleVaultPwd('${escapeHtml(v.pwd).replace(/'/g, "\\'")}')"><i class="fas fa-eye" id="vwEye"></i></button>
-            </span>
-          </div>
-          ${v.url && v.url !== '#' ? `<div class="row"><span><i class="fas fa-link"></i> Sitio</span><span><a href="${v.url}" target="_blank" style="color:#22d3ee; text-decoration:none;">Abrir <i class="fas fa-external-link-alt" style="font-size:.65rem;"></i></a></span></div>` : ''}
-        </div>
-
-        <div class="vault-view-actions">
-          <button class="btn-edit" onclick="Swal.close();editVaultItem('${v.id}')">
-            <i class="fas fa-pen"></i> Editar
-          </button>
-          <button class="btn-share" onclick="Swal.close();shareVaultItem('${v.id}')">
-            <i class="fas fa-share-nodes"></i> Compartir
-          </button>
-        </div>
-      </div>
-    `,
-    showConfirmButton: false,
-    showCloseButton: true,
-    width: 420,
-    padding: '1.5rem',
-    background: '#ffffff'
-  });
-}
-
-function getVaultIconBg(type){
-  const map = {
-    gmail:'linear-gradient(135deg,#EA4335,#c5221f)',
-    facebook:'linear-gradient(135deg,#1877F2,#0f5bbf)',
-    instagram:'linear-gradient(45deg,#f09433,#dc2743,#bc1888)',
-    github:'linear-gradient(135deg,#24292e,#000)',
-    bank:'linear-gradient(135deg,#217346,#16542f)',
-    crypto:'linear-gradient(135deg,#f7931a,#c76f00)',
-    netflix:'linear-gradient(135deg,#E50914,#b00610)',
-    other:'linear-gradient(135deg,#6B7280,#374151)'
-  };
-  return map[type] || map.other;
-}
-
-function toggleVaultPwd(pwd){
-  const el = document.getElementById('vwPwd');
-  if(!el) return;
-  if(el.dataset.shown === '1'){
-    el.innerHTML = `•••••••••• <button class="copy-btn" onclick="toggleVaultPwd('${pwd.replace(/'/g, "\\'")}')"><i class="fas fa-eye" id="vwEye"></i></button>`;
-    el.dataset.shown = '0';
-  } else {
-    el.innerHTML = `${pwd} <button class="copy-btn" onclick="navigator.clipboard.writeText('${pwd.replace(/'/g, "\\'")}');showToast('Contraseña copiada','fa-copy')"><i class="fas fa-copy"></i></button>`;
-    el.dataset.shown = '1';
-  }
-}
-
-function editVaultItem(id){
-  const v = vault.find(x => x.id === id);
-  if(!v) return;
-  openVaultAdd(v);
-}
-
-function shareVaultItem(id){
-  const v = vault.find(x => x.id === id);
-  if(!v) return;
-
-  const payload = JSON.stringify({ n: v.name, u: v.user, p: v.pwd });
-
-  Swal.fire({
-    title: '<i class="fas fa-qrcode"></i> Compartir seguro',
-    html: `
-      <p style="color:#666; font-size:.85rem; margin-bottom:16px;">
-        Escanea este QR para recibir las credenciales de <b>${escapeHtml(v.name)}</b>
-      </p>
-      <div id="vaultQrBox" style="text-align:center; display:flex; justify-content:center;"></div>
-      <p style="color:#999; font-size:.72rem; margin-top:14px;">
-        <i class="fas fa-shield-halved"></i> Cifrado AES-256 · Solo visible una vez
-      </p>
-    `,
-    showConfirmButton: true,
-    confirmButtonText: 'Cerrar',
-    confirmButtonColor: '#1F4E67',
-    width: 380,
-    didOpen: () => {
-      const box = document.createElement('div');
-      box.style.cssText = 'background:#fff; padding:16px; border-radius:16px; display:inline-block;';
-      document.getElementById('vaultQrBox').appendChild(box);
-      new QRCode(box, {
-        text: payload,
-        width: 200,
-        height: 200,
-        colorDark: '#0a0e14',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
-      });
-    }
-  });
-}
-
-function openVaultAdd(existing){
-  const isEdit = !!existing;
-  Swal.fire({
-    title: `<i class="fas fa-${isEdit?'pen':'plus-circle'}"></i> ${isEdit?'Editar':'Nueva'} contraseña`,
-    html: `
-      <div class="vault-field">
-        <label>Nombre / Servicio</label>
-        <input id="nvName" placeholder="Ej. Gmail personal" value="${existing ? escapeHtml(existing.name) : ''}">
-      </div>
-      <div class="vault-field">
-        <label>Usuario / Email</label>
-        <input id="nvUser" placeholder="usuario@correo.com" value="${existing ? escapeHtml(existing.user) : ''}">
-      </div>
-      <div class="vault-field">
-        <label>Contraseña</label>
-        <div class="pwd-row">
-          <input id="nvPwd" type="password" placeholder="••••••••" value="${existing ? escapeHtml(existing.pwd) : ''}" oninput="checkStrength(this.value)">
-          <button type="button" onclick="genPassword()" title="Generar"><i class="fas fa-dice"></i></button>
-          <button type="button" onclick="togglePwdVisibility('nvPwd', this)" title="Mostrar"><i class="fas fa-eye"></i></button>
-        </div>
-        <div class="strength-bar"><div class="fill" id="nvStrengthFill"></div></div>
-        <div class="strength-text">
-          <span id="nvStrengthText">—</span>
-          <span id="nvStrengthTime"></span>
-        </div>
-      </div>
-      <div class="vault-field">
-        <label>Tipo</label>
-        <select id="nvType">
-          <option value="gmail" ${existing?.type==='gmail'?'selected':''}>📧 Correo</option>
-          <option value="facebook" ${existing?.type==='facebook'?'selected':''}>📘 Facebook</option>
-          <option value="instagram" ${existing?.type==='instagram'?'selected':''}>📷 Instagram</option>
-          <option value="github" ${existing?.type==='github'?'selected':''}>💻 GitHub</option>
-          <option value="bank" ${existing?.type==='bank'?'selected':''}>🏦 Banco</option>
-          <option value="crypto" ${existing?.type==='crypto'?'selected':''}>₿ Crypto</option>
-          <option value="netflix" ${existing?.type==='netflix'?'selected':''}>🎬 Netflix</option>
-          <option value="other" ${existing?.type==='other'?'selected':''}>🔑 Otro</option>
-        </select>
-      </div>
-      <div class="vault-field">
-        <label>Sitio web (opcional)</label>
-        <input id="nvUrl" placeholder="https://..." value="${existing ? escapeHtml(existing.url || '') : ''}">
-      </div>
-    `,
-    showCancelButton: true,
-    confirmButtonText: isEdit ? 'Guardar cambios' : 'Guardar',
-    cancelButtonText: 'Cancelar',
-    confirmButtonColor: '#1F4E67',
-    cancelButtonColor: '#d33',
-    width: 440,
-    didOpen: () => {
-      if(existing) checkStrength(existing.pwd);
-    },
-    preConfirm: () => {
-      const name = document.getElementById('nvName').value.trim();
-      const user = document.getElementById('nvUser').value.trim();
-      const pwd = document.getElementById('nvPwd').value;
-      const type = document.getElementById('nvType').value;
-      const url = document.getElementById('nvUrl').value.trim();
-
-      if(!name || !user || !pwd){
-        Swal.showValidationMessage('Completa nombre, usuario y contraseña');
-        return false;
-      }
-      return { name, user, pwd, type, url };
-    }
-  }).then(r => {
-    if(!r.isConfirmed) return;
-
-    if(isEdit){
-      Object.assign(existing, r.value);
-      showToast('Contraseña actualizada ✓', 'fa-check');
-    } else {
-      vault.unshift({ id:'v_' + Date.now(), ...r.value });
-      showToast('Contraseña guardada ✓', 'fa-shield-halved');
-    }
-    renderVault();
-  });
-}
-
-function togglePwdVisibility(id, btn){
-  const el = document.getElementById(id);
-  if(!el) return;
-  const isText = el.type === 'text';
-  el.type = isText ? 'password' : 'text';
-  btn.innerHTML = `<i class="fas fa-eye${isText ? '' : '-slash'}"></i>`;
-}
-
-function genPassword(){
-  const length = 16;
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+';
-  let pwd = '';
-  for(let i = 0; i < length; i++){
-    pwd += chars[Math.floor(Math.random() * chars.length)];
-  }
-  const el = document.getElementById('nvPwd');
-  el.type = 'text';
-  el.value = pwd;
-  checkStrength(pwd);
-  showToast('Contraseña generada ✓', 'fa-dice');
-}
-
-function checkStrength(pwd){
-  const fill = document.getElementById('nvStrengthFill');
-  const text = document.getElementById('nvStrengthText');
-  const time = document.getElementById('nvStrengthTime');
-  if(!fill) return;
-
-  let score = 0;
-  if(pwd.length >= 8) score++;
-  if(pwd.length >= 12) score++;
-  if(/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) score++;
-  if(/\d/.test(pwd)) score++;
-  if(/[^a-zA-Z0-9]/.test(pwd)) score++;
-
-  const levels = [
-    { w:'0%',   c:'transparent', t:'—',             time:'' },
-    { w:'20%',  c:'#d71d00',     t:'Muy débil',     time:'Se crackea al instante' },
-    { w:'40%',  c:'#f97316',     t:'Débil',         time:'~5 minutos' },
-    { w:'60%',  c:'#fcc404',     t:'Aceptable',     time:'~2 horas' },
-    { w:'80%',  c:'#22c55e',     t:'Fuerte',        time:'~3 años' },
-    { w:'100%', c:'#22d3ee',     t:'Muy fuerte 🛡️', time:'~300 años' }
-  ];
-  const l = levels[Math.min(score, 5)];
-  fill.style.width = l.w;
-  fill.style.background = l.c;
-  text.textContent = l.t;
-  text.style.color = l.c;
-  time.textContent = l.time;
-}
-
-// ══════════════════════════════════════════════════════════
-//  CONFIG
-// ══════════════════════════════════════════════════════════
-function openConfig(){ document.getElementById('configModal').classList.add('active'); }
-function closeConfig(){ document.getElementById('configModal').classList.remove('active'); }
-
-function updateField(field){
-  if(field === 'contraseña'){
-    const newP = document.getElementById('cfgPwdNew').value;
-    const conf = document.getElementById('cfgPwdConfirm').value;
-    if(!newP || newP.length < 8){ showToast('La contraseña debe tener al menos 8 caracteres','fa-triangle-exclamation'); return; }
-    if(newP !== conf){ showToast('Las contraseñas no coinciden','fa-triangle-exclamation'); return; }
-    document.getElementById('cfgPwdOld').value = '';
-    document.getElementById('cfgPwdNew').value = '';
-    document.getElementById('cfgPwdConfirm').value = '';
-    showToast('Contraseña actualizada ✓','fa-shield-halved');
-    return;
-  }
-  showToast(`Actualizando ${field}...`, 'fa-check');
-  setTimeout(() => showToast(`✓ ${field.charAt(0).toUpperCase() + field.slice(1)} actualizado`, 'fa-check'), 800);
-}
-
-function toggleBlur(){
-  const active = document.getElementById('cfgToggleBlur').checked;
-  document.querySelectorAll('.profile-card, .side-left, .main-panel').forEach(el => {
-    el.style.filter = active ? 'blur(6px)' : '';
-    el.style.userSelect = active ? 'none' : '';
-    el.style.pointerEvents = active ? 'none' : '';
-  });
-  showToast(active ? 'Datos personales ocultos' : 'Datos visibles', 'fa-eye');
-}
-
-function deleteProfile(){
-  if(!confirm('⚠️ ¿Estás seguro de que quieres eliminar tu perfil? Esta acción es irreversible.')) return;
-  if(!confirm('Última confirmación: se borrarán TODOS tus archivos y datos.')) return;
-  showToast('Perfil eliminado','fa-trash');
-  setTimeout(() => location.reload(), 1500);
-}
-
-// ══════════════════════════════════════════════════════════
-//  TOPNAV
-// ══════════════════════════════════════════════════════════
-document.getElementById('btnConfig').addEventListener('click', function(e){
-  e.preventDefault();
-  openConfig();
-});
-document.querySelectorAll('.topnav a:not(#btnConfig)').forEach(a => {
-  a.addEventListener('click', function(e){
-    e.preventDefault();
-    document.querySelectorAll('.topnav a').forEach(x => x.classList.remove('active'));
-    this.classList.add('active');
-    showToast(this.title, 'fa-info-circle');
-  });
-});
-
-// ══════════════════════════════════════════════════════════
-//  TOAST
-// ══════════════════════════════════════════════════════════
-let toastTimer;
-function showToast(msg, icon){
-  const t = document.getElementById('toast');
-  t.innerHTML = `<i class="fas ${icon || 'fa-check'}"></i> ${msg}`;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
-}
-
-// ══════════════════════════════════════════════════════════
-//  ESC + click fuera
-// ══════════════════════════════════════════════════════════
-document.addEventListener('keydown', e => {
-  if(e.key === 'Escape'){
-    closeFileModal();
-    closeShareModal();
-    closeConfig();
-  }
-});
-document.getElementById('fileModal').addEventListener('click', e => {
-  if(e.target.id === 'fileModal') closeFileModal();
-});
-document.getElementById('shareModal').addEventListener('click', e => {
-  if(e.target.id === 'shareModal') closeShareModal();
-});
-document.getElementById('configModal').addEventListener('click', e => {
-  if(e.target.id === 'configModal') closeConfig();
-});
-
-// ══════════════════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════════════════
-renderFiles();
-renderVault();
-</script>
+    </footer>
 
 </body>
-</html>
+  </html>
