@@ -2,15 +2,17 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0a1c4f">
     <title>Tintorería y Lavandería Marlo</title>
     <style>
-        /* --- ESTILOS GENERALES --- */
+        /* --- VARIABLES --- */
         :root {
             --azul-marlo: #0a1c4f;
             --rojo-marlo: #d32f2f;
             --gris-fondo: #f4f6f9;
             --texto-oscuro: #333;
+            --blanco: #ffffff;
         }
 
         * {
@@ -18,36 +20,42 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--gris-fondo);
             color: var(--texto-oscuro);
+            overflow-x: hidden;
+            line-height: 1.5;
         }
 
         /* --- ENCABEZADO --- */
         header {
-            background-color: white;
-            padding: 15px 5%;
+            background-color: var(--blanco);
+            padding: 12px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
 
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
-        /* Aquí iría tu logo real */
         .logo-placeholder {
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             border: 3px solid var(--azul-marlo);
             border-radius: 50%;
             display: flex;
@@ -55,58 +63,114 @@
             align-items: center;
             color: var(--rojo-marlo);
             font-weight: bold;
-            font-size: 24px;
+            font-size: 20px;
             font-family: Georgia, serif;
+            flex-shrink: 0;
         }
 
         .logo-texto h1 {
             color: var(--rojo-marlo);
             font-family: Georgia, serif;
-            font-size: 28px;
-            letter-spacing: 2px;
+            font-size: 20px;
+            letter-spacing: 1px;
         }
 
         .logo-texto p {
             color: var(--azul-marlo);
-            font-size: 10px;
-            letter-spacing: 1px;
+            font-size: 8px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
+        }
+
+        /* --- BOTÓN HAMBURGUESA --- */
+        .menu-toggle {
+            display: block;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 26px;
+            height: 3px;
+            background-color: var(--azul-marlo);
+            margin: 5px 0;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .menu-toggle.activo span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .menu-toggle.activo span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle.activo span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* --- NAVEGACIÓN MÓVIL --- */
+        nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 70%;
+            max-width: 300px;
+            height: 100vh;
+            background-color: var(--azul-marlo);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            transition: right 0.4s ease;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+        }
+
+        nav.abierto {
+            right: 0;
         }
 
         nav a {
             text-decoration: none;
-            color: var(--azul-marlo);
+            color: var(--blanco);
             font-weight: bold;
-            margin-left: 20px;
-            transition: color 0.3s;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background 0.3s;
         }
 
-        nav a:hover {
-            color: var(--rojo-marlo);
+        nav a:hover, nav a:active {
+            background-color: var(--rojo-marlo);
         }
 
-        /* --- HERO SECTION --- */
+        /* --- HERO --- */
         .hero {
             background-color: var(--azul-marlo);
-            color: white;
+            color: var(--blanco);
             text-align: center;
-            padding: 60px 20px;
+            padding: 45px 20px;
         }
 
         .hero h2 {
-            font-size: 32px;
+            font-size: 22px;
             margin-bottom: 10px;
+            line-height: 1.3;
         }
 
         .hero p {
-            font-size: 18px;
+            font-size: 15px;
             font-style: italic;
-            color: #ffcc00; /* Un toque dorado para resaltar */
+            color: #ffcc00;
         }
 
         /* --- CATÁLOGO --- */
         .catalogo {
-            padding: 50px 5%;
+            padding: 40px 15px;
             max-width: 1200px;
             margin: auto;
         }
@@ -114,32 +178,28 @@
         .catalogo h3 {
             text-align: center;
             color: var(--azul-marlo);
-            font-size: 28px;
-            margin-bottom: 30px;
+            font-size: 24px;
+            margin-bottom: 25px;
         }
 
         .grid-servicios {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
 
         .tarjeta-servicio {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: var(--blanco);
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             border-top: 5px solid var(--rojo-marlo);
             transition: transform 0.3s;
         }
 
-        .tarjeta-servicio:hover {
-            transform: translateY(-5px);
-        }
-
         .tarjeta-servicio h4 {
             color: var(--azul-marlo);
-            font-size: 20px;
+            font-size: 19px;
             margin-bottom: 15px;
             border-bottom: 1px solid #eee;
             padding-bottom: 10px;
@@ -152,19 +212,25 @@
         .tarjeta-servicio li {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 12px;
             font-size: 15px;
+            padding: 4px 0;
         }
 
         .precio {
             font-weight: bold;
             color: var(--rojo-marlo);
+            background: #ffebee;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 14px;
         }
 
         /* --- SECCIÓN DE PAGO --- */
         .seccion-pago {
-            background-color: white;
-            padding: 50px 5%;
+            background-color: var(--blanco);
+            padding: 45px 20px;
             text-align: center;
             border-top: 1px solid #ddd;
             border-bottom: 1px solid #ddd;
@@ -172,58 +238,56 @@
 
         .seccion-pago h3 {
             color: var(--azul-marlo);
-            font-size: 26px;
-            margin-bottom: 15px;
+            font-size: 22px;
+            margin-bottom: 12px;
         }
 
         .seccion-pago p {
-            margin-bottom: 25px;
+            margin-bottom: 22px;
             color: #666;
+            font-size: 14px;
         }
 
         .btn-pagar {
             background-color: var(--rojo-marlo);
-            color: white;
+            color: var(--blanco);
             border: none;
-            padding: 15px 40px;
-            font-size: 18px;
+            padding: 16px 45px;
+            font-size: 17px;
             font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.3);
+            transition: all 0.3s;
+            box-shadow: 0 6px 15px rgba(211, 47, 47, 0.35);
+            width: 100%;
+            max-width: 320px;
         }
 
-        .btn-pagar:hover {
+        .btn-pagar:active {
+            transform: scale(0.97);
             background-color: #b71c1c;
-            transform: scale(1.05);
         }
 
         /* --- PIE DE PÁGINA --- */
         footer {
             background-color: var(--azul-marlo);
-            color: white;
-            padding: 40px 5%;
+            color: var(--blanco);
+            padding: 40px 20px 25px;
             text-align: center;
         }
 
         .footer-contenido {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 20px;
+            flex-direction: column;
+            gap: 25px;
             max-width: 1000px;
             margin: auto;
         }
 
-        .footer-info {
-            margin-bottom: 20px;
-        }
-
         .footer-info h4 {
             color: #ffcc00;
-            margin-bottom: 10px;
-            font-size: 18px;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
 
         .footer-info p {
@@ -231,59 +295,158 @@
             margin-bottom: 5px;
         }
 
+        .redes-sociales {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
         .redes-sociales a {
-            color: white;
+            color: var(--blanco);
             text-decoration: none;
-            margin: 0 10px;
-            font-size: 16px;
-            display: inline-block;
+            font-size: 15px;
+            padding: 12px 20px;
+            border-radius: 8px;
             background: rgba(255,255,255,0.1);
-            padding: 8px 15px;
-            border-radius: 5px;
             transition: background 0.3s;
         }
 
-        .redes-sociales a:hover {
+        .redes-sociales a:active {
             background: var(--rojo-marlo);
         }
 
         .copyright {
             margin-top: 30px;
-            font-size: 12px;
+            font-size: 11px;
             color: #a0aec0;
             border-top: 1px solid rgba(255,255,255,0.1);
             padding-top: 20px;
         }
 
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
+        /* --- OVERLAY CUANDO EL MENÚ ESTÁ ABIERTO --- */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .overlay.activo {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* --- TABLETS Y ESCRITORIO --- */
+        @media (min-width: 768px) {
             header {
-                flex-direction: column;
-                gap: 15px;
+                padding: 15px 5%;
             }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            nav {
+                position: static;
+                width: auto;
+                height: auto;
+                background: transparent;
+                flex-direction: row;
+                box-shadow: none;
+                gap: 0;
+            }
+
             nav a {
-                margin: 0 10px;
-                font-size: 14px;
+                color: var(--azul-marlo);
+                font-size: 15px;
+                margin-left: 20px;
+                padding: 8px 0;
+                border-radius: 0;
+                border-bottom: 2px solid transparent;
             }
-            .hero h2 {
+
+            nav a:hover, nav a:active {
+                background: transparent;
+                color: var(--rojo-marlo);
+                border-bottom: 2px solid var(--rojo-marlo);
+            }
+
+            .logo-placeholder {
+                width: 60px;
+                height: 60px;
                 font-size: 24px;
+            }
+
+            .logo-texto h1 {
+                font-size: 26px;
+            }
+
+            .logo-texto p {
+                font-size: 10px;
+            }
+
+            .hero h2 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .grid-servicios {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+
+            .catalogo h3 {
+                font-size: 28px;
+            }
+
+            .footer-contenido {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            .redes-sociales {
+                flex-direction: row;
+                justify-content: center;
+                margin-top: 15px;
+            }
+
+            .btn-pagar {
+                width: auto;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ENCABEZADO -->
+    <!-- ENCABEZADO CON MENÚ MÓVIL -->
     <header>
         <div class="logo-container">
-            <!-- Reemplaza este div con tu etiqueta <img> real -->
+            <!-- Reemplaza esto con tu etiqueta <img src="logo.png" alt="Marlo"> -->
             <div class="logo-placeholder">M</div>
             <div class="logo-texto">
                 <h1>MARLO</h1>
                 <p>Tintorería y Lavandería</p>
             </div>
         </div>
-        <nav>
+
+        <!-- Botón Hamburguesa (solo visible en móvil) -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Menú de Navegación -->
+        <nav id="menuNav">
             <a href="#inicio">Inicio</a>
             <a href="#catalogo">Catálogo</a>
             <a href="#pago">Pagar en Línea</a>
@@ -291,18 +454,20 @@
         </nav>
     </header>
 
-    <!-- HERO / BIENVENIDA -->
+    <!-- Fondo oscuro al abrir menú -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- BIENVENIDA -->
     <section class="hero" id="inicio">
         <h2>¡Bienvenido a Tintorería y Lavandería Marlo!</h2>
         <p>"Pintamos y lavamos como usted lo merece"</p>
     </section>
 
-    <!-- CATÁLOGO DE SERVICIOS -->
+    <!-- CATÁLOGO -->
     <section class="catalogo" id="catalogo">
         <h3>Nuestros Servicios</h3>
         <div class="grid-servicios">
             
-            <!-- Tarjeta 1 -->
             <div class="tarjeta-servicio">
                 <h4>🧺 Lavandería</h4>
                 <ul>
@@ -313,7 +478,6 @@
                 </ul>
             </div>
 
-            <!-- Tarjeta 2 -->
             <div class="tarjeta-servicio">
                 <h4>👔 Tintorería</h4>
                 <ul>
@@ -328,7 +492,6 @@
                 </ul>
             </div>
 
-            <!-- Tarjeta 3 -->
             <div class="tarjeta-servicio">
                 <h4>🔥 Planchado</h4>
                 <ul>
@@ -346,11 +509,10 @@
         </div>
     </section>
 
-    <!-- SECCIÓN DE PAGO EN LÍNEA -->
+    <!-- PAGO EN LÍNEA -->
     <section class="seccion-pago" id="pago">
         <h3>💳 Paga tus servicios en línea</h3>
         <p>Aceptamos tarjetas de crédito, débito, transferencia SPEI y pago en OXXO.</p>
-        <!-- Este botón simula la pasarela de pago -->
         <button class="btn-pagar" onclick="alert('Aquí se abriría la pasarela de pago (Mercado Pago, Stripe, etc.)')">Pagar Ahora</button>
     </section>
 
@@ -383,5 +545,33 @@
         </div>
     </footer>
 
+    <!-- SCRIPT PARA EL MENÚ MÓVIL -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const menuNav = document.getElementById('menuNav');
+        const overlay = document.getElementById('overlay');
+        const enlaces = document.querySelectorAll('nav a');
+
+        function abrirMenu() {
+            menuToggle.classList.toggle('activo');
+            menuNav.classList.toggle('abierto');
+            overlay.classList.toggle('activo');
+            // Bloquea el scroll del fondo cuando el menú está abierto
+            document.body.style.overflow = menuNav.classList.contains('abierto') ? 'hidden' : '';
+        }
+
+        menuToggle.addEventListener('click', abrirMenu);
+        overlay.addEventListener('click', abrirMenu);
+
+        // Cierra el menú al tocar un enlace
+        enlaces.forEach(enlace => {
+            enlace.addEventListener('click', () => {
+                if (menuNav.classList.contains('abierto')) {
+                    abrirMenu();
+                }
+            });
+        });
+    </script>
+
 </body>
-  </html>
+</html>
