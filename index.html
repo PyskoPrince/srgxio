@@ -2,213 +2,452 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="theme-color" content="#0a1c4f">
-    <meta name="description" content="Sitio web oficial de Sergio Campos. Próximamente disponible.">
-    <meta name="author" content="Sergio Campos">
-    <title>Sergio Campos | Próximamente</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agua Caspio - Purificadora Certificada</title>
     <style>
+        /* --- VARIABLES DE COLOR BASADAS EN TU LOGO --- */
+        :root {
+            --azul: #005a9c;
+            --verde: #8cc63f;
+            --blanco: #ffffff;
+            --gris-claro: #f4f4f4;
+            --texto: #333333;
+        }
+
+        /* --- ESTILOS GENERALES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html, body {
-            height: 100%;
-            overflow: hidden;
         }
 
         body {
-            background-color: #0a1c4f;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(211, 47, 47, 0.22) 0%, transparent 45%),
-                radial-gradient(circle at 80% 80%, rgba(255, 204, 0, 0.12) 0%, transparent 45%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding: 25px;
-            position: relative;
-        }
-
-        /* Grid sutil de fondo */
-        body::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: 0;
-        }
-
-        /* --- CONTENEDOR CENTRAL --- */
-        .contenedor {
-            position: relative;
-            z-index: 1;
-            max-width: 480px;
-            width: 100%;
-            animation: aparecer 1.2s ease-out;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(25px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Monograma */
-        .monograma {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 30px;
-            border: 3px solid #ffcc00;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Georgia, 'Times New Roman', serif;
-            font-size: 38px;
-            font-weight: bold;
-            color: #ffcc00;
-            background: rgba(255, 204, 0, 0.05);
-            letter-spacing: 2px;
-        }
-
-        .etiqueta {
-            display: inline-block;
-            font-size: 11px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #ffcc00;
-            font-weight: 600;
-            padding: 6px 16px;
-            border: 1px solid rgba(255, 204, 0, 0.4);
-            border-radius: 50px;
-            margin-bottom: 25px;
-        }
-
-        .nombre {
-            font-family: Georgia, 'Times New Roman', serif;
-            font-size: 38px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            line-height: 1.1;
-            margin-bottom: 18px;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .subtitulo {
-            font-size: 16px;
-            font-weight: 300;
-            opacity: 0.85;
+            background-color: var(--blanco);
+            color: var(--texto);
             line-height: 1.6;
-            margin-bottom: 40px;
-            max-width: 380px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
-        /* Barra de progreso */
-        .progreso {
-            width: 100%;
-            max-width: 320px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 2px;
+        .container {
+            max-width: 1100px;
             margin: 0 auto;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progreso::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 40%;
-            background: linear-gradient(90deg, #ffcc00, #d32f2f);
-            border-radius: 2px;
-            animation: cargando 2.2s ease-in-out infinite;
-        }
-
-        @keyframes cargando {
-            0% { left: -40%; }
-            100% { left: 100%; }
-        }
-
-        /* Pie de página */
-        .footer {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 1px;
-            z-index: 1;
             padding: 0 20px;
         }
 
-        .footer a {
-            color: rgba(255, 204, 0, 0.7);
+        /* --- ENCABEZADO --- */
+        header {
+            background: linear-gradient(to right, var(--blanco) 50%, var(--verde) 50%);
+            padding: 20px 0;
+            border-bottom: 5px solid var(--azul);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--blanco);
+            padding: 10px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo svg {
+            width: 60px;
+            height: 60px;
+        }
+
+        .logo-text h1 {
+            color: var(--azul);
+            font-size: 1.8rem;
+            margin-bottom: -5px;
+        }
+
+        .logo-text p {
+            color: var(--azul);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
             text-decoration: none;
-            transition: color 0.3s;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
         }
 
-        .footer a:hover {
-            color: #ffcc00;
+        .btn:hover {
+            transform: scale(1.05);
         }
 
-        /* --- CELULARES PEQUEÑOS --- */
-        @media (max-width: 380px) {
-            .nombre { font-size: 30px; }
-            .subtitulo { font-size: 14px; }
-            .monograma {
-                width: 75px;
-                height: 75px;
-                font-size: 32px;
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+        }
+
+        .btn-llamar {
+            background-color: var(--azul);
+            color: white;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: linear-gradient(135deg, var(--azul) 0%, #004080 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* --- CONTENEDOR DE IMAGEN PRINCIPAL --- */
+        .hero-img-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-img-container img {
+            width: 100%;
+            max-width: 700px; 
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 4px solid var(--blanco);
+            object-fit: cover;
+            object-position: center; 
+            max-height: 550px; 
+        }
+
+        /* --- SECCIÓN DE COMPRA (PRODUCTOS) --- */
+        .compra-section {
+            padding: 60px 0;
+            background-color: var(--gris-claro);
+        }
+
+        .compra-section h2 {
+            text-align: center;
+            color: var(--azul);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .compra-section .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .producto-card {
+            background: white;
+            border-radius: 20px;
+            padding: 0; /* Quitamos padding para que la imagen llegue al borde */
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--verde);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Estilo para las imágenes de los productos */
+        .producto-card img {
+            width: 100%;
+            height: 220px; /* Altura fija para que todas las imágenes se vean uniformes */
+            object-fit: cover; /* Recorta la imagen para llenar el espacio sin deformar */
+            object-position: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .producto-info {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Para que el botón siempre quede abajo */
+        }
+
+        .producto-card h3 {
+            color: var(--azul);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .producto-card p.descripcion {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            flex-grow: 1; /* Empuja el precio y botón hacia abajo */
+        }
+
+        .precio {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--azul);
+            margin: 15px 0;
+        }
+
+        .precio span {
+            font-size: 1rem;
+            color: #777;
+            font-weight: normal;
+        }
+
+        .btn-comprar {
+            background-color: var(--verde);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: auto; /* Asegura que el botón se alinee al fondo */
+            transition: background-color 0.3s;
+        }
+
+        .btn-comprar:hover {
+            background-color: #7ab32e;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--azul);
+            color: white;
+            padding: 40px 0 20px 0;
+            text-align: center;
+        }
+
+        .footer-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .footer-info p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                border-radius: 20px;
             }
-        }
-
-        /* --- PANTALLAS GRANDES --- */
-        @media (min-width: 768px) {
-            .nombre { font-size: 52px; }
-            .subtitulo { font-size: 18px; }
-            .monograma {
-                width: 110px;
-                height: 110px;
-                font-size: 46px;
+            .header-buttons {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: center;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            .hero-img-container img {
+                max-width: 100%;
+                max-height: 400px;
+            }
+            .footer-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .productos-grid {
+                grid-template-columns: 1fr; /* Una sola columna en móviles */
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="contenedor">
-        <div class="monograma">SC</div>
+    <!-- ENCABEZADO -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <!-- LOGO SVG (Gota y Hoja) -->
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 15 C50 15, 20 50, 20 70 A30 30 0 0 0 80 70 C80 50, 50 15, 50 15 Z" fill="#005a9c"/>
+                    <path d="M60 25 C60 25, 85 40, 80 65 C75 85, 55 80, 55 80 C55 80, 70 60, 60 25 Z" fill="#8cc63f"/>
+                </svg>
+                <div class="logo-text">
+                    <h1>Agua Caspio</h1>
+                    <p>Purificadora Certificada</p>
+                </div>
+            </div>
+            <div class="header-buttons">
+                <a href="https://wa.me/525560759750?text=Hola,%20quiero%20pedir%20un%20garrafón%20de%20Agua%20Caspio" target="_blank" class="btn btn-whatsapp">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.1 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.46 14.12c-.23.64-1.34 1.22-1.85 1.27-.51.05-1.01.24-3.4-.7-2.87-1.13-4.67-4.03-4.81-4.22-.14-.19-1.15-1.53-1.15-2.92 0-1.39.73-2.07 1-2.35.27-.28.59-.35.79-.35.2 0 .4.01.57.02.18.01.42-.07.66.5.24.58.82 2.02.89 2.16.07.14.12.31.02.5-.1.19-.15.31-.3.48-.15.17-.32.38-.46.51-.14.13-.29.28-.12.56.17.28.75 1.23 1.6 2 1.1.98 2.03 1.28 2.32 1.43.29.14.46.12.63-.07.17-.19.73-.85.92-1.14.19-.29.38-.24.64-.14.26.1 1.65.78 1.94.92.29.14.48.21.55.33.07.12.07.71-.16 1.35z"/></svg>
+                    WhatsApp
+                </a>
+                <a href="tel:5560759750" class="btn btn-llamar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    Llamar
+                </a>
+            </div>
+        </div>
+    </header>
 
-        <span class="etiqueta">Sitio en construcción</span>
+    <!-- HERO SECTION (PRESENTACIÓN PRINCIPAL) -->
+    <section class="hero">
+        <div class="container">
+            <h2>El servicio que mereces</h2>
+            <p>Usamos todas las medidas sanitarias desde el llenado hasta la sanitización de garrafones. ¡Purificadora Certificada!</p>
+            
+            <div class="hero-img-container">
+                <!-- Imagen principal (la botella grande que elegiste) -->
+                <img src="https://i.ibb.co/kV67d220/Gemini-Generated-Image-mrhd74mrhd74mrhd.jpg" alt="Botella de Agua Caspio">
+            </div>
+        </div>
+    </section>
 
-        <h1 class="nombre">Sergio Campos</h1>
+    <!-- SECCIÓN DE COMPRA EN LÍNEA (TODOS LOS PRODUCTOS) -->
+    <section class="compra-section">
+        <div class="container">
+            <h2>Compra tus Productos en Línea</h2>
+            <p class="subtitle">Llevamos hidratación y soluciones a tu hogar u oficina.</p>
+            
+            <div class="productos-grid">
+                
+                <!-- Producto 1: Garrafón 20L (Usamos la imagen de la botella grande como referencia o puedes cambiarla) -->
+                <div class="producto-card">
+                    <img src="https://i.ibb.co/QFzFKTHX/Gemini-Generated-Image-vk5tdxvk5tdxvk5t.jpg" alt="Garrafón 20L">
+                    <div class="producto-info">
+                        <h3>Garrafón 20L</h3>
+                        <p class="descripcion">Agua purificada de alta calidad para tu hogar u oficina.</p>
+                        <div class="precio">$14.00 <span>/ llenado</span></div>
+                        <a href="https://wa.me/525560759750?text=Hola,%20quiero%20comprar%20un%20llenado%20de%20garrafón%20de%2020L" target="_blank" class="btn-comprar">Comprar por WhatsApp</a>
+                    </div>
+                </div>
 
-        <p class="subtitulo">
-            Estoy trabajando en mi sitio web oficial.<br>
-            Muy pronto estará disponible.
-        </p>
+                <!-- Producto 2: Garrafón 10L con Asa (Mini Garrafón) -->
+                <div class="producto-card">
+                    <img src="https://i.ibb.co/9kP5rh3m/Gemini-Generated-Image-ha9sjvha9sjvha9s.jpg" alt="Garrafón 10L con Asa">
+                    <div class="producto-info">
+                        <h3>Garrafón 10L</h3>
+                        <p class="descripcion">Envase intermedio con asa integrada, ideal para espacios pequeños.</p>
+                        <div class="precio">$10.00 <span>/ llenado</span></div>
+                        <a href="https://wa.me/525560759750?text=Hola,%20quiero%20comprar%20un%20garrafón%20de%2010L%20con%20asa" target="_blank" class="btn-comprar">Comprar por WhatsApp</a>
+                    </div>
+                </div>
 
-        <div class="progreso"></div>
-    </div>
+                <!-- Producto 3: Botella Personalizada Sport -->
+                <div class="producto-card">
+                    <img src="https://i.ibb.co/twChDY5p/Gemini-Generated-Image-53lsbg53lsbg53ls.jpg" alt="Botella Sport Agua Caspio">
+                    <div class="producto-info">
+                        <h3>Botella Sport</h3>
+                        <p class="descripcion">Botella ergonómica de 750 ml con boquilla deportiva. Ideal para el gym.</p>
+                        <div class="precio">$5.00 <span>/ unidad</span></div>
+                        <a href="https://wa.me/525560759750?text=Hola,%20quiero%20comprar%20una%20botella%20Sport%20de%20Agua%20Caspio" target="_blank" class="btn-comprar">Comprar por WhatsApp</a>
+                    </div>
+                </div>
 
-    <div class="footer">
-        © 2026 <a href="https://sergiocampos.mx">sergiocampos.mx</a> · Todos los derechos reservados
-    </div>
+                <!-- Producto 4: Hielo Purificado en Bolsa -->
+                <div class="producto-card">
+                    <img src="https://i.ibb.co/3mFWLnvx/Gemini-Generated-Image-hky7onhky7onhky7.jpg" alt="Hielo Purificado Agua Caspio">
+                    <div class="producto-info">
+                        <h3>Hielo Purificado</h3>
+                        <p class="descripcion">Bolsa de 5 kg de hielo en cubo, fabricado con nuestra agua certificada.</p>
+                        <div class="precio">$3.00 <span>/ bolsa</span></div>
+                        <a href="https://wa.me/525560759750?text=Hola,%20quiero%20comprar%20una%20bolsa%20de%20hielo%20purificado%20de%205kg" target="_blank" class="btn-comprar">Comprar por WhatsApp</a>
+                    </div>
+                </div>
+
+                <!-- Producto 5: Dispensadores y Accesorios -->
+                <div class="producto-card">
+                    <!-- Aquí usamos la imagen de la botella sport o una de garrafón como referencia visual para accesorios -->
+                    <img src="https://i.ibb.co/QFzFKTHX/Gemini-Generated-Image-vk5tdxvk5tdxvk5t.jpg" alt="Dispensadores y Accesorios">
+                    <div class="producto-info">
+                        <h3>Dispensadores y Accesorios</h3>
+                        <p class="descripcion">Bombas manuales, bases metálicas y renta/venta de despachadores fríos y calientes.</p>
+                        <div class="precio">Consultar <span>/ precios</span></div>
+                        <a href="https://wa.me/525560759750?text=Hola,%20quiero%20información%20sobre%20dispensadores%20y%20accesorios" target="_blank" class="btn-comprar">Más Información</a>
+                    </div>
+                </div>
+
+                <!-- Producto 6: Promociones Especiales -->
+                <div class="producto-card">
+                    <!-- Usamos la imagen de la botella de 20L o la que prefieras para promociones -->
+                    <img src="https://i.ibb.co/9kP5rh3m/Gemini-Generated-Image-ha9sjvha9sjvha9s.jpg" alt="Promociones Agua Caspio">
+                    <div class="producto-info">
+                        <h3>Promociones Especiales</h3>
+                        <p class="descripcion">Aprovecha nuestro 2x1 y el décimo llenado gratis. ¡Pregunta por las fechas!</p>
+                        <div class="precio">Ofertas <span>/ variables</span></div>
+                        <a href="https://wa.me/525560759750?text=Hola,%20quiero%20saber%20sobre%20las%20promociones%20vigentes" target="_blank" class="btn-comprar">Ver Promociones</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-info">
+                <p>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    Santa Ursula #48
+                </p>
+                <p>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    5560759750 / 5520772176
+                </p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Agua Caspio. Todos los derechos reservados.</p>
+                <p>Proceso de purificación con base en normas solicitadas por COFEPRIS.</p>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
