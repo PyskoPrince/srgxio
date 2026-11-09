@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Sergio Medina | Candidato a Diputado Federal del PRI</title>
-<link rel="icon" href="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Logotipo-PRI-Elecciones15.png/330px-Logotipo-PRI-Elecciones15.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail">
+<link id="favicon" rel="icon" href="img/logo-pri.png">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
@@ -20,12 +20,44 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,800;1,500&display=swap" rel="stylesheet">
  
 <script>
+  /* ===== Imágenes en tu propio sitio =====
+     La página busca sus imágenes en la carpeta img/, junto a este archivo:
+       img/logo-pri.png   -> logotipo oficial del partido (se usa en los 4 lugares)
+       img/perfil.jpg     -> foto del menú lateral
+       img/portada.png    -> foto recortada de la portada
+       img/quien-soy.jpg  -> foto de la sección "¿Quién soy?"
+     Mientras alguna no esté en esa carpeta, se carga desde su dirección de respaldo. */
+  var RESPALDO = {
+    logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Logotipo-PRI-Elecciones15.png/330px-Logotipo-PRI-Elecciones15.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail',
+    perfil: 'https://i.ibb.co/XfdyMNhq/Gemini-Generated-Image-rdexlfrdexlfrdex.jpg',
+    portada: 'https://i.ibb.co/4wt4B5VH/ELEMENTS.png',
+    quienSoy: 'https://i.ibb.co/QvV43W1b/Gemini-Generated-Image-p0aqlsp0aqlsp0aq.jpg'
+  };
+ 
+  function usarRespaldo(img, clave) {
+    if (!img.dataset.respaldo) {
+      img.dataset.respaldo = 'si';
+      img.src = RESPALDO[clave];
+    } else if (clave === 'logo') {
+      logoPendiente(img);
+    }
+  }
+ 
   function logoPendiente(img) {
     var aviso = document.createElement('span');
     aviso.className = 'logo-pendiente';
     aviso.textContent = 'Logotipo oficial';
     img.parentNode.replaceChild(aviso, img);
   }
+ 
+  // Ícono de la pestaña: si img/logo-pri.png todavía no existe, usa el de respaldo.
+  (function () {
+    var prueba = new Image();
+    prueba.onerror = function () {
+      document.getElementById('favicon').href = RESPALDO.logo;
+    };
+    prueba.src = 'img/logo-pri.png';
+  })();
 </script>
  
 <style>
@@ -486,7 +518,7 @@
  
 <!-- Menú Lateral -->
 <nav class="custom-navbar">
-  <img class="profile-pic" src="https://i.ibb.co/XfdyMNhq/Gemini-Generated-Image-rdexlfrdexlfrdex.jpg" alt="Perfil Sergio Medina">
+  <img class="profile-pic" src="img/perfil.jpg" alt="Perfil Sergio Medina" onerror="usarRespaldo(this, 'perfil')">
   <div class="nav-identidad">
     <h5 class="nav-nombre">Sergio Medina</h5>
     <p class="nav-cargo">Candidato a Diputado Federal del PRI</p>
@@ -505,7 +537,7 @@
   </ul>
   <div class="nav-logo">
     <div class="logo-caja logo-caja--chica">
-      <img class="logo-partido" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Logotipo-PRI-Elecciones15.png/330px-Logotipo-PRI-Elecciones15.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" alt="Logotipo del PRI" onerror="logoPendiente(this)">
+      <img class="logo-partido" src="img/logo-pri.png" alt="Logotipo del PRI" onerror="usarRespaldo(this, 'logo')">
     </div>
   </div>
 </nav>
@@ -563,7 +595,7 @@ btnDonar.addEventListener("click", function() {
  
       <!-- Foto grande a la derecha, sin marco -->
       <div class="portada-foto">
-        <img src="https://i.ibb.co/4wt4B5VH/ELEMENTS.png" alt="Sergio Medina">
+        <img src="img/portada.png" alt="Sergio Medina" onerror="usarRespaldo(this, 'portada')">
       </div>
  
     </div>
@@ -574,7 +606,7 @@ btnDonar.addEventListener("click", function() {
     <div class="tarjeta-verde text-white p-4 shadow">
  
       <div class="logo-chat-circular">
-        <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Logotipo-PRI-Elecciones15.png/330px-Logotipo-PRI-Elecciones15.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" alt="Chat icon">
+        <img src="img/logo-pri.png" alt="Logotipo del PRI" onerror="usarRespaldo(this, 'logo')">
       </div>
  
       <h2 class="text-white font-weight-bold">Dialoga con tu candidato</h2>
@@ -615,7 +647,7 @@ btnDonar.addEventListener("click", function() {
       </div>
       <div class="col-lg-5 text-center mt-4 mt-lg-0">
         <div style="background-color: var(--blanco); border-radius: 30px; padding: 24px;" class="shadow-sm">
-          <img src="https://i.ibb.co/QvV43W1b/Gemini-Generated-Image-p0aqlsp0aqlsp0aq.jpg" style="max-width:100%; height:auto; border-radius: 20px;" alt="Sergio Medina">
+          <img src="img/quien-soy.jpg" style="max-width:100%; height:auto; border-radius: 20px;" alt="Sergio Medina" onerror="usarRespaldo(this, 'quienSoy')">
         </div>
       </div>
     </div>
@@ -750,7 +782,7 @@ btnDonar.addEventListener("click", function() {
       <div class="row">
         <div class="col">
           <div class="logo-caja logo-caja--mediana">
-            <img class="logo-partido" src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PRI_logo_%28Mexico%29.svg" alt="Logotipo del PRI" onerror="logoPendiente(this)">
+            <img class="logo-partido" src="img/logo-pri.png" alt="Logotipo del PRI" onerror="usarRespaldo(this, 'logo')">
           </div>
           <p class="m-0 mt-3 font-weight-bold" style="color: white; font-size: 1.1rem;">Sergio Medina | Candidato a Diputado Federal del PRI</p>
           <p class="m-0 pb-2" style="color: rgba(255,255,255,0.85); font-size: 0.9rem;">© 2026 Político Intelectual. Todos los derechos reservados.</p>
