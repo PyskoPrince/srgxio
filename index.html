@@ -1,214 +1,770 @@
 <!DOCTYPE html>
 <html lang="es">
+ 
+<!-- Head -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="theme-color" content="#0a1c4f">
-    <meta name="description" content="Sitio web oficial de Sergio Campos. Próximamente disponible.">
-    <meta name="author" content="Sergio Campos">
-    <title>Sergio Campos | Próximamente</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
-
-        body {
-            background-color: #0a1c4f;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(211, 47, 47, 0.22) 0%, transparent 45%),
-                radial-gradient(circle at 80% 80%, rgba(255, 204, 0, 0.12) 0%, transparent 45%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding: 25px;
-            position: relative;
-        }
-
-        /* Grid sutil de fondo */
-        body::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: 0;
-        }
-
-        /* --- CONTENEDOR CENTRAL --- */
-        .contenedor {
-            position: relative;
-            z-index: 1;
-            max-width: 480px;
-            width: 100%;
-            animation: aparecer 1.2s ease-out;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(25px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Monograma */
-        .monograma {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 30px;
-            border: 3px solid #ffcc00;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Georgia, 'Times New Roman', serif;
-            font-size: 38px;
-            font-weight: bold;
-            color: #ffcc00;
-            background: rgba(255, 204, 0, 0.05);
-            letter-spacing: 2px;
-        }
-
-        .etiqueta {
-            display: inline-block;
-            font-size: 11px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #ffcc00;
-            font-weight: 600;
-            padding: 6px 16px;
-            border: 1px solid rgba(255, 204, 0, 0.4);
-            border-radius: 50px;
-            margin-bottom: 25px;
-        }
-
-        .nombre {
-            font-family: Georgia, 'Times New Roman', serif;
-            font-size: 38px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            line-height: 1.1;
-            margin-bottom: 18px;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .subtitulo {
-            font-size: 16px;
-            font-weight: 300;
-            opacity: 0.85;
-            line-height: 1.6;
-            margin-bottom: 40px;
-            max-width: 380px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Barra de progreso */
-        .progreso {
-            width: 100%;
-            max-width: 320px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 2px;
-            margin: 0 auto;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progreso::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 40%;
-            background: linear-gradient(90deg, #ffcc00, #d32f2f);
-            border-radius: 2px;
-            animation: cargando 2.2s ease-in-out infinite;
-        }
-
-        @keyframes cargando {
-            0% { left: -40%; }
-            100% { left: 100%; }
-        }
-
-        /* Pie de página */
-        .footer {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 1px;
-            z-index: 1;
-            padding: 0 20px;
-        }
-
-        .footer a {
-            color: rgba(255, 204, 0, 0.7);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer a:hover {
-            color: #ffcc00;
-        }
-
-        /* --- CELULARES PEQUEÑOS --- */
-        @media (max-width: 380px) {
-            .nombre { font-size: 30px; }
-            .subtitulo { font-size: 14px; }
-            .monograma {
-                width: 75px;
-                height: 75px;
-                font-size: 32px;
-            }
-        }
-
-        /* --- PANTALLAS GRANDES --- */
-        @media (min-width: 768px) {
-            .nombre { font-size: 52px; }
-            .subtitulo { font-size: 18px; }
-            .monograma {
-                width: 110px;
-                height: 110px;
-                font-size: 46px;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Sergio Medina | Candidato a Diputado Federal del PRI</title>
+<link rel="icon" href="GIF/noti.jpg">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+ 
+<!-- CSS propio y Fuentes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,800;1,500&display=swap" rel="stylesheet">
+ 
+<script>
+  function logoPendiente(img) {
+    var aviso = document.createElement('span');
+    aviso.className = 'logo-pendiente';
+    aviso.textContent = 'Logotipo oficial';
+    img.parentNode.replaceChild(aviso, img);
+  }
+</script>
+ 
+<style>
+  :root {
+    --verde: #006847;
+    --verde-oscuro: #004b33;
+    --verde-profundo: #00291b;
+    --rojo: #ce1126;
+    --rojo-oscuro: #8f0c1b;
+    --blanco: #ffffff;
+    --fondo: #f6f7f5;
+    --texto: #15261d;
+  }
+ 
+  body {
+    background-color: var(--fondo);
+    color: var(--texto);
+  }
+  h1, h2, h3, h4, h5, h6, p, a, button, input, textarea, select, label {
+    font-family: 'Montserrat', sans-serif;
+  }
+ 
+  .franja-tricolor {
+    height: 8px;
+    background: linear-gradient(to right,
+      var(--verde) 0%, var(--verde) 33.33%,
+      var(--blanco) 33.33%, var(--blanco) 66.66%,
+      var(--rojo) 66.66%, var(--rojo) 100%);
+  }
+  .barra-tricolor {
+    width: 72px;
+    height: 6px;
+    margin: 12px auto 0;
+    border-radius: 3px;
+    background: linear-gradient(to right,
+      var(--verde) 0%, var(--verde) 33.33%,
+      var(--blanco) 33.33%, var(--blanco) 66.66%,
+      var(--rojo) 66.66%, var(--rojo) 100%);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+  }
+  .barra-blanca {
+    width: 56px;
+    height: 5px;
+    margin: 12px auto 0;
+    border-radius: 3px;
+    background: var(--blanco);
+  }
+ 
+  /* ===== Menú lateral ===== */
+  .custom-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 22%;
+    height: 100vh;
+    background: linear-gradient(to bottom, var(--verde), var(--verde-profundo));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 28px 30px 24px 20px;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+    box-shadow: inset -5px 0 0 var(--rojo), inset -10px 0 0 var(--blanco), 4px 0 15px rgba(0,0,0,0.3);
+  }
+ 
+  .custom-navbar img.profile-pic {
+    max-width: 100%;
+    width: 104px;
+    height: 104px;
+    object-fit: cover;
+    margin-bottom: 12px;
+    border: 4px solid var(--blanco);
+    border-radius: 50%;
+    background-color: whitesmoke;
+  }
+ 
+  .nav-identidad {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+  .nav-nombre {
+    color: var(--blanco);
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin: 0;
+  }
+  .nav-cargo {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.8rem;
+    line-height: 1.35;
+    margin: 4px 0 0;
+  }
+ 
+  .custom-navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  .custom-navbar li {
+    margin-bottom: 8px;
+    width: 100%;
+  }
+  .custom-navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+  .custom-navbar a:hover {
+    background-color: rgba(255,255,255,0.15);
+    transform: translateX(5px);
+  }
+  .nav-logo {
+    margin-top: auto;
+    padding-top: 20px;
+  }
+ 
+  .main-content {
+    margin-left: 22%;
+    padding: 0px;
+    transition: margin-left 0.3s ease;
+  }
+ 
+  .btn-donate-custom {
+    width: 100%;
+    border-radius: 20px;
+    font-weight: bold;
+    padding: 10px;
+    background-color: var(--rojo);
+    border: 2px solid var(--blanco);
+    color: var(--blanco);
+  }
+  .btn-donate-custom:hover,
+  .btn-donate-custom:focus {
+    background-color: var(--rojo-oscuro);
+    color: var(--blanco);
+  }
+ 
+  /* ===== Logos pequeños (menú y footer) ===== */
+  .logo-caja {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--blanco);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  }
+  .logo-caja img.logo-partido {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .logo-caja--chica   { width: 76px;  height: 76px; }
+  .logo-caja--mediana { width: 100px; height: 100px; }
+  .logo-pendiente {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    border: 2px dashed var(--verde);
+    border-radius: 12px;
+    color: var(--verde);
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1.15;
+    text-align: center;
+    text-transform: uppercase;
+  }
+ 
+  /* ===== Logo circular en la sección "Dialoga con tu candidato" ===== */
+  .logo-chat-circular {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    padding: 14px;
+    margin-bottom: 16px;
+    background-color: var(--blanco);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 5px var(--blanco),
+      0 0 0 9px var(--rojo),
+      0 10px 24px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+  }
+  .logo-chat-circular img {
+    width: 120%;
+    height: 120%;
+    object-fit: contain;
+    display: block;
+  }
+ 
+  /* ===== PORTADA con foto grande integrada ===== */
+  .portada {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 78% 60%, rgba(0,104,71,0.12) 0%, transparent 55%),
+      linear-gradient(120deg, #ffffff 0%, #ffffff 55%, #eef3ef 55%, #eef3ef 100%);
+  }
+  .portada-contenido {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 64px 0;
+    min-height: 620px;
+  }
+  .portada-texto {
+    max-width: 50%;
+    padding-bottom: 40px;
+  }
+  .portada-nombre {
+    color: var(--verde);
+    font-weight: 800;
+    font-size: 3.8rem;
+    line-height: 1.02;
+    margin: 0;
+  }
+  .portada-cargo {
+    display: inline-block;
+    color: var(--rojo);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 18px 0 0;
+  }
+  .portada-frase {
+    color: var(--texto);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-top: 18px;
+    max-width: 470px;
+  }
+ 
+  /* Contenedor de la foto: MÁS GRANDE */
+  .portada-foto {
+    position: relative;
+    align-self: flex-end;
+    flex-shrink: 0;
+    width: 55%;
+    max-width: 640px;
+    margin-left: 10px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .portada-foto img {
+    width: 100%;
+    height: auto;
+    max-height: 660px;
+    object-fit: contain;
+    display: block;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.28));
+    animation: aparecerFoto 0.9s ease-out both;
+  }
+ 
+  /* Círculo decorativo detrás (verde suave) */
+  .portada-foto::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    padding-bottom: 95%;
+    background: radial-gradient(circle, rgba(0,104,71,0.18) 0%, rgba(0,104,71,0.05) 60%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+  }
+ 
+  @keyframes aparecerFoto {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+ 
+  /* ===== Iconos (reemplazan imágenes) ===== */
+  .icono-grande {
+    font-size: 3.5rem;
+    line-height: 1;
+    margin-bottom: 14px;
+    display: inline-block;
+  }
+  .icono-mediano {
+    font-size: 2.6rem;
+    line-height: 1;
+    margin-bottom: 14px;
+    display: inline-block;
+  }
+  .icono-circulo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background-color: whitesmoke;
+    color: var(--verde);
+    font-size: 3rem;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  }
+ 
+  /* ===== Bloques de color ===== */
+  .seccion-chat {
+    background: linear-gradient(to bottom, var(--fondo), var(--blanco));
+  }
+  .tarjeta-verde {
+    background: linear-gradient(to bottom, var(--verde), var(--verde-profundo));
+    color: var(--blanco);
+    border-radius: 30px;
+  }
+  .tarjeta-roja {
+    background: linear-gradient(to bottom, var(--rojo), var(--rojo-oscuro));
+    color: var(--blanco);
+    border-radius: 30px;
+  }
+  .tarjeta-blanca {
+    background-color: var(--blanco);
+    color: var(--texto);
+    border-radius: 30px;
+    border-top: 6px solid var(--rojo);
+  }
+  .tarjeta-blanca--verde {
+    border-top-color: var(--verde);
+  }
+  .tarjeta-blanca h4 {
+    color: var(--verde);
+    font-weight: bold;
+  }
+  .titulo-verde {
+    color: var(--verde);
+  }
+ 
+  .btn-rojo {
+    background-color: var(--rojo);
+    border-color: var(--rojo);
+    color: var(--blanco);
+  }
+  .btn-rojo:hover,
+  .btn-rojo:focus {
+    background-color: var(--rojo-oscuro);
+    border-color: var(--rojo-oscuro);
+    color: var(--blanco);
+  }
+  .btn-blanco {
+    background-color: var(--blanco);
+    color: var(--verde);
+    border: 2px solid var(--blanco);
+  }
+  .btn-blanco:hover,
+  .btn-blanco:focus {
+    background-color: transparent;
+    color: var(--blanco);
+  }
+ 
+  .pie {
+    background: linear-gradient(to bottom, var(--fondo) 0%, var(--verde) 55%, var(--verde-profundo) 100%);
+  }
+ 
+  .swal-button {
+    background-color: var(--verde) !important;
+  }
+  .swal-button:not([disabled]):hover {
+    background-color: var(--verde-oscuro) !important;
+  }
+ 
+  @media (max-width: 800px) {
+    .custom-navbar {
+      width: 100%;
+      height: auto;
+      position: relative;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      overflow: visible;
+      box-shadow: none;
+    }
+    .custom-navbar img.profile-pic {
+      width: 54px;
+      height: 54px;
+      margin-bottom: 0;
+      border-width: 3px;
+    }
+    .nav-identidad {
+      flex: 1;
+      text-align: left;
+      margin: 0 0 0 12px;
+    }
+    .nav-nombre { font-size: 1.05rem; }
+    .nav-cargo { font-size: 0.72rem; }
+    .custom-navbar ul,
+    .nav-logo {
+      display: none;
+    }
+    .main-content {
+      margin-left: 0;
+    }
+ 
+    /* Portada en móvil: foto arriba, texto abajo, todo centrado */
+    .portada-contenido {
+      flex-direction: column-reverse;
+      text-align: center;
+      padding: 24px 20px 0;
+      min-height: auto;
+    }
+    .portada-texto {
+      max-width: 100%;
+      padding-bottom: 30px;
+    }
+    .portada-foto {
+      width: 80%;
+      max-width: 340px;
+      margin: 0 0 10px 0;
+      align-self: center;
+    }
+    .portada-foto img {
+      max-height: 400px;
+    }
+    .portada-nombre { font-size: 2.4rem; }
+    .portada-cargo { font-size: 0.85rem; letter-spacing: 0.05em; }
+    .portada-frase { font-size: 0.95rem; margin: 14px auto 0; }
+ 
+    .logo-chat-circular {
+      width: 130px;
+      height: 130px;
+      padding: 10px;
+    }
+ 
+    .icono-grande { font-size: 2.8rem; }
+    .icono-mediano { font-size: 2.2rem; }
+    .icono-circulo {
+      width: 90px;
+      height: 90px;
+      font-size: 2.4rem;
+    }
+  }
+</style>
 </head>
 <body>
-
-    <div class="contenedor">
-        <div class="monograma">SC</div>
-
-        <span class="etiqueta">Sitio en construcción</span>
-
-        <h1 class="nombre">Sergio Campos</h1>
-
-        <p class="subtitulo">
-            Estoy trabajando en mi sitio web oficial.<br>
-            Muy pronto estará disponible.
+ 
+<!-- Menú Lateral -->
+<nav class="custom-navbar">
+  <img class="profile-pic" src="https://i.ibb.co/XfdyMNhq/Gemini-Generated-Image-rdexlfrdexlfrdex.jpg" alt="Perfil Sergio Medina">
+  <div class="nav-identidad">
+    <h5 class="nav-nombre">Sergio Medina</h5>
+    <p class="nav-cargo">Candidato a Diputado Federal del PRI</p>
+  </div>
+  <ul>
+    <li><a href="#conoceme"><i class="far fa-user mr-3"></i>Mi Perfil</a></li>
+    <li><a href="#metas"><i class="fas fa-bullseye mr-3"></i>Propuestas</a></li>
+    <li><a href="#chat"><i class="far fa-comments mr-3"></i>Plática Conmigo</a></li>
+    <li><a href="#contacto"><i class="far fa-envelope mr-3"></i>Únete a la Causa</a></li>
+    <li><a href="https://twitter.com/Politico_int" target="_blank"><i class="fab fa-twitter mr-3"></i>Twitter</a></li>
+    <li class="mt-4">
+      <button id="btnAceptar" type="button" class="btn btn-donate-custom">
+        <i class="fas fa-dollar-sign mr-2"></i>Aportar a la campaña
+      </button>
+    </li>
+  </ul>
+  <div class="nav-logo">
+    <div class="logo-caja logo-caja--chica">
+      <img class="logo-partido" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Logotipo-PRI-Elecciones15.png/330px-Logotipo-PRI-Elecciones15.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" alt="Logotipo del PRI" onerror="logoPendiente(this)">
+    </div>
+  </div>
+</nav>
+ 
+<!-- Lógica del botón de donación -->
+<script>
+var btnDonar = document.getElementById("btnAceptar");
+btnDonar.addEventListener("click", function() {
+  Swal.fire({
+    title: "Apoya nuestro proyecto",
+    text: "Tu aportación ayuda a llevar nuestra voz al Congreso.",
+    showCancelButton: true,
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Donar",
+    confirmButtonColor: "#ce1126",
+    cancelButtonColor: "#6c757d",
+    html:
+      '<div class="mt-3">' +
+      '<button class="btn btn-primary m-1 swal-donate-button" data-amount="50" style="background-color: #006847; border-color: #006847;">$50</button>' +
+      '<button class="btn btn-primary m-1 swal-donate-button" data-amount="100" style="background-color: #006847; border-color: #006847;">$100</button>' +
+      '<button class="btn btn-primary m-1 swal-donate-button" data-amount="200" style="background-color: #006847; border-color: #006847;">$200</button>' +
+      '<button class="btn btn-primary m-1 swal-donate-button" data-amount="500" style="background-color: #006847; border-color: #006847;">$500</button>' +
+      '</div>' +
+      '<input type="number" placeholder="Otra cantidad" id="customAmount" class="form-control mt-3 text-center">',
+    focusConfirm: false,
+    preConfirm: function() {
+      var customAmount = document.getElementById("customAmount").value;
+      if (customAmount) return customAmount;
+    }
+  }).then(function(result) {
+    if (result.value) {
+      console.log("Donar " + result.value);
+      swal("¡Gracias!", "Tu apoyo es fundamental para este proyecto.", "success");
+    }
+  });
+});
+</script>
+ 
+<!-- Contenido Principal -->
+<div class="main-content">
+ 
+  <!-- Portada -->
+  <header class="portada">
+    <div class="franja-tricolor"></div>
+    <div class="portada-contenido">
+ 
+      <!-- Texto a la izquierda -->
+      <div class="portada-texto">
+        <h1 class="portada-nombre">Sergio<br>Medina</h1>
+        <p class="portada-cargo">Candidato a Diputado Federal del PRI</p>
+        <p class="portada-frase">
+          Llevo la voz ciudadana al Congreso: transparencia, tecnología y defensa de nuestros recursos.
         </p>
-
-        <div class="progreso"></div>
+      </div>
+ 
+      <!-- Foto grande a la derecha, sin marco -->
+      <div class="portada-foto">
+        <img src="https://i.ibb.co/4wt4B5VH/ELEMENTS.png" alt="Sergio Medina">
+      </div>
+ 
     </div>
-
-    <div class="footer">
-        © 2026 <a href="https://sergiocampos.mx">sergiocampos.mx</a> · Todos los derechos reservados
+  </header>
+ 
+  <!-- Sección Chat -->
+  <div id="chat" class="seccion-chat text-center pl-3 pt-5 pr-3 pb-4">
+    <div class="tarjeta-verde text-white p-4 shadow">
+ 
+      <div class="logo-chat-circular">
+        <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Logotipo-PRI-Elecciones15.png/330px-Logotipo-PRI-Elecciones15.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" alt="Chat icon">
+      </div>
+ 
+      <h2 class="text-white font-weight-bold">Dialoga con tu candidato</h2>
+      <div class="barra-blanca mb-3"></div>
+ 
+      <script>
+      function truco() {
+        swal({
+          title: "¡Servicio en Mantenimiento!",
+          text: "Actualmente estoy en recorridos de trabajo. Deja tu mensaje en la sección de contacto.",
+          icon: "info",
+          button: "Entendido"
+        });
+      }
+      </script>
+ 
+      <p class="text-light" style="font-size: 1.1rem;">Pregúntame sobre mis propuestas, leyes o política ciudadana... ⚖️🔍</p>
+      <div style="position:relative; max-width: 800px; margin: 0 auto;">
+        <textarea class="form-control shadow-sm" id="pregunta_input" style="color: var(--texto); height: 120px; border-radius: 20px; resize: none;" placeholder="Escribe tu duda ciudadana aquí..."></textarea>
+        <button onclick="truco()" style="position: absolute; bottom: 15px; right: 15px; border-radius: 20px;" class="btn btn-rojo font-weight-bold">
+          Enviar <i class="fas fa-paper-plane ml-1"></i>
+        </button>
+      </div>
     </div>
-
+  </div>
+ 
+  <!-- Sección Conóceme (MÁS GRANDE) -->
+  <div id="conoceme" class="tarjeta-roja p-5 ml-3 mr-3 mt-4 text-white shadow">
+    <h2 class="text-center font-weight-bold" style="font-size: 2.2rem;">¿Quién soy?</h2>
+    <div class="barra-blanca mb-4"></div>
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <p class="text-white" style="text-align: justify; line-height: 1.9; font-size: 1.25rem; margin-bottom: 0;">
+          Soy <strong>Sergio Medina</strong>, ciudadano comprometido y candidato a diputado federal del <strong>PRI</strong>. Represento a los vecinos, a los emprendedores y a las familias que buscamos soluciones reales.
+          <br><br>
+          Cuento con una sólida formación en desarrollo tecnológico, innovación y defensa de derechos. He enfrentado los obstáculos del sistema y sé lo que cuesta sacar un proyecto adelante. Mi objetivo es llevar la voz ciudadana al Congreso: legislar con transparencia, impulsar la tecnología como motor de desarrollo y defender nuestros recursos.
+        </p>
+      </div>
+      <div class="col-lg-5 text-center mt-4 mt-lg-0">
+        <div style="background-color: var(--blanco); border-radius: 30px; padding: 24px;" class="shadow-sm">
+          <img src="https://i.ibb.co/QvV43W1b/Gemini-Generated-Image-p0aqlsp0aqlsp0aq.jpg" style="max-width:100%; height:auto; border-radius: 20px;" alt="Sergio Medina">
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Sección Metas / Propuestas -->
+  <div id="metas" class="mt-5 pt-3">
+    <div class="container text-center">
+      <span class="icono-circulo" style="background-color: whitesmoke; color: var(--verde);">
+        <i class="fas fa-bullseye"></i>
+      </span>
+      <h2 class="mt-3 font-weight-bold titulo-verde">Agenda Legislativa</h2>
+      <div class="barra-tricolor mb-5"></div>
+ 
+      <div class="row mt-3 row-cols-1 row-cols-md-2 px-3">
+ 
+        <!-- Tarjeta 1 Verde - Derechos -->
+        <div class="col mb-4">
+          <div class="tarjeta-verde h-100 shadow-sm">
+            <div class="p-4 d-flex flex-column align-items-center justify-content-center text-center">
+              <i class="fas fa-balance-scale icono-grande" style="color: var(--blanco);"></i>
+              <h4 style="color: white; font-weight: bold;">Defensa de Derechos</h4>
+              <p style="color: white; font-size: 0.95rem;">Luchar contra el abuso de autoridad y asegurar que los ciudadanos cuenten con defensa efectiva frente a la burocracia institucional.</p>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- Tarjeta 2 Blanca - Comunidad y Seguridad -->
+        <div class="col mb-4">
+          <div class="tarjeta-blanca h-100 shadow-sm">
+            <div class="p-4 d-flex flex-column align-items-center justify-content-center text-center">
+              <i class="fas fa-shield-alt icono-grande" style="color: var(--rojo);"></i>
+              <h4>Comunidad y Seguridad</h4>
+              <p style="font-size: 0.95rem;">Fortalecer el tejido social mediante presupuestos participativos y estrategias de seguridad ciudadana que realmente funcionen en nuestras colonias.</p>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- Tarjeta 3 Roja - Bosques -->
+        <div class="col mb-4">
+          <div class="tarjeta-roja h-100 shadow-sm">
+            <div class="p-4 d-flex flex-column align-items-center justify-content-center text-center">
+              <i class="fas fa-tree icono-grande" style="color: var(--blanco);"></i>
+              <h4 style="color: white; font-weight: bold;">Protección de Bosques</h4>
+              <p style="color: white; font-size: 0.95rem;">Leyes severas para proteger las áreas de conservación, frenar la tala ilegal y garantizar el abasto de agua responsable.</p>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- Tarjeta 4 Blanca (borde verde) - Tecnología -->
+        <div class="col mb-4">
+          <div class="tarjeta-blanca tarjeta-blanca--verde h-100 shadow-sm">
+            <div class="p-4 d-flex flex-column align-items-center justify-content-center text-center">
+              <i class="fas fa-microchip icono-grande" style="color: var(--verde);"></i>
+              <h4>Tecnología Pública</h4>
+              <p style="font-size: 0.95rem;">Impulsar el uso de innovación tecnológica para transparentar el gobierno, agilizar trámites y apoyar a los emprendedores locales.</p>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- Tarjeta 5 Verde - Salud -->
+        <div class="col mb-4">
+          <div class="tarjeta-verde h-100 shadow-sm">
+            <div class="p-4 d-flex flex-column align-items-center justify-content-center text-center">
+              <i class="fas fa-heartbeat icono-grande" style="color: var(--blanco);"></i>
+              <h4 style="color: white; font-weight: bold;">Salud Cercana</h4>
+              <p style="color: white; font-size: 0.95rem;">Gestión de recursos federales para mejorar el equipamiento y la atención en los centros de salud de pueblos y colonias.</p>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- Tarjeta 6 Blanca - Educación -->
+        <div class="col mb-4">
+          <div class="tarjeta-blanca h-100 shadow-sm">
+            <div class="p-4 d-flex flex-column align-items-center justify-content-center text-center">
+              <i class="fas fa-graduation-cap icono-grande" style="color: var(--rojo);"></i>
+              <h4>Apoyo a Jóvenes</h4>
+              <p style="font-size: 0.95rem;">Legislación que facilite el acceso a créditos sin barreras burocráticas y becas para estudiantes que buscan crear sus propios proyectos.</p>
+            </div>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Sección Contacto -->
+  <div id="contacto" class="tarjeta-verde p-5 mx-3 mt-4 mb-5 text-white shadow">
+    <div class="mb-4 text-center">
+      <span class="icono-circulo" style="background-color: whitesmoke; color: var(--verde);">
+        <i class="fas fa-envelope-open-text"></i>
+      </span>
+    </div>
+    <h2 class="text-center font-weight-bold">Únete a la campaña</h2>
+    <div class="barra-blanca mb-3"></div>
+    <p class="text-center mb-5">Ayúdame a llevar la voz ciudadana al Congreso.</p>
+ 
+    <form style="max-width: 700px; margin: 0 auto;">
+      <div class="form-group">
+        <label for="nombre" class="font-weight-bold">Nombre completo:</label>
+        <input type="text" class="form-control" id="nombre" style="border-radius: 15px;" required>
+      </div>
+      <div class="form-group">
+        <label for="email" class="font-weight-bold">Correo electrónico:</label>
+        <input type="email" class="form-control" id="email" style="border-radius: 15px;" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="telefono" class="font-weight-bold">Teléfono / WhatsApp:</label>
+          <input type="tel" class="form-control" id="telefono" style="border-radius: 15px;" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="colonia" class="font-weight-bold">Colonia y municipio o alcaldía:</label>
+          <input type="text" class="form-control" id="colonia" style="border-radius: 15px;" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="mensaje" class="font-weight-bold">¿Cómo te gustaría apoyar? (Voluntariado, difusión, ideas):</label>
+        <textarea class="form-control" id="mensaje" rows="3" style="border-radius: 15px; resize: none;" required></textarea>
+      </div>
+      <div class="text-center mt-4">
+        <button type="button" class="btn btn-blanco font-weight-bold px-5 py-2" style="border-radius: 20px; font-size: 1.1rem;" onclick="swal('¡Enviado!', 'Gracias por sumarte a este proyecto.', 'success')">
+          <i class="mr-2 fas fa-paper-plane"></i>Enviar Registro
+        </button>
+      </div>
+    </form>
+  </div>
+ 
+  <!-- Footer -->
+  <footer class="pie text-center" id="gif">
+    <div class="container py-4">
+      <div class="row">
+        <div class="col">
+          <div class="logo-caja logo-caja--mediana">
+            <img class="logo-partido" src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PRI_logo_%28Mexico%29.svg" alt="Logotipo del PRI" onerror="logoPendiente(this)">
+          </div>
+          <p class="m-0 mt-3 font-weight-bold" style="color: white; font-size: 1.1rem;">Sergio Medina | Candidato a Diputado Federal del PRI</p>
+          <p class="m-0 pb-2" style="color: rgba(255,255,255,0.85); font-size: 0.9rem;">© 2026 Político Intelectual. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </div>
+    <div class="franja-tricolor"></div>
+  </footer>
+ 
+</div>
+ 
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+ 
 </body>
 </html>
